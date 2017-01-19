@@ -1,0 +1,117 @@
+.form-builder-save {
+	display:none !important;
+}
+.view-data { display:none !important; }
+.access-wrap { display: none !important; }
+.field-label { display:block !important;}
+.hidden-field { display:block !important;}
+
+
+#welcome-block {
+	position: relative;
+    overflow: auto;
+    margin: 16px 0;
+    padding: 23px 10px 0;
+    border: 1px solid #e5e5e5;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    background: #fff;
+    font-size: 13px;
+    padding-bottom:20px;
+}
+
+.welcome-block .welcome-block-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px 10px 21px;
+    font-size: 13px;
+    line-height: 1.23076923;
+    text-decoration: none;
+}
+
+.welcome-block .welcome-block-close:before {
+    background: 0 0;
+    color: #b4b9be;
+    content: "\f153";
+    display: block;
+    font: 400 16px/20px dashicons;
+    speak: none;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.welcome-block .welcome-block-close:before {
+    margin: 0;
+}
+.welcome-block .welcome-block-close:before {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    -webkit-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+}
+.welcome-block-content {
+    margin-left: 13px;
+    max-width: 1500px;
+}
+.welcome-block .welcome-block-column-container {
+    clear: both;
+    position: relative;
+}
+.welcome-block .welcome-block-column:first-child {
+    width: 36%;
+}
+.welcome-block .welcome-block-column {
+    width: 32%;
+    min-width: 200px;
+    float: left;
+}
+
+.welcome-block .message {
+	margin-right:20px;
+}
+.welcome-block ul li {
+	margin-bottom:3px;
+	margin-top:3px;
+}
+
+.welcome-block table tr td {
+    text-align: left;
+    display: table-cell;
+    padding-right: 10px;
+}
+.welcome-block table tr th {
+	text-align: left;
+	margin-right:20px;
+}
+.wpcf_nd_vote {
+	width:40px;
+}
+
+
+.wpcf-extension {
+
+    float: left;
+    margin: 0 1% 1% 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 262px;
+    padding: 14px;
+    height: 395px;
+    position: relative;
+
+}
+.wpcf-extension h3 {
+    margin: 0 0 8px;
+    font-size: 13px;
+
+}
+
+.wpcf-extension .button-secondary {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+}
