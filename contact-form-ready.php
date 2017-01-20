@@ -668,11 +668,13 @@ class WP_Contact_Form_ND{
 
 				</table>
 
-			</div>
+			</div>			
 
-			<?php do_action( "contact_form_ready_settings_content" ); ?>
+			<?php do_action( "contact_form_ready_settings_content", $post ); ?>  
 
-		</div>	    
+		</div>	  
+
+
 
         <!-- / Components -->
         <?php
