@@ -420,41 +420,63 @@ class WP_Contact_Form_ND{
     	$orig_body = $body;
 
     	// SEND TO ADMIN
-    	
-    	if (!isset($wpcf_nd_settings['wpcf_nd_message_admin']))
-    		$wpcf_nd_settings['wpcf_nd_message_admin'] = __( "A new message has been received." , "wpcf_nd" );
+    	$wpcf_nd_settings = get_post_meta( $cfid, 'wpcf_nd_email_sending_settings', true ); 
+
+		if( $wpcf_nd_settings == '' ){
+
+			/**
+			 * Either new user, or updated to the latest version
+			 */
+			
+			$wpcf_nd_settings = get_option("wpcf_nd_settings");
+
+			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
+
+			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
+
+			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+						
+			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
+
+			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
+
+		} else {
+
+			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
+
+			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
+
+			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+						
+			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
+
+			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
+
+		}
 
 		$data = array(
 			'message' => $body,
 			'footer' => '',
 			'logo' => $header,
-			'header' => stripslashes(esc_html( $wpcf_nd_settings['wpcf_nd_message_admin'] ) )
+			'header' => stripslashes( esc_html( $message_admin ) )
 		);
-		$body = apply_filters( "wpcf_nd_email_wrapper" , $data );
-
-		if (!isset($wpcf_nd_settings['wpcf_nd_subject_admin']))
-			$wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
+		$body = apply_filters( "wpcf_nd_email_wrapper" , $data );		
     	
-    	@wp_mail( $sendto , stripslashes( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) , $body , $headers , $attachments );
+    	@wp_mail( $sendto , stripslashes( $subject_admin ) , $body , $headers , $attachments );
     	
 
     	// SEND TO USER?
-    	if (isset($wpcf_nd_settings['wpcf_nd_send_to_user']) && intval($wpcf_nd_settings['wpcf_nd_send_to_user']) == 1 && $sent_data['user_email'] != false) { 
-	    	if (!isset($wpcf_nd_settings['wpcf_nd_message_user']))
-	    		$wpcf_nd_settings['wpcf_nd_message_user'] = __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );
+    	if ( $send_to_user !== '' && $send_to_user == '1' && $sent_data['user_email'] != false) { 
 
 			$data = array(
 				'message' => $orig_body,
 				'footer' => '',
 				'logo' => $header,
-				'header' => stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_user'] ) )
+				'header' => stripslashes( esc_html( $cfr_email_body_user ) )
 			);
 			$body = apply_filters( "wpcf_nd_email_wrapper" , $data );
 
-			if (!isset($wpcf_nd_settings['wpcf_nd_subject_user']))
-				$wpcf_nd_settings['wpcf_nd_subject_user'] = __("Contact Form Submission Received","wpcf_nd");
-
-	    	@wp_mail( $sent_data['user_email'] , stripslashes( $wpcf_nd_settings['wpcf_nd_subject_user'] ) , $body , $headers , $attachments );
+	    	@wp_mail( $sent_data['user_email'] , stripslashes( $cfr_email_subject_user ) , $body , $headers , $attachments );
 	    }
 
 
@@ -504,60 +526,157 @@ class WP_Contact_Form_ND{
 		}
 
 		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
-    	
 
-	    ?>
-	    <table class='wp-list-table widefat fixed'>
-	    	<?php do_action( "wpcf_hook_form_builder_table_top", $post, $wpcf_nd_settings ); ?>
-	    	<tr>
-	    		<td width='250'><label for='wpcf_nd_shortcode'><?php _e("Shortcode","wpcf_nd"); ?></label></td>
-	    		<td>
-	    			<input type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
-	    			<p class='description'><?php _e("Copy this to your post or page to show the contact form","wpcf_nd"); ?></p>
+		$tabs_array = array(
+			'basic-settings' => array(
+				'name' => __( 'Basic Settings', 'wpcf_nd' ),
+				'icon' => ''						
+			),
+			'advanced-settings' => array(
+				'name' => __( 'Advanced Settings', 'wpcf_nd' ),
+				'icon' => ''
+			)
+		);
 
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<td valign='top'><label for='wpcf_nd_send_to'><?php _e("Send emails to","wpcf_nd"); ?></label></td>
-	    		<td>
-	    			<input type='text' value='<?php echo $sendto; ?>' id='wpcf_nd_send_to' name='wpcf_nd_send_to' class='regular-text' />
-	    			<p class='description'><?php _e("Multiple emails separated by commas","wpcf_nd"); ?></p>
+		$tabs_array = apply_filters( 'cfr_form_settings_tabs', $tabs_array );
 
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<td valign='top'><label for='wpcf_nd_redirect_uri'><?php _e("Redirect to URL after submit","wpcf_nd"); ?></label></td>
-	    		<td>
-	    			<input type='text' value='<?php echo $wpcf_nd_redirect_uri; ?>' id='wpcf_nd_redirect_uri' name='wpcf_nd_redirect_uri' class='regular-text code' />
-	    			<p class='description'><?php _e("Example: /thank-you <br>Leave blank for no redirect","wpcf_nd"); ?></p>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<td><label for='wpcf_nd_submit_string'><?php _e( "Submit button value", "wpcf_nd" ); ?></label></td>
-	    		<td><input type='text' value='<?php echo $submit_string; ?>' id='wpcf_nd_submit_string' name='wpcf_nd_submit_string' /></td>
-	    	</tr>
-	    	<tr>
-	    		<td><label for='wpcf_nd_submit_type'><?php _e( "Form type", "wpcf_nd" ); ?></label></td>
-	    		<td>
-	    			<select id="wpcf_nd_submit_type" name="wpcf_nd_submit_type">
-	    				<option value='0' <?php if ($form_type == '0') { echo 'selected'; } ?>><?php _e( "Normal", "wpcf_nd" ); ?></option>
-	    				<option value='1' <?php if ($form_type == '1') { echo 'selected'; } ?>><?php _e( "AJAX (avoids page reloading)", "wpcf_nd" ); ?></option>
-	    			</select>
-	    		</td>
-	    	</tr>
-	    	<?php do_action( "wpcf_hook_form_builder_table_bottom", $post, $wpcf_nd_settings ); ?>
-	    </table>
+		?>
+
+		<div id="contact_form_ready_tabs">
+			<ul>
+				<?php
+					if( $tabs_array ){
+						foreach( $tabs_array as $key => $val ){
+							echo "<li><a href='#".$key."'>".$val['icon']." ".$val['name']."</a></li>";
+						}
+					}
+				?>
+			</ul>
+			<div id='basic-settings'>
+
+				<h2><?php _e("Basic Settings","wpcf_nd"); ?></h2>
+
+				<table class='form-table'>
+			    	<?php do_action( "wpcf_hook_form_builder_table_top", $post, $wpcf_nd_settings ); ?>
+			    	<tr>
+			    		<td width='250'><label for='wpcf_nd_shortcode'><?php _e("Shortcode","wpcf_nd"); ?></label></td>
+			    		<td>
+			    			<input type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
+			    			<p class='description'><?php _e("Copy this to your post or page to show the contact form","wpcf_nd"); ?></p>
+
+			    		</td>
+			    	</tr>
+			    	<tr>
+			    		<td valign='top'><label for='wpcf_nd_send_to'><?php _e("Send emails to","wpcf_nd"); ?></label></td>
+			    		<td>
+			    			<input type='text' value='<?php echo $sendto; ?>' id='wpcf_nd_send_to' name='wpcf_nd_send_to' class='regular-text' />
+			    			<p class='description'><?php _e("Multiple emails separated by commas","wpcf_nd"); ?></p>
+
+			    		</td>
+			    	</tr>
+			    	<tr>
+			    		<td valign='top'><label for='wpcf_nd_redirect_uri'><?php _e("Redirect to URL after submit","wpcf_nd"); ?></label></td>
+			    		<td>
+			    			<input type='text' value='<?php echo $wpcf_nd_redirect_uri; ?>' id='wpcf_nd_redirect_uri' name='wpcf_nd_redirect_uri' class='regular-text code' />
+			    			<p class='description'><?php _e("Example: /thank-you <br>Leave blank for no redirect","wpcf_nd"); ?></p>
+			    		</td>
+			    	</tr>
+			    	<tr>
+			    		<td><label for='wpcf_nd_submit_string'><?php _e( "Submit button value", "wpcf_nd" ); ?></label></td>
+			    		<td><input type='text' value='<?php echo $submit_string; ?>' id='wpcf_nd_submit_string' name='wpcf_nd_submit_string' /></td>
+			    	</tr>
+			    	<tr>
+			    		<td><label for='wpcf_nd_submit_type'><?php _e( "Form type", "wpcf_nd" ); ?></label></td>
+			    		<td>
+			    			<select id="wpcf_nd_submit_type" name="wpcf_nd_submit_type">
+			    				<option value='0' <?php if ($form_type == '0') { echo 'selected'; } ?>><?php _e( "Normal", "wpcf_nd" ); ?></option>
+			    				<option value='1' <?php if ($form_type == '1') { echo 'selected'; } ?>><?php _e( "AJAX (avoids page reloading)", "wpcf_nd" ); ?></option>
+			    			</select>
+			    		</td>
+			    	</tr>
+			    	<?php do_action( "wpcf_hook_form_builder_table_bottom", $post, $wpcf_nd_settings ); ?>
+			    </table>
+
+			</div>
+
+			<div id='advanced-settings'>
+
+				<?php 
+
+					$wpcf_nd_settings = get_post_meta( $post->ID, 'wpcf_nd_email_sending_settings', true ); 
+					
+					if( $wpcf_nd_settings == '' ){
+
+						/**
+						 * Either new user, or updated to the latest version
+						 */
+						
+						$wpcf_nd_settings = get_option("wpcf_nd_settings");
+
+						$cfr_email_subject_admin = ( isset($wpcf_nd_settings['wpcf_nd_subject_admin'] ) ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : "";
+						$cfr_email_body_admin = ( isset($wpcf_nd_settings['wpcf_nd_message_admin'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : "";
+						
+						$cfr_send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+						
+						$cfr_email_subject_user = ( isset($wpcf_nd_settings['wpcf_nd_subject_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : "";
+						$cfr_email_body_user = ( isset($wpcf_nd_settings['wpcf_nd_message_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : "";
+
+					} else {
+
+						$cfr_email_subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ) : '';
+						$cfr_email_body_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ) : '';
+						
+						$cfr_send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ) : '';
+						
+						$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ) : '';
+						$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_user'] ) ) : '';
+
+					}
+
+				?>
+
+				<h2><?php _e("Email Settings","wpcf_nd"); ?></h2>
+
+				<table class='form-table'>					
+					<tr>
+						<td width='250'><?php _e("Email subject (admin)","wpcf_nd"); ?></td>
+						<td><input type='text' name='wpcf_nd_subject_admin' class='regular-text' id='wpcf_nd_subject_admin' value='<?php echo $cfr_email_subject_admin ?>' /></td>
+					</tr>
+					<tr>
+						<td><?php _e("Email body (admin)","wpcf_nd"); ?></td>
+						<td><input type='text' name='wpcf_nd_message_admin' class='regular-text' id='wpcf_nd_message_admin' value='<?php echo $cfr_email_body_admin ?>' /></td>
+					</tr>
+
+
+					<tr>
+						<td><?php _e("Send confirmation email to user?","wpcf_nd"); ?></td>
+						
+						<?php $is_checked = $cfr_send_to_user == 1 ? "checked" : ""; ?>
+
+						<td><input type='checkbox' name='wpcf_nd_send_to_user' id='wpcf_nd_send_to_user' value='1' <?php echo $is_checked; ?> /></td>
+					</tr>
+					<tr>
+						<td><?php _e("Email subject (user)","wpcf_nd"); ?></td>
+						<td><input type='text' name='wpcf_nd_subject_user' class='regular-text' id='wpcf_nd_subject_user' value='<?php echo $cfr_email_subject_user; ?>' /></td>
+					</tr>
+					<tr>
+						<td><?php _e("Email body (user)","wpcf_nd"); ?></td>
+						<td><input type='text' name='wpcf_nd_message_user' class='regular-text' id='wpcf_nd_message_user' value='<?php echo $cfr_email_body_user; ?>' /></td>
+					</tr>
+
+					<?php do_action( "contact_form_ready_settings_bottom_advanced" ); ?>
+
+				</table>
+
+			</div>
+
+			<?php do_action( "contact_form_ready_settings_content" ); ?>
+
+		</div>	    
 
         <!-- / Components -->
         <?php
 	}
-
-
-
-
-
-
-
 
 	 
 	/**
@@ -725,7 +844,8 @@ class WP_Contact_Form_ND{
 		    	'name' => array(),
 		    	'maxlength' => array(),
 		    	'rows' => array(),
-		    	'id' => array()
+		    	'id' => array(),
+		    	'placeholder' => array()
 		    	)
 	    );
 
@@ -799,6 +919,36 @@ class WP_Contact_Form_ND{
 	        update_post_meta( $post_id, 'wpcf_nd_redirect_uri', sanitize_text_field( $_POST['wpcf_nd_redirect_uri'] ) );
 	    if( isset( $_POST['wpcf_nd_submit_type'] ) )
 	        update_post_meta( $post_id, 'wpcf_nd_submit_type', sanitize_text_field( $_POST['wpcf_nd_submit_type'] ) );
+
+	    /**
+	     * Email details
+	     */
+	    $wpcf_nd_settings = array();
+		if (isset($_POST['wpcf_nd_email_from_address'])) 
+			$wpcf_nd_settings['wpcf_nd_email_from_address'] = sanitize_text_field( $_POST['wpcf_nd_email_from_address'] );
+
+		if (isset($_POST['wpcf_nd_email_from_name'])) 
+			$wpcf_nd_settings['wpcf_nd_email_from_name'] = sanitize_text_field( $_POST['wpcf_nd_email_from_name'] );
+
+		if (isset($_POST['wpcf_nd_subject_admin'])) 
+			$wpcf_nd_settings['wpcf_nd_subject_admin'] = sanitize_text_field( $_POST['wpcf_nd_subject_admin'] );
+
+		if (isset($_POST['wpcf_nd_subject_user'])) 
+			$wpcf_nd_settings['wpcf_nd_subject_user'] = sanitize_text_field( $_POST['wpcf_nd_subject_user'] );
+		
+		if ( isset( $_POST['wpcf_nd_send_to_user'] ) && $_POST['wpcf_nd_send_to_user'] == '1' ){
+			$wpcf_nd_settings['wpcf_nd_send_to_user'] = intval(sanitize_text_field( $_POST['wpcf_nd_send_to_user'] ));
+		} else {
+			$wpcf_nd_settings['wpcf_nd_send_to_user'] = 0;
+		}
+
+		if (isset($_POST['wpcf_nd_message_user'])) 
+			$wpcf_nd_settings['wpcf_nd_message_user'] = sanitize_text_field( $_POST['wpcf_nd_message_user'] );
+
+		if (isset($_POST['wpcf_nd_message_admin'])) 
+			$wpcf_nd_settings['wpcf_nd_message_admin'] = sanitize_text_field( $_POST['wpcf_nd_message_admin'] );
+
+		update_post_meta( $post_id, 'wpcf_nd_email_sending_settings', $wpcf_nd_settings );
 
 	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
 	    
@@ -947,6 +1097,12 @@ class WP_Contact_Form_ND{
 
        		$wpcf_nd_settings = get_option("wpcf_nd_settings");
 
+       		wp_enqueue_script( 'jquery' );
+       		wp_enqueue_script( 'jquery-ui-core' );
+       		wp_enqueue_script( 'jquery-ui-tooltip' );
+
+       		wp_enqueue_style( 'cfr-jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"' );
+
 	        wp_register_script( 'contact-form-ready', plugins_url(plugin_basename(dirname(__FILE__)))."/js/user.js", true, $this->current_version );
 	        wp_enqueue_script( 'contact-form-ready' );
 	        wp_localize_script( 'contact-form-ready', 'wpcf_nd_nonce', $wpcf_nonce );
@@ -968,6 +1124,11 @@ class WP_Contact_Form_ND{
 	 	global $post_type;
 	 	global $post;
 	    if( "contact-forms-nd" == $post_type ) {
+
+	    	wp_enqueue_script( 'jquery' );
+	    	wp_enqueue_script( 'jquery-ui-core' );
+	    	wp_enqueue_script( 'jquery-ui-tabs' );	    	
+
 	        wp_register_script( 'form-builder-js', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/helpers.js", true );
 	        wp_enqueue_script( 'form-builder-js' );
 	        wp_register_script( 'form-builder-js1', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/events.js", true );
@@ -1016,6 +1177,8 @@ class WP_Contact_Form_ND{
 	        wp_enqueue_style( 'form-builder-css' );
 	        wp_register_style( 'wpcf-nd-css', plugins_url(plugin_basename(dirname(__FILE__)))."/css/admin.css", true, $this->current_version );
 	        wp_enqueue_style( 'wpcf-nd-css' );
+
+	        wp_enqueue_style( 'contact-form-ready-jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
 
 		}
 	}
@@ -1077,27 +1240,18 @@ class WP_Contact_Form_ND{
 		} else {
 			if (isset($_POST['wpcf_submit_save_settings'])) {
 
+				if ( isset( $_POST['wpcf_nd_email_from_address'] ) ){
+					$wpcf_nd_settings['wpcf_nd_email_from_address'] = sanitize_text_field( $_POST['wpcf_nd_email_from_address'] ); 					
+				} else {
+					$wpcf_nd_settings['wpcf_nd_email_from_address'] = ''; 
+				}
 
-				if (isset($_POST['wpcf_nd_email_from_address'])) 
-					$wpcf_nd_settings['wpcf_nd_email_from_address'] = sanitize_text_field( $_POST['wpcf_nd_email_from_address'] );
 
-				if (isset($_POST['wpcf_nd_email_from_name'])) 
-					$wpcf_nd_settings['wpcf_nd_email_from_name'] = sanitize_text_field( $_POST['wpcf_nd_email_from_name'] );
-
-				if (isset($_POST['wpcf_nd_subject_admin'])) 
-					$wpcf_nd_settings['wpcf_nd_subject_admin'] = sanitize_text_field( $_POST['wpcf_nd_subject_admin'] );
-
-				if (isset($_POST['wpcf_nd_subject_user'])) 
-					$wpcf_nd_settings['wpcf_nd_subject_user'] = sanitize_text_field( $_POST['wpcf_nd_subject_user'] );
-
-				if (isset($_POST['wpcf_nd_send_to_user'])) 
-					$wpcf_nd_settings['wpcf_nd_send_to_user'] = intval(sanitize_text_field( $_POST['wpcf_nd_send_to_user'] ));
-
-				if (isset($_POST['wpcf_nd_message_user'])) 
-					$wpcf_nd_settings['wpcf_nd_message_user'] = sanitize_text_field( $_POST['wpcf_nd_message_user'] );
-
-				if (isset($_POST['wpcf_nd_message_admin'])) 
-					$wpcf_nd_settings['wpcf_nd_message_admin'] = sanitize_text_field( $_POST['wpcf_nd_message_admin'] );
+				if ( isset( $_POST['wpcf_nd_email_from_name'] ) ){
+					$wpcf_nd_settings['wpcf_nd_email_from_name'] = sanitize_text_field( $_POST['wpcf_nd_email_from_name'] ); 					
+				} else {
+					$wpcf_nd_settings['wpcf_nd_email_from_name'] = ''; 
+				}
 
 
 				if (isset($_POST['wpcf_nd_thank_you_text'])) 
@@ -1130,58 +1284,19 @@ class WP_Contact_Form_ND{
 
 				<table class='wp-list-table widefat striped fixed'>
 					<tr>
-						<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
-					</tr>
-				</table>
-
-
-				<h2><?php _e("Email Settings","wpcf_nd"); ?></h2>
-
-				<table class='wp-list-table widefat striped fixed'>
-					<tr>
 						<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
 						<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_email_from_address'])); ?>' /></td>
 					</tr>
 					<tr>
 						<td width='250'><?php _e("Email from name","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_email_from_name'])); ?>' /></td>
-					</tr>
-					<tr style='height:20px;'>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
+						<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo $wpcf_nd_settings['wpcf_nd_email_from_name']; ?>' /></td>
 					</tr>
 					<tr>
-						<td width='250'><?php _e("Email subject (admin)","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_subject_admin' class='regular-text' id='wpcf_nd_subject_admin' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_subject_admin'])); ?>' /></td>
+						<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
+						<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
 					</tr>
-					<tr>
-						<td><?php _e("Email body (admin)","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_message_admin' class='regular-text' id='wpcf_nd_message_admin' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_message_admin'])); ?>' /></td>
-					</tr>
-
-
-					<tr>
-						<td><?php _e("Send confirmation email to user?","wpcf_nd"); ?></td>
-						<?php
-						 $is_checked = (isset($wpcf_nd_settings['wpcf_nd_send_to_user']) && $wpcf_nd_settings['wpcf_nd_send_to_user'] == 1) ? "checked" : "";
-						?>
-						<td><input type='checkbox' name='wpcf_nd_send_to_user' id='wpcf_nd_send_to_user' value='1' <?php echo $is_checked; ?> /></td>
-					</tr>
-					<tr>
-						<td><?php _e("Email subject (user)","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_subject_user' class='regular-text' id='wpcf_nd_subject_user' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_subject_user'])); ?>' /></td>
-					</tr>
-					<tr>
-						<td><?php _e("Email body (user)","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_message_user' class='regular-text' id='wpcf_nd_message_user' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_message_user'])); ?>' /></td>
-					</tr>
-
-
-
-
-
 				</table>
+				
 				<?php do_action( "wpcf_hook_settings_page_bottom", $wpcf_nd_settings ); ?>
 
 				<input type='submit' value='Save settings' name='wpcf_submit_save_settings' />
