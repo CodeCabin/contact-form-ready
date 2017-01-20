@@ -104,6 +104,10 @@ jQuery(document).ready(function() {
         }
 
     });
+
+    jQuery( function() {
+      jQuery( "#contact_form_ready_tabs" ).tabs();
+    } );
     
     
 });

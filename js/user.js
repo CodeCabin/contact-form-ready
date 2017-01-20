@@ -102,9 +102,10 @@ jQuery(document).ready(function() {
 			jQuery("#wp-live-chat-inner #wpcf_nd_submit").attr('disabled', 'disabled');
 			jQuery("#wp-live-chat-inner #wpcf_nd").addClass('wpcf_nd_ajax_enabled');
 	        formData = new FormData();
-		
+			
 			var x = jQuery(".wpcf_nd_"+cfid).serializeArray();
 		    jQuery.each(x, function(i, field){
+		    	
 				formData.append(field.name, field.value);
 		    });
 
@@ -125,9 +126,9 @@ jQuery(document).ready(function() {
 					} else {
 
 						if (typeof wpcf_nd_ajax_thank_you !== "undefined") {
-							jQuery(".wpcf_nd_"+cfid).html(wpcf_nd_ajax_thank_you);
+							jQuery(".wpcf_nd_"+cfid).html("<div class='wpcf-nd-thank-you'>"+wpcf_nd_ajax_thank_you+"</div>");
 						} else {
-							jQuery(".wpcf_nd_"+cfid).html("Thank you for your message. We will respond to you as soon as possible.");
+							jQuery(".wpcf_nd_"+cfid).html("<div class='wpcf-nd-thank-you'>Thank you for your message. We will respond to you as soon as possible.</div>");
 						}
 					}
 				},
@@ -158,29 +159,45 @@ jQuery(document).ready(function() {
 		var cfid = jQuery(this).attr('cfid');
 		if (recaptcha_can_continue[cfid]) {
 
-
 			if (typeof wpcf_nd_form_type !== "undefined" && wpcf_nd_form_type == '1' && !within_wplc) {
 				e.preventDefault();
 				var orig_element = this;
 				
+				var validation_errors = 0;
 
+				jQuery(".form-control").each(function(){	
 
-					
+					var is_present = jQuery(this).attr('required');
+
+					if( typeof is_present !== typeof undefined && is_present !== false ) {
+						if( jQuery(this).val() == "" ){
+
+							jQuery(this).css('border', '1px solid red');
+							validation_errors++;
+
+						}
+
+					}
+
+				});
+
+				if( validation_errors === 0 ){
+
 					var orig_elem_string = jQuery(this).val();
 					jQuery(this).val(wpcf_nd_ajax_sending);
 					jQuery(orig_element).attr('disabled', 'disabled');
 					
 			        formData = new FormData();
 				
-					var x = jQuery(".wpcf_nd_"+cfid).serializeArray();
+					var x = jQuery(".wpcf_nd_"+cfid).serializeArray();					
+
 				    jQuery.each(x, function(i, field){
-				
 						formData.append(field.name, field.value);
-				         
 				    });
 
 			    	formData.append('action', 'wpcf_nd_send_ajax');
 			    	formData.append('security', wpcf_nd_nonce);
+		    	
 					jQuery.ajax({
 						url : wpcf_nd_ajaxurl,
 						type : 'POST',
@@ -195,9 +212,9 @@ jQuery(document).ready(function() {
 								jQuery(orig_element).val(orig_elem_string);
 							} else {
 								if (typeof wpcf_nd_ajax_thank_you !== "undefined") {
-									jQuery(".wpcf_nd_"+cfid).html(wpcf_nd_ajax_thank_you);
+									jQuery(".wpcf_nd_"+cfid).html("<div class='wpcf-nd-thank-you'>"+wpcf_nd_ajax_thank_you+"</div>");
 								} else {
-									jQuery(".wpcf_nd_"+cfid).html("Thank you for your message. We will respond to you as soon as possible.");
+									jQuery(".wpcf_nd_"+cfid).html("<div class='wpcf-nd-thank-you'>Thank you for your message. We will respond to you as soon as possible.</div>");
 								}
 								if (typeof wpcf_nd_form_redirect !== "undefined") {
 									window.location = wpcf_nd_form_redirect;
@@ -208,6 +225,9 @@ jQuery(document).ready(function() {
 							jQuery(".wpcf_nd_"+cfid).html("There was a problem sending the message. Please try again later.");
 						}
 					});
+
+				}					
+					
 			}
 		} else {
 			e.preventDefault();
@@ -219,4 +239,24 @@ jQuery(document).ready(function() {
 		
 	});
 
+    if( jQuery(".wpcf_wrapper .required").length > 0 ){
+
+	    jQuery(".wpcf_wrapper .required").each(function( key, val ){
+
+	    	var parent_id = jQuery(this).parent().attr('class');
+
+	    	jQuery("#"+parent_id).attr('required', 'true');
+	    	
+	    });
+	}
+
+});
+
+jQuery( function() {
+	jQuery( document ).tooltip({
+		items: ".tooltip-element",
+		content: function() {
+			return jQuery( this ).attr( 'tooltip' );
+		}
+	});
 });
