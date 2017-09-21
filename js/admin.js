@@ -6,10 +6,6 @@ jQuery(document).ready(function() {
         if (!predefined_busy) {
             // TODO event handler logic
             var formData = formBuilder.formData;
-            console.log(formData);
-
-
-
             var escapeEl = document.createElement('textarea'),
               code = document.getElementById('markup'),
               escapeHTML = function(html) {
@@ -44,7 +40,6 @@ jQuery(document).ready(function() {
     jQuery("body").on("change","#wpcf_nd_predfined",function(e) {
 
         var ctype = jQuery(this).val();
-        console.log(wpcf_nd_types);
 
         if (ctype !== 'x') {
             if (typeof wpcf_nd_types[ctype].xml_data !== 'undefined') {
@@ -52,10 +47,6 @@ jQuery(document).ready(function() {
 
 
                 var tformData = wpcf_nd_types[ctype].xml_data;
-                console.log('tformdata');
-                console.log(tformData);
-
-
 
                 var escapeEl = document.createElement('textarea'),
                   code = document.getElementById('markup'),
@@ -104,6 +95,7 @@ jQuery(document).ready(function() {
         }
 
     });
+
 
     jQuery( function() {
       jQuery( "#contact_form_ready_tabs" ).tabs();
