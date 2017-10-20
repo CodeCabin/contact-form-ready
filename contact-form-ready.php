@@ -135,6 +135,7 @@ class WP_Contact_Form_ND{
 		register_activation_hook( __FILE__, array($this, 'plugin_activate') );
 		add_action( "init", array($this, "check_versions") );
 		add_action( "init", array($this, "create_post_type") );
+		add_action( "plugins_loaded", array($this, "load_plugin_textdomain") );
 		add_filter( "wpcf_nd_html_control", array( $this, "wpcf_nd_filter_control_html_control" ), 10, 2 );
 		add_action( 'save_post', array( $this, 'wpcf_nd_save_meta_box' ) );
 		add_action( 'save_post', array( $this, 'wpcf_nd_save_meta_box_control' ) );
