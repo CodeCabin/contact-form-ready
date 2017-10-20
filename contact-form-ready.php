@@ -170,6 +170,11 @@ class WP_Contact_Form_ND{
 
 	}
 
+	function load_plugin_textdomain() {
+	    $plugin_dir = basename( dirname( __FILE__ ) ) . '/languages/';
+		load_plugin_textdomain( 'wpcf_nd', false, $plugin_dir );
+    }
+
 	function wpcf_nd_ajax_callback_front() {
 	    $check = check_ajax_referer('wpcf_nd_front', 'security');
 	    if ($check == 1) {
