@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wpcf\n"
 "POT-Creation-Date: 2017-10-20 14:01+0200\n"
-"PO-Revision-Date: 2017-10-20 16:46+0200\n"
+"PO-Revision-Date: 2017-10-23 14:28+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -168,15 +168,15 @@ msgstr "Zostanie ustawiony jeżeli formularz ma poprawne pole maila."
 
 #: contact-form-ready.php:771
 msgid "Select from a predefined list"
-msgstr ""
+msgstr "Wybierz ze zdefiniowanej listy"
 
 #: contact-form-ready.php:773 includes/integration_wp_live_chat_support.php:22
 msgid "Please select"
-msgstr ""
+msgstr "Proszę wybierz"
 
 #: contact-form-ready.php:793
 msgid "Drag and drop the elements to create your contact form."
-msgstr ""
+msgstr "Przeciągnij i upuść element żeby utworzyć formularz kontaktowy."
 
 #: contact-form-ready.php:1044 contact-form-ready.php:1055
 #: contact-form-ready.php:1059
@@ -205,109 +205,111 @@ msgstr "Wszystkie Formularze Kontaktowe"
 
 #: contact-form-ready.php:1051
 msgid "View Contact Form"
-msgstr ""
+msgstr "Podgląd Formularza Kontaktowego"
 
 #: contact-form-ready.php:1052
 msgid "Search Contact Forms"
-msgstr ""
+msgstr "Przeszukaj Formularze Kontaktowe"
 
 #: contact-form-ready.php:1053
 msgid "No contact forms found"
-msgstr ""
+msgstr "Nie znaleziono żadnego formularza"
 
 #: contact-form-ready.php:1054
 msgid "No contact forms in the Trash"
-msgstr ""
+msgstr "Nie znaleziono formularza w Koszu"
 
 #: contact-form-ready.php:1091
 msgid "Simple contact form"
-msgstr ""
+msgstr "Prosty formularz kontaktowy"
 
 #: contact-form-ready.php:1095
 msgid "Booking form (hotel)"
-msgstr ""
+msgstr "Formularz rejestracji (hotel)"
 
 #: contact-form-ready.php:1099
 msgid "Booking form (restaurant)"
-msgstr ""
+msgstr "Formularz rezerwacji (restauracja)"
 
 #: contact-form-ready.php:1103
 msgid "Support form"
-msgstr ""
+msgstr "Formularz pomocy"
 
 #: contact-form-ready.php:1107
 msgid "How did you hear about us"
-msgstr ""
+msgstr "Jak o nas się dowiedziałeś"
 
 #: contact-form-ready.php:1111
 msgid "NPS Score"
-msgstr ""
+msgstr "Wynik NPS"
 
 #: contact-form-ready.php:1134
 msgid "New Contact Form Response"
-msgstr ""
+msgstr "Odpowiedź nowego formularza kontaktowego"
 
 #: contact-form-ready.php:1137
 msgid "Contact Form Response Received"
-msgstr ""
+msgstr "Otrzymano odpowiedź z formularza kontaktowego"
 
 #: contact-form-ready.php:1147
 msgid ""
 "Thank you. Your message has been sent and we will be in touch as soon as "
 "possible."
 msgstr ""
+"Dziękujemy. Twoja wiadomość została wysłana. Skontaktujemy się z Tobą tak "
+"szybko jak jest to możliwe."
 
 #: contact-form-ready.php:1186
 msgid "Sending..."
-msgstr ""
+msgstr "Wysyłanie..."
 
 #: contact-form-ready.php:1246
 msgid "Are you sure you want to restore the default newsletter template?"
-msgstr ""
+msgstr "Jesteś pewny, że chcesz przywrócić domyślny szablon newslettera?"
 
 #: contact-form-ready.php:1273 includes/module_subscribe.php:13
 msgid "Settings"
-msgstr ""
+msgstr "Ustawienia"
 
 #: contact-form-ready.php:1274 includes/module_subscribe.php:15
 msgid "Extensions"
-msgstr ""
+msgstr "Rozszerzenia"
 
 #: contact-form-ready.php:1282
 msgid "Contact Form Ready Extensions"
-msgstr ""
+msgstr "Rozszerzenia Formularza Kontaktowego"
 
 #: contact-form-ready.php:1458
 msgid "Contact form settings"
-msgstr ""
+msgstr "Ustawienia formularza kontaktowego"
 
 #: contact-form-ready.php:1465
 msgid "Email from address"
-msgstr ""
+msgstr "Adres mail wysyłającego"
 
 #: contact-form-ready.php:1469
 msgid "Email from name"
-msgstr ""
+msgstr "Nazwa adresu mail wysyłającego"
 
 #: contact-form-ready.php:1473
 msgid "Thank you text"
-msgstr ""
+msgstr "Tekst podziękowania"
 
 #: contact-form-ready.php:1517
 msgid "Views"
-msgstr ""
+msgstr "Widok"
 
 #: contact-form-ready.php:1518
 msgid "Submissions"
-msgstr ""
+msgstr "Zgłoszenia"
 
 #: contact-form-ready.php:1643
 msgid "Dismiss"
-msgstr ""
+msgstr "Odrzuć"
 
 #: contact-form-ready.php:1648
 msgid "Welcome to Contact Form Ready"
-msgstr ""
+msgstr "Witamy na stronie Formularza Kontaktowego"
 
 #: contact-form-ready.php:1649
 msgid ""
@@ -315,42 +317,46 @@ msgid ""
 "improving our plugin. Please vote for the feature you would like to see next "
 "by using the voting feature to the right."
 msgstr ""
+"Dziękujemy za zainstalowanie Formularza Kontaktowego! Cały czas "
+"aktualizujemy i ulepszamy naszą wtyczkę. Proszę zagłosuj w polu po prawej "
+"stronie na funkcję którą chciałbyś/chciałabyś zobaczyć wkrótce w naszej "
+"wtyczce."
 
 #: contact-form-ready.php:1650
 msgid "Create a form now"
-msgstr ""
+msgstr "Utwórz formularz"
 
 #: contact-form-ready.php:1654
 msgid "Getting Started"
-msgstr ""
+msgstr "Rozpocznij"
 
 #: contact-form-ready.php:1656
 msgid "Introduction"
-msgstr ""
+msgstr "Wprowadzenie"
 
 #: contact-form-ready.php:1657
 msgid "Creating your first contact form"
-msgstr ""
+msgstr "Utwórz swój pierwszy formularz kontaktowy"
 
 #: contact-form-ready.php:1658
 msgid "Adding reCAPTCHA to your form"
-msgstr ""
+msgstr "Dodawanie reCAPTCHA do formularza"
 
 #: contact-form-ready.php:1660
 msgid "Browse CFR Extensions"
-msgstr ""
+msgstr "Przeglądaj Rozszerzenia CFR"
 
 #: contact-form-ready.php:1665
 msgid "Get help now"
-msgstr ""
+msgstr "Otrzymaj wsparcie techniczne"
 
 #: contact-form-ready.php:1671
 msgid "Vote for the features you want next!"
-msgstr ""
+msgstr "Zagłosuj na funkcję którą chcesz zobaczyć wkrótce!"
 
 #: includes/integration_wp_live_chat_support.php:25
 msgid "Unnamed contact form"
-msgstr ""
+msgstr "Formularz kontaktowy bez nazwy"
 
 #: includes/integration_wp_live_chat_support.php:32
 #, php-format
@@ -358,104 +364,118 @@ msgid ""
 "Replaces the normal offline message form with the above contact form created "
 "by <a href='%s' target='_BLANK'>Contact Form Ready</a>."
 msgstr ""
+"Zamienia standardowy formularz wiadomości offline na powyższy formularz "
+"utworzony przez <a href='%s' target='_BLANK'>Formularz Kontaktowy</a>."
 
 #: includes/integration_wp_live_chat_support.php:35
 #, php-format
 msgid ""
 "There are no contact forms to use. Please <a href='%s'>create one first</a>."
 msgstr ""
+"Nie ma żadnych formularzy kontaktowych. Proszę <a href='%s'>utwórz pierwszy</"
+"a>."
 
 #: includes/module_recaptcha.php:22
 msgid "Anti Spam Settings"
-msgstr ""
+msgstr "Ustawienia Anty Spam"
 
 #: includes/module_recaptcha.php:25
 msgid "Enable reCAPTCHA?"
-msgstr ""
+msgstr "Włączyć reCAPTCHA?"
 
 #: includes/module_recaptcha.php:29
 #, php-format
 msgid ""
 "Click <a href='%s' target='_BLANK'>here</a> to set up your reCAPTCHA profile."
 msgstr ""
+"Kliknij <a href='%s' target='_BLANK'>tutaj</a> żeby ustawić swój profil "
+"reCAPTCHA."
 
 #: includes/module_recaptcha.php:32
 msgid "Site key"
-msgstr ""
+msgstr "Klucz strony"
 
 #: includes/module_recaptcha.php:36
 msgid "Secret key"
-msgstr ""
+msgstr "Tajny klucz"
 
 #: includes/module_recaptcha.php:139
 msgid "The reCAPTCHA wasn't entered correctly. Please try sagain."
 msgstr ""
+"reCAPTCHA nie została wprowadzona poprawnie. Proszę spróbować ponownie."
 
 #: includes/module_recaptcha.php:166
 msgid ""
 "reCAPTCHA failed. Please tick the reCAPTCHA checkbox to prove you are human."
 msgstr ""
+"reCAPTCHA spowodowała błąd. Proszę zaznaczyć pole reCAPTCHA żeby udowodnić, "
+"że jesteś człowiekiem."
 
 #: includes/module_subscribe.php:59
 msgid ""
 "Sign up to our newsletter and get information on the latest updates, beta "
 "versions and specials."
 msgstr ""
+"Zapisz się do naszego newslettera żeby otrzymywać ostatnie aktualizacje, "
+"wersję beta i dodatki."
 
 #: includes/module_subscribe.php:62
 msgid "Sign up"
-msgstr ""
+msgstr "Zaloguj się"
 
 #: includes/module_template_editor.php:15
 msgid "Email Template"
-msgstr ""
+msgstr "Szablon Maila"
 
 #: includes/module_template_editor.php:23
 msgid "Restore default"
-msgstr ""
+msgstr "Przywróć domyślne"
 
 #: templates/welcome.php:5
 msgid "Welcome to Contact Form Ready!"
-msgstr ""
+msgstr "Witamy na stronie Formularza Kontaktowego!"
 
 #: templates/welcome.php:7
 msgid ""
 "Contact Form Ready is the easiest to use drag and drop contact form builder, "
 "with amazing features."
 msgstr ""
+"Formularz Kontaktowy jest najłatwiejszym w użyciu narzędziem do tworzenia "
+"formularzy kontaktowych przy użyciu metody przeciągnij, upuść. Posiada też "
+"wiele niesamowitych funkcji."
 
 #: templates/welcome.php:9
 msgid "How did you find us?"
-msgstr ""
+msgstr "Jak się o nas dowiedziałeś?"
 
 #: templates/welcome.php:14
 msgid "WordPress.org plugin repository "
-msgstr ""
+msgstr "Repozytorium wtyczek WordPress.org"
 
 #: templates/welcome.php:17
 msgid "Search Term"
-msgstr ""
+msgstr "Poszukiwane wyrażenie"
 
 #: templates/welcome.php:21
 msgid "Google or other search Engine"
-msgstr ""
+msgstr "Google lub inna wyszukiwarka"
 
 #: templates/welcome.php:27
 msgid "Friend recommendation"
-msgstr ""
+msgstr "Przyjazna rekomendacja"
 
 #: templates/welcome.php:33
 msgid "Other"
-msgstr ""
+msgstr "Inne"
 
 #: templates/welcome.php:37
 msgid "Please Explain"
-msgstr ""
+msgstr "Proszę wytłumacz"
 
 #: templates/welcome.php:46
 msgid "Submit"
-msgstr ""
+msgstr "Potwierdź"
 
 #: templates/welcome.php:48
 msgid "Skip"
-msgstr ""
+msgstr "Pomiń"
