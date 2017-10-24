@@ -115,3 +115,18 @@
     bottom: 14px;
     left: 14px;
 }
+
+.wpcf-shortcode-copy-text {
+    opacity: 0;
+    visibility: hidden;
+    margin: 0 3px;
+    padding: 2px;
+    transition: opacity 0.8s;
+    color: #0085ba;
+    border: 1px solid #0085ba;
+}
+
+.wpcf-shortcode-copy-text.is-active {
+    opacity: 1;
+    visibility: visible;
+}

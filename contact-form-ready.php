@@ -604,7 +604,8 @@ class WP_Contact_Form_ND{
 			    	<tr>
 			    		<td width='250'><label for='wpcf_nd_shortcode'><?php _e("Shortcode","wpcf_nd"); ?></label></td>
 			    		<td>
-			    			<input type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
+			    			<input id="wpcf-shortcode-input" type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
+                            <span class="wpcf-shortcode-copy-text"><?php _e( 'Copied to clipboard', 'wpcf_nd' ) ?></span>
 			    			<p class='description'><?php _e("Copy this to your post or page to show the contact form","wpcf_nd"); ?></p>
 
 			    		</td>

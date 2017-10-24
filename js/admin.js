@@ -100,6 +100,26 @@ jQuery(document).ready(function() {
     jQuery( function() {
       jQuery( "#contact_form_ready_tabs" ).tabs();
     } );
-    
-    
+
+    /* Copy to clipboard */
+    var copyToClipboardText = jQuery('.wpcf-shortcode-copy-text');
+
+    jQuery('#wpcf-shortcode-input').on('click', function (event) {
+        copyToClipboard(jQuery(this).attr('id'));
+    });
+
+    function copyToClipboard(id) {
+        copyToClipboardText.addClass('is-active');
+        var input = document.createElement("input");
+        input.setAttribute("value", document.getElementById(id).value);
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+        setTimeout(function () {
+            copyToClipboardText.removeClass('is-active');
+        }, 800);
+    }
+
+
 });
