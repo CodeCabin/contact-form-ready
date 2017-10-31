@@ -115,3 +115,52 @@
     bottom: 14px;
     left: 14px;
 }
+
+.wpcf-shortcode-copy-text {
+    opacity: 0;
+    visibility: hidden;
+    margin: 0 3px;
+    padding: 2px;
+    transition: opacity 0.8s;
+    color: #0085ba;
+    border: 1px solid #0085ba;
+}
+
+.wpcf-shortcode-copy-text.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.build-wrap .icon-pencil {
+    position: relative;
+}
+
+.build-wrap .icon-pencil:before,
+.build-wrap .icon-pencil:after {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    width: 6px;
+    height: 1px;
+    content: '';
+    transform: rotate(-45deg);
+    background: #999;
+}
+
+.build-wrap .icon-pencil:after {
+    left: 10px;
+    transform: rotate(45deg);
+}
+
+.build-wrap .icon-pencil:hover:before,
+.build-wrap .icon-pencil:hover:after {
+    background-color: #fff;
+}
+
+.build-wrap .editing .icon-pencil:before {
+    transform: rotate(45deg);
+}
+
+.build-wrap .editing .icon-pencil:after {
+    transform: rotate(-45deg);
+}

@@ -26,7 +26,8 @@ Contact Form Ready has a lot of useful and great features, along with a handy dr
 * Required option for any form field
 * Easily move form fields positions
 * Redirect feature after form submit
-* Send contact form via AJAX
+* Send contact form via AJAX or POST
+* Auto responder functionality
 * Contact form views - counter
 * Contact form submissions - counter
 * Insert Text fields
@@ -40,14 +41,14 @@ Contact Form Ready has a lot of useful and great features, along with a handy dr
 * Insert Heading field
 * Insert Paragraph field
 * Insert Separator/Divider field
-* Integration with support desks (coming soon)
+* Set the reply-to address to the user's email address
+* Integration with support desks (Zendesk and Nifty Desk)
 * Works perfectly with all versions of WordPress
 * World-class support from the developer should you need it!
 
 ### The features of Contact Form Ready Pro (Coming Soon!)
 
 * Contact form themes
-* Auto responder functionality
 * Different Font styles
 * Ability to insert Upload File field
 * Ability to insert Google Map field
@@ -165,6 +166,28 @@ Copy and paste the shortcode into your post or page and save your page. Then vie
 Nothing here
 
 == Changelog ==
+
+= 1.13 - 2017-09-21 =
+* Tested on WordPress 4.8.2
+* Fixed small typo
+
+= 1.12 - 2017-01-24 - Medium priority =
+* Added an option to set the "reply to" address as the user's email address
+* Fixed a bug that caused some settings to not be carried over correctly
+* Fixed a bug that caused the mailchimp and the recaptcha modules to conflict with one another
+* Fixed a bug that caused the AJAX method to not work if there were multiple contact forms with required fields on one page
+* Added the ability for you to edit the newsletter that gets sent out when a contact form is submitted
+
+= 1.11 - 2017-01-20 - Medium priority =
+* More extensions added
+* Bug Fix: Form validation now works as expected
+* Bug Fix: Added a class to the thank you message when sending the form via Ajax
+* Bug Fix: Fixed a bug that caused the 'Send Confirmation Email' to never be disabled
+* Bug Fix: Fixed a bug that prevented punctuation and placeholders from being kept in the form
+* Enhancement: You can now specify a subject line and message for each form instead of globally
+* Bug Fix: Helper text now works as expected
+* Enhancement: New hooks added to the contact form editor
+* Enhancement: Contact form settings are now in tabs for ease of use
 
 = 1.10 - 2017-01-10 =
 * Added an "email" field to the drag and drop contact form builder

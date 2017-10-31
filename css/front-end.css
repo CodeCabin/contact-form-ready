@@ -16,7 +16,10 @@
 	margin-top:10px;
 }
 
-
+#wpcf_nd input,
+#wpcf_nd textarea {
+    width: 100%;
+}
 
 /* Integration with WP Live Chat Support */
 

@@ -1,0 +1,454 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wpcf\n"
+"POT-Creation-Date: 2017-09-28 14:20+0200\n"
+"PO-Revision-Date: 2017-09-28 14:20+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: contact-form-ready.php:349
+msgid "Thank you. Your message has been sent."
+msgstr ""
+
+#: contact-form-ready.php:459 contact-form-ready.php:467
+msgid "New Contact Form Submission"
+msgstr ""
+
+#: contact-form-ready.php:460 contact-form-ready.php:468
+#: contact-form-ready.php:1141
+msgid "A new message has been received."
+msgstr ""
+
+#: contact-form-ready.php:462 contact-form-ready.php:470
+msgid "Contact Form Submission Received"
+msgstr ""
+
+#: contact-form-ready.php:463 contact-form-ready.php:471
+#: contact-form-ready.php:1144 contact-form-ready.php:1183
+msgid "Thank you for your message. We will respond to you as soon as possible."
+msgstr ""
+
+#: contact-form-ready.php:521
+msgid "Contact Form Data"
+msgstr ""
+
+#: contact-form-ready.php:526 contact-form-ready.php:1461
+msgid "Contact Form Settings"
+msgstr ""
+
+#: contact-form-ready.php:530
+msgid "Save all form submissions"
+msgstr ""
+
+#: contact-form-ready.php:531 contact-form-ready.php:1663
+msgid "Need help?"
+msgstr ""
+
+#: contact-form-ready.php:534
+#, php-format
+msgid "Browse the <a href='%s' target='_BLANK'>documentation</a>."
+msgstr ""
+
+#: contact-form-ready.php:535
+#, php-format
+msgid "Or get in touch with <a href='%s'>nick@codecabin.co.za</a>"
+msgstr ""
+
+#: contact-form-ready.php:541
+#, php-format
+msgid ""
+"Store all form submissions using the new <a href='%s' target='_BLANK'>Stored "
+"Submission Extension</a> from CFR."
+msgstr ""
+
+#: contact-form-ready.php:542
+#, php-format
+msgid "Browse more extensions <a href='%s'>here</a>."
+msgstr ""
+
+#: contact-form-ready.php:565 contact-form-ready.php:1590
+msgid "Send"
+msgstr ""
+
+#: contact-form-ready.php:575 contact-form-ready.php:600
+msgid "Basic Settings"
+msgstr ""
+
+#: contact-form-ready.php:579
+msgid "Advanced Settings"
+msgstr ""
+
+#: contact-form-ready.php:605 contact-form-ready.php:1516
+msgid "Shortcode"
+msgstr ""
+
+#: contact-form-ready.php:608
+msgid "Copy this to your post or page to show the contact form"
+msgstr ""
+
+#: contact-form-ready.php:613
+msgid "Send emails to"
+msgstr ""
+
+#: contact-form-ready.php:616
+msgid "Multiple emails separated by commas"
+msgstr ""
+
+#: contact-form-ready.php:621
+msgid "Redirect to URL after submit"
+msgstr ""
+
+#: contact-form-ready.php:624
+msgid "Example: /thank-you <br>Leave blank for no redirect"
+msgstr ""
+
+#: contact-form-ready.php:628
+msgid "Submit button value"
+msgstr ""
+
+#: contact-form-ready.php:632
+msgid "Form type"
+msgstr ""
+
+#: contact-form-ready.php:635
+msgid "Normal"
+msgstr ""
+
+#: contact-form-ready.php:636
+msgid "AJAX (avoids page reloading)"
+msgstr ""
+
+#: contact-form-ready.php:681
+msgid "Email Settings"
+msgstr ""
+
+#: contact-form-ready.php:685
+msgid "Email subject (admin)"
+msgstr ""
+
+#: contact-form-ready.php:689
+msgid "Email body (admin)"
+msgstr ""
+
+#: contact-form-ready.php:695
+msgid "Send confirmation email to user?"
+msgstr ""
+
+#: contact-form-ready.php:702
+msgid "Email subject (user)"
+msgstr ""
+
+#: contact-form-ready.php:706
+msgid "Email body (user)"
+msgstr ""
+
+#: contact-form-ready.php:711
+msgid "Set the reply-to as the user's email address"
+msgstr ""
+
+#: contact-form-ready.php:715
+msgid "Will only be set if the form has a valid email field."
+msgstr ""
+
+#: contact-form-ready.php:771
+msgid "Select from a predefined list"
+msgstr ""
+
+#: contact-form-ready.php:773 includes/integration_wp_live_chat_support.php:22
+msgid "Please select"
+msgstr ""
+
+#: contact-form-ready.php:793
+msgid "Drag and drop the elements to create your contact form."
+msgstr ""
+
+#: contact-form-ready.php:1044 contact-form-ready.php:1055
+#: contact-form-ready.php:1059
+msgid "Contact Forms"
+msgstr ""
+
+#: contact-form-ready.php:1045
+msgid "Contact Form"
+msgstr ""
+
+#: contact-form-ready.php:1046 contact-form-ready.php:1049
+msgid "New Contact Form"
+msgstr ""
+
+#: contact-form-ready.php:1047
+msgid "Add New Contact Form"
+msgstr ""
+
+#: contact-form-ready.php:1048
+msgid "Edit Contact Form"
+msgstr ""
+
+#: contact-form-ready.php:1050
+msgid "All Contact Forms"
+msgstr ""
+
+#: contact-form-ready.php:1051
+msgid "View Contact Form"
+msgstr ""
+
+#: contact-form-ready.php:1052
+msgid "Search Contact Forms"
+msgstr ""
+
+#: contact-form-ready.php:1053
+msgid "No contact forms found"
+msgstr ""
+
+#: contact-form-ready.php:1054
+msgid "No contact forms in the Trash"
+msgstr ""
+
+#: contact-form-ready.php:1091
+msgid "Simple contact form"
+msgstr ""
+
+#: contact-form-ready.php:1095
+msgid "Booking form (hotel)"
+msgstr ""
+
+#: contact-form-ready.php:1099
+msgid "Booking form (restaurant)"
+msgstr ""
+
+#: contact-form-ready.php:1103
+msgid "Support form"
+msgstr ""
+
+#: contact-form-ready.php:1107
+msgid "How did you hear about us"
+msgstr ""
+
+#: contact-form-ready.php:1111
+msgid "NPS Score"
+msgstr ""
+
+#: contact-form-ready.php:1134
+msgid "New Contact Form Response"
+msgstr ""
+
+#: contact-form-ready.php:1137
+msgid "Contact Form Response Received"
+msgstr ""
+
+#: contact-form-ready.php:1147
+msgid ""
+"Thank you. Your message has been sent and we will be in touch as soon as "
+"possible."
+msgstr ""
+
+#: contact-form-ready.php:1186
+msgid "Sending..."
+msgstr ""
+
+#: contact-form-ready.php:1246
+msgid "Are you sure you want to restore the default newsletter template?"
+msgstr ""
+
+#: contact-form-ready.php:1273 includes/module_subscribe.php:13
+msgid "Settings"
+msgstr ""
+
+#: contact-form-ready.php:1274 includes/module_subscribe.php:15
+msgid "Extensions"
+msgstr ""
+
+#: contact-form-ready.php:1282
+msgid "Contact Form Ready Extensions"
+msgstr ""
+
+#: contact-form-ready.php:1458
+msgid "Contact form settings"
+msgstr ""
+
+#: contact-form-ready.php:1465
+msgid "Email from address"
+msgstr ""
+
+#: contact-form-ready.php:1469
+msgid "Email from name"
+msgstr ""
+
+#: contact-form-ready.php:1473
+msgid "Thank you text"
+msgstr ""
+
+#: contact-form-ready.php:1517
+msgid "Views"
+msgstr ""
+
+#: contact-form-ready.php:1518
+msgid "Submissions"
+msgstr ""
+
+#: contact-form-ready.php:1643
+msgid "Dismiss"
+msgstr ""
+
+#: contact-form-ready.php:1648
+msgid "Welcome to Contact Form Ready"
+msgstr ""
+
+#: contact-form-ready.php:1649
+msgid ""
+"Thank you for installing Contact Form Ready! We are constantly updating and "
+"improving our plugin. Please vote for the feature you would like to see next "
+"by using the voting feature to the right."
+msgstr ""
+
+#: contact-form-ready.php:1650
+msgid "Create a form now"
+msgstr ""
+
+#: contact-form-ready.php:1654
+msgid "Getting Started"
+msgstr ""
+
+#: contact-form-ready.php:1656
+msgid "Introduction"
+msgstr ""
+
+#: contact-form-ready.php:1657
+msgid "Creating your first contact form"
+msgstr ""
+
+#: contact-form-ready.php:1658
+msgid "Adding reCAPTCHA to your form"
+msgstr ""
+
+#: contact-form-ready.php:1660
+msgid "Browse CFR Extensions"
+msgstr ""
+
+#: contact-form-ready.php:1665
+msgid "Get help now"
+msgstr ""
+
+#: contact-form-ready.php:1671
+msgid "Vote for the features you want next!"
+msgstr ""
+
+#: includes/integration_wp_live_chat_support.php:25
+msgid "Unnamed contact form"
+msgstr ""
+
+#: includes/integration_wp_live_chat_support.php:32
+#, php-format
+msgid ""
+"Replaces the normal offline message form with the above contact form created "
+"by <a href='%s' target='_BLANK'>Contact Form Ready</a>."
+msgstr ""
+
+#: includes/integration_wp_live_chat_support.php:35
+#, php-format
+msgid ""
+"There are no contact forms to use. Please <a href='%s'>create one first</a>."
+msgstr ""
+
+#: includes/module_recaptcha.php:22
+msgid "Anti Spam Settings"
+msgstr ""
+
+#: includes/module_recaptcha.php:25
+msgid "Enable reCAPTCHA?"
+msgstr ""
+
+#: includes/module_recaptcha.php:29
+#, php-format
+msgid ""
+"Click <a href='%s' target='_BLANK'>here</a> to set up your reCAPTCHA profile."
+msgstr ""
+
+#: includes/module_recaptcha.php:32
+msgid "Site key"
+msgstr ""
+
+#: includes/module_recaptcha.php:36
+msgid "Secret key"
+msgstr ""
+
+#: includes/module_recaptcha.php:139
+msgid "The reCAPTCHA wasn't entered correctly. Please try sagain."
+msgstr ""
+
+#: includes/module_recaptcha.php:166
+msgid ""
+"reCAPTCHA failed. Please tick the reCAPTCHA checkbox to prove you are human."
+msgstr ""
+
+#: includes/module_subscribe.php:59
+msgid ""
+"Sign up to our newsletter and get information on the latest updates, beta "
+"versions and specials."
+msgstr ""
+
+#: includes/module_subscribe.php:62
+msgid "Sign up"
+msgstr ""
+
+#: includes/module_template_editor.php:15
+msgid "Email Template"
+msgstr ""
+
+#: includes/module_template_editor.php:23
+msgid "Restore default"
+msgstr ""
+
+#: templates/welcome.php:5
+msgid "Welcome to Contact Form Ready!"
+msgstr ""
+
+#: templates/welcome.php:7
+msgid ""
+"Contact Form Ready is the easiest to use drag and drop contact form builder, "
+"with amazing features."
+msgstr ""
+
+#: templates/welcome.php:9
+msgid "How did you find us?"
+msgstr ""
+
+#: templates/welcome.php:14
+msgid "WordPress.org plugin repository "
+msgstr ""
+
+#: templates/welcome.php:17
+msgid "Search Term"
+msgstr ""
+
+#: templates/welcome.php:21
+msgid "Google or other search Engine"
+msgstr ""
+
+#: templates/welcome.php:27
+msgid "Friend recommendation"
+msgstr ""
+
+#: templates/welcome.php:33
+msgid "Other"
+msgstr ""
+
+#: templates/welcome.php:37
+msgid "Please Explain"
+msgstr ""
+
+#: templates/welcome.php:46
+msgid "Submit"
+msgstr ""
+
+#: templates/welcome.php:48
+msgid "Skip"
+msgstr ""

@@ -90,14 +90,16 @@ function wpcf_filter_control_recapatcha_submit_button_initial_status( $initial_s
 
 }
 
+
 add_filter( "wpcf_filter_other_form_data_frontend", "wpcf_filter_control_other_form_data_frontend_recaptcha_v2", 10, 3);
 function wpcf_filter_control_other_form_data_frontend_recaptcha_v2( $html_data, $cfid, $form_data ) {
 	$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+    $captch = "";
 	if (isset($wpcf_nd_settings['wpcf_nd_enable_recaptcha']) && $wpcf_nd_settings['wpcf_nd_enable_recaptcha'] == '1' && isset($wpcf_nd_settings['wpcf_nd_recaptcha_site_key'])) {
 
-		return '<div class="g-recaptcha wpcf_g_recaptcha wpcf_g_recaptcha_'.$cfid.'" id="wpcf_g_recaptcha_'.$cfid.'"></div>';
+        $captch =  '<div class="g-recaptcha wpcf_g_recaptcha wpcf_g_recaptcha_'.$cfid.'" id="wpcf_g_recaptcha_'.$cfid.'"></div>';
 	}
-	return $html_data;
+    return $html_data.$captch;
 }
 
 add_action( "wpcf_user_js", "wpcf_filter_control_js_overrides_front_end", 10, 1);

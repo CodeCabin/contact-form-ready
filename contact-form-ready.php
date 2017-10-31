@@ -3,13 +3,35 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 1.10
+  Version: 1.13
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ * 1.13 - 2017-09-21
+ * Tested on WordPress 4.8.2
+ * Fixed small typo
+ *
+ * 1.12 - 2017-01-26 - Medium priority
+ * Added an option to set the "reply to" address as the user's email address
+ * Fixed a bug that caused some settings to not be carried over correctly
+ * Fixed a bug that caused the mailchimp and the recaptcha modules to conflict with one another
+ * Fixed a bug that caused the AJAX method to not work if there were multiple contact forms with required fields on one page
+ * Added the ability for you to edit the newsletter that gets sent out when a contact form is submitted
+ *
+ * 1.11 - 2017-01-20 - Medium priority
+ * More extensions added
+ * Bug Fix: Form validation now works as expected
+ * Bug Fix: Added a class to the thank you message when sending the form via Ajax
+ * Bug Fix: Fixed a bug that caused the 'Send Confirmation Email' to never be disabled
+ * Bug Fix: Fixed a bug that prevented punctuation and placeholders from being kept in the form
+ * Enhancement: You can now specify a subject line and message for each form instead of globally
+ * Bug Fix: Helper text now works as expected
+ * Enhancement: New hooks added to the contact form editor
+ * Enhancement: Contact form settings are now in tabs for ease of use
+ *
  * 1.10 - 2017-01-10
  * Added an "email" field to the drag and drop contact form builder
  * Fixed the bugs with single quotes in email content showing backslashes
@@ -86,6 +108,8 @@ global $wpcf_error_message;
 include "includes/module_customizer.php";
 include "includes/module_recaptcha.php";
 include "includes/module_integrations.php";
+include "includes/module_template_editor.php";
+include "includes/module_subscribe.php";
 include "includes/integration_wp_live_chat_support.php";
 
 class WP_Contact_Form_ND{
@@ -94,7 +118,7 @@ class WP_Contact_Form_ND{
 
 	public function __construct(){
 
-		$this->current_version = "1.10";
+		$this->current_version = "1.13";
 
 		$this->upload_dir =(defined('WP_CONTENT_DIR')) ? WP_CONTENT_DIR . '/uploads' : ABSPATH . 'wp-content' . $this->DS() . 'uploads';
 		$this->upload_url =(defined('WP_CONTENT_URL')) ? WP_CONTENT_URL . '/uploads' : get_option('siteurl') . '/wp-content/uploads';
@@ -111,6 +135,7 @@ class WP_Contact_Form_ND{
 		register_activation_hook( __FILE__, array($this, 'plugin_activate') );
 		add_action( "init", array($this, "check_versions") );
 		add_action( "init", array($this, "create_post_type") );
+		add_action( "plugins_loaded", array($this, "load_plugin_textdomain") );
 		add_filter( "wpcf_nd_html_control", array( $this, "wpcf_nd_filter_control_html_control" ), 10, 2 );
 		add_action( 'save_post', array( $this, 'wpcf_nd_save_meta_box' ) );
 		add_action( 'save_post', array( $this, 'wpcf_nd_save_meta_box_control' ) );
@@ -145,6 +170,11 @@ class WP_Contact_Form_ND{
 		add_filter( 'wp_mail_from_name', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_name' ), 10, 1 );
 
 	}
+
+	function load_plugin_textdomain() {
+	    $plugin_dir = basename( dirname( __FILE__ ) ) . '/languages/';
+		load_plugin_textdomain( 'wpcf_nd', false, $plugin_dir );
+    }
 
 	function wpcf_nd_ajax_callback_front() {
 	    $check = check_ajax_referer('wpcf_nd_front', 'security');
@@ -398,7 +428,9 @@ class WP_Contact_Form_ND{
 		add_filter( 'wp_mail_content_type', array( $this, 'wpcf_nd_set_html_mail_content_type' ) );
 
 		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+
     	$sendto = get_post_meta( $cfid, 'wpcf_nd_send_to', true );
+
     	if (!$sendto) {
     		//set admin email as defaul email address if nothing was set
     		$sendto = get_option( 'admin_email' );
@@ -408,11 +440,6 @@ class WP_Contact_Form_ND{
     			$sendto = implode( "," , $sendto );
     		}
     	}
-
-    	$headers = '';
-    	$headers = apply_filters("wpcf_nd_filter_mail_headers",$headers,$cfid);
-    	$attachments = array();
-    	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid);
 
 
     	$header = sprintf("<a href='%s'>%s</a>",get_option('siteurl'),get_option('blogname'));
@@ -429,27 +456,18 @@ class WP_Contact_Form_ND{
 			 */
 			
 			$wpcf_nd_settings = get_option("wpcf_nd_settings");
-
 			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
-
 			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
-
 			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
-						
 			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
-
 			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
 
 		} else {
 
 			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
-
 			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
-
 			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
-						
 			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
-
 			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
 
 		}
@@ -462,6 +480,22 @@ class WP_Contact_Form_ND{
 		);
 		$body = apply_filters( "wpcf_nd_email_wrapper" , $data );		
     	
+
+		if ( isset( $sent_data['user_email'] ) && isset( $wpcf_nd_settings['wpcf_nd_send_as_user'] ) && $wpcf_nd_settings['wpcf_nd_send_as_user'] == 1 ) {
+			$headers = array(
+			  	'Reply-To: <'.$sent_data['user_email'].'>',
+			);
+		} else {
+			$headers = array();
+		}
+
+    	$headers = apply_filters("wpcf_nd_filter_mail_headers",$headers,$cfid);
+    	$attachments = array();
+    	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid);
+
+
+
+
     	@wp_mail( $sendto , stripslashes( $subject_admin ) , $body , $headers , $attachments );
     	
 
@@ -493,14 +527,23 @@ class WP_Contact_Form_ND{
 	}
 
 	function wpcf_nd_add_cf_support_metabox( $post ) {
+		add_meta_box('wpcf_nd_main_ext', __('Save all form submissions','wpcf_nd'), array( $this, 'wpcf_main_ext_metabox' ), 'contact-forms-nd', 'side', 'default');
 		add_meta_box('wpcf_nd_main_support', __('Need help?','wpcf_nd'), array( $this, 'wpcf_main_support' ), 'contact-forms-nd', 'side', 'default');
 	}
-
 	function wpcf_main_support( $post ) {
 		echo "<p>".sprintf(__( "Browse the <a href='%s' target='_BLANK'>documentation</a>.", "wpcf_nd" ),'http://www.contactformready.com/documentation/')."</p>";
 		echo "<p>".sprintf(__( "Or get in touch with <a href='%s'>nick@codecabin.co.za</a>", "wpcf_nd" ), 'mailto:nick@codecabin.co.za'). "</p>";
 
 	}
+
+
+	function wpcf_main_ext_metabox( $post ) {
+		echo "<p>".sprintf(__( "Store all form submissions using the new <a href='%s' target='_BLANK'>Stored Submission Extension</a> from CFR.", "wpcf_nd" ),'http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&utm_medium=link&utm_campaign=meta_store')."</p>";
+		echo "<p>".sprintf(__( "Browse more extensions <a href='%s'>here</a>.", "wpcf_nd" ), 'http://www.contactformready.com/extensions/?utm_source=plugin&utm_medium=link&utm_campaign=meta_ext'). "</p>";
+
+	}
+
+
 
 	function wpcf_main_control( $post ) {
 
@@ -561,7 +604,8 @@ class WP_Contact_Form_ND{
 			    	<tr>
 			    		<td width='250'><label for='wpcf_nd_shortcode'><?php _e("Shortcode","wpcf_nd"); ?></label></td>
 			    		<td>
-			    			<input type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
+			    			<input id="wpcf-shortcode-input" type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
+                            <span class="wpcf-shortcode-copy-text"><?php _e( 'Copied to clipboard', 'wpcf_nd' ) ?></span>
 			    			<p class='description'><?php _e("Copy this to your post or page to show the contact form","wpcf_nd"); ?></p>
 
 			    		</td>
@@ -664,13 +708,26 @@ class WP_Contact_Form_ND{
 						<td><input type='text' name='wpcf_nd_message_user' class='regular-text' id='wpcf_nd_message_user' value='<?php echo $cfr_email_body_user; ?>' /></td>
 					</tr>
 
+					<tr>
+						<td><?php _e("Set the reply-to as the user's email address","wpcf_nd"); ?></td>
+						<?php
+						 $is_checked = (isset($wpcf_nd_settings['wpcf_nd_send_as_user']) && $wpcf_nd_settings['wpcf_nd_send_as_user'] == 1) ? "checked" : "";
+						?>
+						<td><input type='checkbox' name='wpcf_nd_send_as_user' id='wpcf_nd_send_as_user' value='1' <?php echo $is_checked; ?> /> <span class='description'><?php echo __( "Will only be set if the form has a valid email field.")  ?></span></td>
+					</tr>
+
+
 					<?php do_action( "contact_form_ready_settings_bottom_advanced" ); ?>
 
 				</table>
 
 			</div>			
 
-			<?php do_action( "contact_form_ready_settings_content", $post, $wpcf_nd_settings ); ?>  
+
+			<?php
+				$wpcf_nd_settings = get_option("wpcf_nd_settings");
+				do_action( "contact_form_ready_settings_content", $post, $wpcf_nd_settings );
+			?>
 
 		</div>	  
 
@@ -944,8 +1001,21 @@ class WP_Contact_Form_ND{
 			$wpcf_nd_settings['wpcf_nd_send_to_user'] = 0;
 		}
 
-		if (isset($_POST['wpcf_nd_message_user'])) 
+
+
+		if (isset($_POST['wpcf_nd_message_user']))  {
 			$wpcf_nd_settings['wpcf_nd_message_user'] = sanitize_text_field( $_POST['wpcf_nd_message_user'] );
+		} else {
+			$wpcf_nd_settings['wpcf_nd_message_user'] = '';
+		}
+
+
+		if (isset($_POST['wpcf_nd_send_as_user'])  && $_POST['wpcf_nd_send_as_user'] == '1' ) {
+			$wpcf_nd_settings['wpcf_nd_send_as_user'] = intval(sanitize_text_field( $_POST['wpcf_nd_send_as_user'] ));
+		} else {
+			$wpcf_nd_settings['wpcf_nd_send_as_user'] = 0;
+		}
+
 
 		if (isset($_POST['wpcf_nd_message_admin'])) 
 			$wpcf_nd_settings['wpcf_nd_message_admin'] = sanitize_text_field( $_POST['wpcf_nd_message_admin'] );
@@ -1028,7 +1098,7 @@ class WP_Contact_Form_ND{
 				),
 				3 => array(
 					"title" => __("Booking form (restaurant)", "wpcf_nd"),
-					"xml_data" => '<form-template><fields><field type="header" subtype="h1" label="Book now" class="header"></field><field type="paragraph" subtype="p" label="This is a customizable paragraph field" class="paragraph"></field><field type="text" label="Name" subtype="text" class="form-control text-input" name="name-field"></field><field type="text" subtype="email" label="Email" class="form-control text-input" name="email-field"></field><field type="number" label="Guests" min="1" max="100" step="1" class="form-control" name="guests"></field><field type="date" label="Booking date" class="calendar" name="booking-date"></field><field type="select" label="Occassion" class="form-control" name="occassion"><option label="No occassion" value="none">No occassion</option><option label="Birthday" value="birthday" selected="true">Birthday</option><option label="Engagement" value="engagement">Engagement</option><option label="Anniversary" value="anniversary">Anniversary</option><option label="Meeting" value="meeting">Meeting</option></field><field type="textarea" label="Additional comments" class="form-control text-area" name="additional-comments"></field></fields></form-template>'
+					"xml_data" => '<form-template><fields><field type="header" subtype="h1" label="Book now" class="header"></field><field type="paragraph" subtype="p" label="This is a customizable paragraph field" class="paragraph"></field><field type="text" label="Name" subtype="text" class="form-control text-input" name="name-field"></field><field type="text" subtype="email" label="Email" class="form-control text-input" name="email-field"></field><field type="number" label="Guests" min="1" max="100" step="1" class="form-control" name="guests"></field><field type="date" label="Booking date" class="calendar" name="booking-date"></field><field type="select" label="Occasion" class="form-control" name="occasion"><option label="No occasion" value="none">No occasion</option><option label="Birthday" value="birthday" selected="true">Birthday</option><option label="Engagement" value="engagement">Engagement</option><option label="Anniversary" value="anniversary">Anniversary</option><option label="Meeting" value="meeting">Meeting</option></field><field type="textarea" label="Additional comments" class="form-control text-area" name="additional-comments"></field></fields></form-template>'
 				),
 				4 => array(
 					"title" => __("Support form", "wpcf_nd"),
@@ -1171,6 +1241,11 @@ class WP_Contact_Form_ND{
 
 
 		}
+		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
+	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
+	        wp_enqueue_script( 'wpcf-admin-settings' );
+	        wp_localize_script( 'wpcf-admin-settings', 'wpcf_nd_confirm_restore_template_string', __( 'Are you sure you want to restore the default newsletter template?', 'wpcf_nd' ) );
+		}
 	}
 	function load_admin_styles() {
 	 	global $post_type;
@@ -1208,7 +1283,7 @@ class WP_Contact_Form_ND{
 		<h1><?php echo __( "Contact Form Ready Extensions", "wpcf_nd" ); ?></h1>
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Stored Submissions</h3>
-			<a href="http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Stored Submissions Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/storedsubm.png" ?>" class="attachment-showcase wp-post-image" alt="Stored Submissions" title="Stored Submissions">
 			</a>
 			<p></p>
@@ -1216,12 +1291,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Save all sent form data in WordPress.</p>
-			<a href="http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Stored Submissions Extension" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">MailChimp</h3>
-			<a href="http://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Mailchimp Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mailchimp" title="Mailchimp Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/MailChimp.png" ?>" class="attachment-showcase wp-post-image" alt="MailChimp" title="MailChimp">
 			</a>
 			<p></p>
@@ -1229,12 +1304,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Store submission email addresses to a MailChimp subscriber list</p>			
-			<a href="http://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="MailChimp Extension" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mailchimp" title="MailChimp Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Slack Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Slack Notifications Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=slack" title="Slack Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/Slack.png" ?>" class="attachment-showcase wp-post-image" alt="Slack Notifications" title="Slack Notifications">
 			</a>
 			<p></p>
@@ -1242,12 +1317,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via Slack when a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Slack Notifications Extension" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=slack" title="Slack Notifications Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">PDF Submissions</h3>
-			<a href="http://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="PDF Submissions Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=pdf" title="PDF Submissions Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/pdf.png" ?>" class="attachment-showcase wp-post-image" alt="PDF Submissions" title="PDF Submissions">
 			</a>
 			<p></p>
@@ -1255,12 +1330,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Store all sent form data in a PDF file</p>			
-			<a href="http://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="PDF Submissions" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=pdf" title="PDF Submissions" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">ClickSend Text Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="ClickSend Text Notifications Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clicksend" title="ClickSend Text Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/ClickSend.png" ?>" class="attachment-showcase wp-post-image" alt="ClickSend Text Notifications" title="ClickSend Text Notifications">
 			</a>
 			<p></p>
@@ -1268,12 +1343,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via text message via ClickSend as soon as a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="ClickSend Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clicksend" title="ClickSend Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">BulkSMS Text Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="ClickSend Text Notifications Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=bulksms" title="ClickSend Text Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/BulkSMS.png" ?>" class="attachment-showcase wp-post-image" alt="BulkSMS Text Notifications" title="BulkSMS Text Notifications">
 			</a>
 			<p></p>
@@ -1281,12 +1356,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via text message via BulkSMS as soon as a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="BulkSMS Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=bulksms" title="BulkSMS Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Clickatell Text Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="ClickSend Text Notifications Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clickatell" title="ClickSend Text Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/ClickaTell.png" ?>" class="attachment-showcase wp-post-image" alt="Clickatell Text Notifications" title="Clickatell Text Notifications">
 			</a>
 			<p></p>
@@ -1294,12 +1369,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via text message via Clickatell as soon as a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Clickatell Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clickatell" title="Clickatell Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Zendesk</h3>
-			<a href="http://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Zendesk Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zendesk" title="Zendesk Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/Zendesk.png" ?>" class="attachment-showcase wp-post-image" alt="Zendesk Extension" title="Zendesk Extension">
 			</a>
 			<p></p>
@@ -1307,12 +1382,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Convert submitted form data into a ticket on Zendesk</p>			
-			<a href="http://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Zendesk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zendesk" title="Zendesk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Nifty Desk</h3>
-			<a href="http://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Nifty Desk Extension" target="_BLANK">
+			<a href="http://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/niftyd.png" ?>" class="attachment-showcase wp-post-image" alt="Nifty Desk Extension" title="Nifty Desk Extension">
 			</a>
 			<p></p>
@@ -1320,7 +1395,7 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Convert submitted form data into a ticket on Nifty Desk</p>			
-			<a href="http://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=extensions" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>			
+			<a href="http://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 
@@ -1414,8 +1489,17 @@ class WP_Contact_Form_ND{
 	}
 
 	function wpcf_nd_email_wrapper_control($data) {
-		$dir = dirname(__FILE__);
-		$template_content_template = file_get_contents($dir."/templates/mail_template.html");
+		$wpcf_nd_settings = get_option("wpcf_nd_settings");
+		if (!isset($wpcf_nd_settings['wpcf_nd_template_html'])) {
+			$wpcf_nd_settings['wpcf_nd_template_html'] = wpcf_get_default_template_html();
+		}
+
+
+		$template_content_template = stripslashes( $wpcf_nd_settings['wpcf_nd_template_html'] );
+
+
+		//$dir = dirname(__FILE__);
+		//$template_content_template = file_get_contents($dir."/templates/mail_template.html");
 
 		$template_content_template = str_replace("{header}",$data['header'],$template_content_template);
 		$template_content_template = str_replace("{message}",$data['message'],$template_content_template);
@@ -1496,7 +1580,6 @@ class WP_Contact_Form_ND{
 				}
 
 				wp_localize_script( 'contact-form-ready', 'wpcf_nd_form_type', $form_type );
-		
 
 				$wpcf_nd_redirect_uri = get_post_meta( $atts['id'], 'wpcf_nd_redirect_uri', true );
 		    	if ($wpcf_nd_redirect_uri) {
