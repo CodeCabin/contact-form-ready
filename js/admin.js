@@ -120,6 +120,24 @@ var predefined_busy = false;
             }, 800);
         }
 
+        /* Themes */
+        var themeInput      = $('.wpcf-admin-option-theme'),
+            themeInputVal   = themeInput.val(),
+            themeItems      = $('.wpcf-admin-img-item'),
+            themeLinks      = $('.wpcf-admin-img-link');
+
+        $('.wpcf-admin-img-item[data-cf-theme="' + themeInputVal + '"]').addClass('is-active');
+
+        themeLinks.on('click', function (event) {
+            event.preventDefault();
+
+            var that = $(this),
+                thatItem = that.parent('.wpcf-admin-img-item');
+
+            themeItems.removeClass('is-active');
+            thatItem.addClass('is-active');
+            themeInput.val(thatItem.data('cf-theme'));
+        });
 
     });
 })(jQuery);

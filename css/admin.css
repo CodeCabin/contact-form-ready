@@ -164,3 +164,91 @@
 .build-wrap .editing .icon-pencil:after {
     transform: rotate(-45deg);
 }
+
+/* Themes */
+.wpcf-admin-img-list {
+    overflow: hidden;
+}
+
+.wpcf-admin-img-item {
+    display: inline-block;
+    width: 31.7%;
+    float: left;
+    margin-right: 2%;
+    margin-bottom: 30px;
+}
+
+.wpcf-admin-img-item:nth-child(3n) {
+    margin-right: 0;
+}
+
+.wpcf-admin-img-heading {
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.is-active .wpcf-admin-img-heading {
+    font-weight: 600;
+}
+
+.wpcf-admin-img-link {
+    display: block;
+    border: 1px solid transparent;
+}
+
+.wpcf-admin-img-item:hover .wpcf-admin-img-link,
+.is-active .wpcf-admin-img-link {
+    border-color: rgba(0, 127, 255, .5);
+    box-shadow: 0 0 7px rgba(0, 127, 255, .4);
+}
+
+.wpcf-admin-img-thumb {
+    width: 100%;
+    height: auto;
+}
+
+/* Styling */
+.wpcf-admin-enable-table-wrapper table {
+    max-width: 500px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.wpcf-admin-enable-table-wrapper table:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,.3);
+}
+
+.wpcf-admin-enable-table-wrapper.is-active table:after {
+    width: 0;
+    height: 0;
+}
+
+.wpcf-admin-enable-style-wrapper {
+    display: inline-block;
+    margin: 20px 0;
+    padding: 10px 15px;
+    background: #f9f9f9;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.wpcf-admin-enable-style-wrapper input {
+    position: relative;
+    top: 2px;
+    margin-left: 5px;
+}
+
+.wpcf-admin-table th {
+    text-align: left;
+}
+
+.wpcf-nd-small-input {
+    width: 100px;
+}

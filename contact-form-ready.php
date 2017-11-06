@@ -578,6 +578,10 @@ class WP_Contact_Form_ND{
 			'advanced-settings' => array(
 				'name' => __( 'Advanced Settings', 'wpcf_nd' ),
 				'icon' => ''
+			),
+			'themes' => array(
+				'name' => __( 'Themes', 'wpcf_nd' ),
+				'icon' => ''
 			)
 		);
 
@@ -679,7 +683,7 @@ class WP_Contact_Form_ND{
 
 				?>
 
-				<h2><?php _e("Email Settings","wpcf_nd"); ?></h2>
+				<h2><?php _e("Themes","wpcf_nd"); ?></h2>
 
 				<table class='form-table'>					
 					<tr>
@@ -723,8 +727,46 @@ class WP_Contact_Form_ND{
 
 			</div>			
 
+            <div id='themes'>
 
-			<?php
+				<?php
+				$wpcf_nd_theme = get_post_meta( $post->ID, 'wpcf_nd_theme', true );
+				if ( ! isset( $wpcf_nd_theme ) ) {
+					$wpcf_nd_theme = 'default';
+				}
+				?>
+
+                <h2><?php _e("Themes","wpcf_nd"); ?></h2>
+
+                <ul class="wpcf-admin-img-list">
+                    <li class="wpcf-admin-img-item" data-cf-theme="default">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Default Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/default.png" ?>"
+                                 alt="<?php _e("Default Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                    <li class="wpcf-admin-img-item" data-cf-theme="slick">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Slick Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/slick.png" ?>"
+                                 alt="<?php _e("Slick Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                    <li class="wpcf-admin-img-item" data-cf-theme="modern">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Modern Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/modern.png" ?>"
+                                 alt="<?php _e("Modern Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                </ul>
+                <input class="wpcf-admin-option-theme" type="hidden" name="wpcf_nd_theme" value="<?php echo $wpcf_nd_theme; ?>" />
+
+            </div>
+
+
+            <?php
 				$wpcf_nd_settings = get_option("wpcf_nd_settings");
 				do_action( "contact_form_ready_settings_content", $post, $wpcf_nd_settings );
 			?>
@@ -1020,6 +1062,12 @@ class WP_Contact_Form_ND{
 		if (isset($_POST['wpcf_nd_message_admin'])) 
 			$wpcf_nd_settings['wpcf_nd_message_admin'] = sanitize_text_field( $_POST['wpcf_nd_message_admin'] );
 
+		/**
+		 * Themes settings
+		 */
+		if (isset($_POST['wpcf_nd_theme']))
+			update_post_meta( $post_id, 'wpcf_nd_theme', sanitize_text_field( $_POST['wpcf_nd_theme'] ) );
+
 		update_post_meta( $post_id, 'wpcf_nd_email_sending_settings', $wpcf_nd_settings );
 
 	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
@@ -1121,6 +1169,7 @@ class WP_Contact_Form_ND{
 
 	function handle_defaults() {
 		$wpcf_nd_settings = get_option("wpcf_nd_settings");
+		$wpcf_nd_styling = get_option("wpcf_nd_styling");
 		/**
 		 * defaults here
 		 */
@@ -1149,6 +1198,53 @@ class WP_Contact_Form_ND{
 
 
 		update_option("wpcf_nd_settings",$wpcf_nd_settings);
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_enable_style']))
+			$wpcf_nd_styling['wpcf_nd_enable_style'] = 0;
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_size']))
+			$wpcf_nd_styling['wpcf_nd_label_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_label_font_weight'] = "600";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_color']))
+			$wpcf_nd_styling['wpcf_nd_label_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_input_bg_color'] = "transparent";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_focus_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = "#333333";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_size']))
+			$wpcf_nd_styling['wpcf_nd_input_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_color']))
+			$wpcf_nd_styling['wpcf_nd_input_font_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_size']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_size'] = "14";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_color'] = "#ffffff";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = "700";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_text_transform']))
+			$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = "none";
+
+		update_option("wpcf_nd_styling",$wpcf_nd_styling);
 	}
 
 	
@@ -1246,10 +1342,14 @@ class WP_Contact_Form_ND{
 	        wp_enqueue_script( 'wpcf-admin-settings' );
 	        wp_localize_script( 'wpcf-admin-settings', 'wpcf_nd_confirm_restore_template_string', __( 'Are you sure you want to restore the default newsletter template?', 'wpcf_nd' ) );
 		}
+		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-styling') {
+			wp_register_script( 'wpcf-admin-styling', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_styling.js", true );
+			wp_enqueue_script( 'wpcf-admin-styling' );
+		}
 	}
 	function load_admin_styles() {
 	 	global $post_type;
-	    if( "contact-forms-nd" == $post_type || (isset($_GET['page']) && $_GET['page'] == "wpcf-extensions") ) {
+	    if( "contact-forms-nd" == $post_type || (isset($_GET['page']) && ( $_GET['page'] == "wpcf-extensions" || $_GET['page'] == "wpcf-styling" )) ) {
 	        wp_register_style( 'form-builder-css', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/css/form-builder.min.css", true );
 	        wp_enqueue_style( 'form-builder-css' );
 	        wp_register_style( 'wpcf-nd-css', plugins_url(plugin_basename(dirname(__FILE__)))."/css/admin.css", true, $this->current_version );
@@ -1272,6 +1372,7 @@ class WP_Contact_Form_ND{
 
 	public function wpcf_nd_menu_items(){
         add_submenu_page('edit.php?post_type=contact-forms-nd', __('Settings', 'wpcf_nd'), __('Settings', 'wpcf_nd'), 'manage_options', 'wpcf-settings',  array( $this , 'wpcf_settings_page' ) );
+        add_submenu_page('edit.php?post_type=contact-forms-nd', __('Styling', 'wpcf_nd'), __('Styling', 'wpcf_nd'), 'manage_options', 'wpcf-styling',  array( $this , 'wpcf_styling_page' ) );
         add_submenu_page('edit.php?post_type=contact-forms-nd', __('Extensions', 'wpcf_nd'), __('Extensions', 'wpcf_nd'), 'manage_options', 'wpcf-extensions',  array( $this , 'wpcf_extensions_page' ) );
 	}
 
@@ -1400,6 +1501,280 @@ class WP_Contact_Form_ND{
 
 
 		<?php
+	}
+
+	function wpcf_styling_page() {
+		$wpcf_nd_styling = get_option("wpcf_nd_styling");
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_enable_style']))
+			$wpcf_nd_styling['wpcf_nd_enable_style'] = 0;
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_size']))
+			$wpcf_nd_styling['wpcf_nd_label_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_label_font_weight'] = "600";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_color']))
+			$wpcf_nd_styling['wpcf_nd_label_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_input_bg_color'] = "transparent";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_focus_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = "#333333";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_size']))
+			$wpcf_nd_styling['wpcf_nd_input_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_color']))
+			$wpcf_nd_styling['wpcf_nd_input_font_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_size']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_size'] = "14";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_color'] = "#ffffff";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = "700";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_text_transform']))
+			$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = "none";
+
+		if (isset($_POST['wpcf_submit_save_styling'])) {
+
+			if ( isset( $_POST['wpcf_nd_enable_style'] ) ){
+		        $wpcf_nd_styling['wpcf_nd_enable_style'] = 1;
+	        } else {
+				$wpcf_nd_styling['wpcf_nd_enable_style'] = 0;
+			}
+
+            if ( isset( $_POST['wpcf_nd_label_font_size'] ) ){
+                $wpcf_nd_styling['wpcf_nd_label_font_size'] = sanitize_text_field( $_POST['wpcf_nd_label_font_size'] );
+            } else {
+                $wpcf_nd_styling['wpcf_nd_label_font_size'] = '';
+            }
+
+	        if ( isset( $_POST['wpcf_nd_label_font_weight'] ) ){
+		        $wpcf_nd_styling['wpcf_nd_label_font_weight'] = sanitize_text_field( $_POST['wpcf_nd_label_font_weight'] );
+	        } else {
+		        $wpcf_nd_styling['wpcf_nd_label_font_weight'] = '';
+	        }
+
+	        if ( isset( $_POST['wpcf_nd_label_color'] ) ){
+		        $wpcf_nd_styling['wpcf_nd_label_color'] = sanitize_text_field( $_POST['wpcf_nd_label_color'] );
+	        } else {
+		        $wpcf_nd_styling['wpcf_nd_label_color'] = '';
+	        }
+
+			if ( isset( $_POST['wpcf_nd_input_bg_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_bg_color'] = sanitize_text_field( $_POST['wpcf_nd_input_bg_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_bg_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_border_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_border_color'] = sanitize_text_field( $_POST['wpcf_nd_input_border_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_border_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_border_focus_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = sanitize_text_field( $_POST['wpcf_nd_input_border_focus_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_font_size'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_font_size'] = sanitize_text_field( $_POST['wpcf_nd_input_font_size'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_font_size'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_font_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_font_color'] = sanitize_text_field( $_POST['wpcf_nd_input_font_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_font_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_bg_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = sanitize_text_field( $_POST['wpcf_nd_submit_bg_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_bg_hover_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = sanitize_text_field( $_POST['wpcf_nd_submit_bg_hover_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_font_size'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_font_size'] = sanitize_text_field( $_POST['wpcf_nd_submit_font_size'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_font_size'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_font_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_font_color'] = sanitize_text_field( $_POST['wpcf_nd_submit_font_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_font_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_font_weight'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = sanitize_text_field( $_POST['wpcf_nd_submit_font_weight'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_text_transform'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = sanitize_text_field( $_POST['wpcf_nd_submit_text_transform'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = '';
+			}
+
+            $wpcf_nd_styling = apply_filters("wpcf_filter_save_styling", $wpcf_nd_styling, $_POST);
+
+            update_option( "wpcf_nd_styling" , $wpcf_nd_styling );
+            echo "<span class='update-nag below-h1'>Styling saved</span>";
+
+        }
+        ?>
+
+        <form action='' method='POST' name='wpcf_styling_form'>
+            <h1><?php _e("Contact form styling","wpcf_nd"); ?></h1>
+
+
+            <h2><?php _e("Contact Form Styling","wpcf_nd"); ?></h2>
+
+            <div class="wpcf-admin-enable-style-wrapper">
+                <label for="wpcf_nd_enable_style"><?php _e( "Enable custom styling", "wpcf_nd" ); ?></label>
+                <input type="checkbox" name="wpcf_nd_enable_style" class="" id="wpcf_nd_enable_style" value="1" <?php checked( $wpcf_nd_styling['wpcf_nd_enable_style'], 1, true ); ?> />
+            </div>
+
+            <div class="wpcf-admin-enable-table-wrapper">
+                <table class='wp-list-table striped fixed wpcf-admin-table'>
+                    <thead>
+                    <tr>
+                        <th><?php _e( "Label", "wpcf_nd" ); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+                        <td><input type='number' name='wpcf_nd_label_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_label_font_size' value='<?php echo$wpcf_nd_styling['wpcf_nd_label_font_size']; ?>' min="10" max="62" /></td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
+                        <td>
+                            <select name='wpcf_nd_label_font_weight' id='wpcf_nd_label_font_weight'>
+                                <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+                                <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+                                <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+                                <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+                        <td><input type='text' name='wpcf_nd_label_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_label_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_label_color'])); ?>' /></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class='wp-list-table striped fixed wpcf-admin-table'>
+                    <thead>
+                        <tr>
+                            <th><?php _e( "Input", "wpcf_nd" ); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_input_bg_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_bg_color'])); ?>' /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Border color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_input_border_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_border_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_color'])); ?>' /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Border hover color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_input_border_focus_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_border_focus_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_focus_color'])); ?>' /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+                            <td><input type='number' name='wpcf_nd_input_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_size'])); ?>' min="10" max="62" /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_input_font_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_color'])); ?>' /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class='wp-list-table striped fixed wpcf-admin-table'>
+                    <thead>
+                    <tr>
+                        <th><?php _e( "Submit button", "wpcf_nd" ); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
+                        <td><input type='text' name='wpcf_nd_submit_bg_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_color'])); ?>' /></td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Background hover color","wpcf_nd"); ?></td>
+                        <td><input type='text' name='wpcf_nd_submit_bg_hover_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_bg_hover_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'])); ?>' /></td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+                        <td><input type='number' name='wpcf_nd_submit_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_size'])); ?>' min="10" max="62" /></td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+                        <td><input type='text' name='wpcf_nd_submit_font_color' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_color'])); ?>' /></td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
+                        <td>
+                            <select name='wpcf_nd_submit_font_weight' id='wpcf_nd_submit_font_weight'>
+                                <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+                                <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+                                <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+                                <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width='250'><?php _e("Text transform","wpcf_nd"); ?></td>
+                        <td>
+                            <select name='wpcf_nd_submit_text_transform' id='wpcf_nd_submit_text_transform'>
+                                <option value="none" <?php echo ( 'normal' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "none", "wpcf_nd" ); ?></option>
+                                <option value="uppercase" <?php echo ( 'uppercase' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "uppercase", "wpcf_nd" ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <?php do_action( "wpcf_hook_styling_page_bottom", $wpcf_nd_styling ); ?>
+
+            <input class="wpcf-submit-save-styling" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
+        </form>
+
+    <?php
 	}
 
 	function wpcf_settings_page() {
@@ -1548,6 +1923,92 @@ class WP_Contact_Form_ND{
 	public static function enqueue_user_styles() {
         wp_register_style( 'contact-form-ready', plugins_url(plugin_basename(dirname(__FILE__)))."/css/front-end.css", true );
         wp_enqueue_style( 'contact-form-ready' );
+
+		$wpcf_nd_styling = get_option("wpcf_nd_styling");
+
+		if ( 0 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {
+			return;
+		}
+
+		$css = '';
+		if (
+			$wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ||
+			$wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ||
+			$wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222'
+        ) {
+			$css .= ".wpcf_nd label {";
+			if ( $wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ) {
+				$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_size'] ) . "px;";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ) {
+				$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) . ";";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222' ) {
+				$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_color'] ) . ";";
+			}
+			$css .= "}";
+		}
+
+		if (
+			$wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ||
+			$wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ||
+			$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ||
+			$wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ||
+			$wpcf_nd_styling['wpcf_nd_input_font_color'] !== '#666666'
+		) {
+			$css .= ".wpcf_nd input[type='text'],.wpcf_nd textarea,.wpcf_nd input[type='email'],.wpcf_nd input[type='number'],.wpcf_nd input[type='date'] {";
+			if ( $wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ) {
+				$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_bg_color'] ) . ";";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
+				$css .= "border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ) {
+				$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_font_size'] ) . "px;";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
+				$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
+			}
+			$css .= "}";
+		}
+
+		if ( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ) {
+			$css .= ".wpcf_nd input[type='text']:focus,.wpcf_nd textarea:focus,.wpcf_nd input[type='email']:focus,.wpcf_nd input[type='number']:focus,.wpcf_nd input[type='date']:focus {border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] ) . ";}";
+		}
+
+		if (
+			$wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ||
+			$wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ||
+			$wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ||
+			$wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ||
+			$wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none'
+		) {
+			$css .= ".wpcf_nd .wpcf_nd_submit {";
+			if ( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ) {
+				$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ) {
+				$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_size'] ) . "px;";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ) {
+				$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_color'] ) . ";";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ) {
+				$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) . ";";
+			}
+			if ( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none' ) {
+				$css .= "text-transform: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) . ";";
+			}
+			$css .= "}";
+		}
+
+		if ( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] !== '#666666' ) {
+			$css .= ".wpcf_nd .wpcf_nd_submit:hover {background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";}";
+		}
+
+		if ( '' !== $css ) {
+			wp_add_inline_style( 'contact-form-ready', $css );
+		}
 	}
 
 	/**
@@ -1591,15 +2052,18 @@ class WP_Contact_Form_ND{
 					$submit_string = __("Send","wpcf_nd");
 				}
 
+				$theme = get_post_meta( $atts['id'], 'wpcf_nd_theme', true );
+
 				$data = array(
 					"cfid" => $atts['id'],
 					"submit_string" => $submit_string,
-					"sendto" => $send_to
+					"sendto" => $send_to,
+                    "theme" => $theme
 				);
 
 				$js_overrides = apply_filters( "wpcf_js_overrides_front_end", "" );
 
-				$html_data = str_replace(array("\r", "\n"), '', $html_data);
+			    $html_data = str_replace(array("\r", "\n"), '', $html_data);
 				$html_data = apply_filters( "wpcf_nd_html_control" , $html_data, $data );
 				$style = '<style>.form-control { clear: both; display: block; }</style>';
 
@@ -1615,8 +2079,9 @@ class WP_Contact_Form_ND{
 
 	function wpcf_nd_filter_control_html_control( $html_data, $data ) {
 		$random_identifier = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
+		$theme = 'wpcf_nd--' . $data['theme'];
 		$form_start = '<div class="wpcf_wrapper">'.PHP_EOL;
-		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.'" cfid="'.$random_identifier.'">'.PHP_EOL;
+		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.' '. $theme .'" cfid="'.$random_identifier.'">'.PHP_EOL;
 		$id_string = "			<input type='hidden' value='".esc_attr($data['cfid'])."' name='wpcf_nd_send_id' id='wpcf_nd_send_id' />".PHP_EOL;
 		$nonce_string = '			'.wp_nonce_field( 'wpcf_nd', 'wpcf_nonce_field', false, false ).PHP_EOL;
 
