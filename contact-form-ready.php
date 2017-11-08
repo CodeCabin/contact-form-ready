@@ -459,6 +459,7 @@ class WP_Contact_Form_ND{
 			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
 			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
 			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+			$send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? $wpcf_nd_settings['wpcf_nd_send_plaintext'] : '';
 			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
 			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
 
@@ -467,6 +468,7 @@ class WP_Contact_Form_ND{
 			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
 			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
 			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+			$send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? $wpcf_nd_settings['wpcf_nd_send_plaintext'] : '';
 			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
 			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
 
@@ -493,10 +495,15 @@ class WP_Contact_Form_ND{
     	$attachments = array();
     	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid);
 
+		if ( 1 === $send_plaintext ) {
+			require_once( 'includes/class.html-to-plaintext.php' );
+			$converter = new HTMLToPlaintextConverter();
+			$plaintext = @$converter->convert($body);
+		} else {
+			$plaintext = $body;
+		}
 
-
-
-    	@wp_mail( $sendto , stripslashes( $subject_admin ) , $body , $headers , $attachments );
+		@wp_mail( $sendto , stripslashes( $subject_admin ) , $plaintext , $headers , $attachments );
     	
 
     	// SEND TO USER?
@@ -510,7 +517,14 @@ class WP_Contact_Form_ND{
 			);
 			$body = apply_filters( "wpcf_nd_email_wrapper" , $data );
 
-	    	@wp_mail( $sent_data['user_email'] , stripslashes( $cfr_email_subject_user ) , $body , $headers , $attachments );
+		    if ( 1 === $send_plaintext ) {
+			    $converter = new HTMLToPlaintextConverter();
+			    $plaintext = @$converter->convert( $body );
+		    } else {
+			    $plaintext = $body;
+		    }
+
+		    @wp_mail( $sent_data['user_email'] , stripslashes( $cfr_email_subject_user ) , $plaintext , $headers , $attachments );
 	    }
 
 
@@ -706,7 +720,8 @@ class WP_Contact_Form_ND{
 						$cfr_email_body_admin = ( isset($wpcf_nd_settings['wpcf_nd_message_admin'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : "";
 						
 						$cfr_send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
-						
+						$cfr_send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? $wpcf_nd_settings['wpcf_nd_send_plaintext'] : '';
+
 						$cfr_email_subject_user = ( isset($wpcf_nd_settings['wpcf_nd_subject_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : "";
 						$cfr_email_body_user = ( isset($wpcf_nd_settings['wpcf_nd_message_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : "";
 
@@ -716,7 +731,8 @@ class WP_Contact_Form_ND{
 						$cfr_email_body_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ) : '';
 						
 						$cfr_send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ) : '';
-						
+						$cfr_send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ) : '';
+
 						$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ) : '';
 						$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_user'] ) ) : '';
 
@@ -744,6 +760,13 @@ class WP_Contact_Form_ND{
 
 						<td><input type='checkbox' name='wpcf_nd_send_to_user' id='wpcf_nd_send_to_user' value='1' <?php echo $is_checked; ?> /></td>
 					</tr>
+                    <tr>
+                        <td><?php _e("Send plaintext email instead of html version?","wpcf_nd"); ?></td>
+
+						<?php $plaintext_is_checked = $cfr_send_plaintext == 1 ? "checked" : ""; ?>
+
+                        <td><input type='checkbox' name='wpcf_nd_send_plaintext' id='wpcf_nd_send_plaintext' value='1' <?php echo $plaintext_is_checked; ?> /></td>
+                    </tr>
 					<tr>
 						<td><?php _e("Email subject (user)","wpcf_nd"); ?></td>
 						<td><input type='text' name='wpcf_nd_subject_user' class='regular-text' id='wpcf_nd_subject_user' value='<?php echo $cfr_email_subject_user; ?>' /></td>
@@ -1081,6 +1104,12 @@ class WP_Contact_Form_ND{
 			$wpcf_nd_settings['wpcf_nd_send_to_user'] = intval(sanitize_text_field( $_POST['wpcf_nd_send_to_user'] ));
 		} else {
 			$wpcf_nd_settings['wpcf_nd_send_to_user'] = 0;
+		}
+
+		if ( isset( $_POST['wpcf_nd_send_plaintext'] ) && $_POST['wpcf_nd_send_plaintext'] == '1' ){
+			$wpcf_nd_settings['wpcf_nd_send_plaintext'] = intval(sanitize_text_field( $_POST['wpcf_nd_send_plaintext'] ));
+		} else {
+			$wpcf_nd_settings['wpcf_nd_send_plaintext'] = 0;
 		}
 
 
