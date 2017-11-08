@@ -252,3 +252,11 @@
 .wpcf-nd-small-input {
     width: 100px;
 }
+
+.wpcf-modal-customization {
+    display: none;
+}
+
+.wpcf-modal-customization.is-active {
+    display: table-row;
+}

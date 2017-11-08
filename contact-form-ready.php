@@ -567,8 +567,23 @@ class WP_Contact_Form_ND{
 		if (!$form_type || $form_type === null) {
 			$form_type = '0';
 		}
-
 		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+		$wpcf_nd_basic_settings = get_option( "wpcf_nd_basic_settings" );
+		$modal_el_attr = $wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'];
+		$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
+		$modal_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_bg'];
+		$modal_opacity = $wpcf_nd_basic_settings['wpcf_nd_modal_opacity'];
+		$modal_inner_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'];
+		if ('' === trim($modal_bg)) {
+			$modal_bg = '#222222';
+		}
+		if ('' === trim($modal_opacity)) {
+			$modal_opacity = '0.8';
+		}
+		if ('' === trim($modal_inner_bg)) {
+			$modal_inner_bg = '#ffffff';
+		}
+
 
 		$tabs_array = array(
 			'basic-settings' => array(
@@ -642,6 +657,32 @@ class WP_Contact_Form_ND{
 			    			</select>
 			    		</td>
 			    	</tr>
+                    <tr>
+                        <td><label for='wpcf_nd_modal_el'><?php _e( "Open modal window when click on element with", "wpcf_nd" ); ?></label></td>
+                        <td>
+                            <select name="wpcf_nd_modal_el_attr">
+                                <option value="class" <?php selected( $modal_el_attr, 'class' ) ?>><?php _e( "class", "wpcf_nd" ); ?></option>
+                                <option value="id" <?php selected( $modal_el_attr, 'id' ) ?>><?php _e( "id", "wpcf_nd" ); ?></option>
+                            </select>
+                            <input type='text' value='<?php echo $modal_el; ?>' id='wpcf_nd_modal_el' name='wpcf_nd_modal_el' />
+                            <p class='description'><?php _e("Leave this field empty if you don't want modal window","wpcf_nd"); ?></p>
+                        </td>
+                    </tr>
+                    <tr class="wpcf-modal-customization is-active">
+                        <td><label for='wpcf_nd_modal_bg'><?php _e( "Modal wrapper background color", "wpcf_nd" ); ?></label></td>
+                        <td><input type='text' value='<?php echo $modal_bg; ?>' id='wpcf_nd_modal_bg' name='wpcf_nd_modal_bg' /></td>
+                    </tr>
+                    <tr class="wpcf-modal-customization is-active">
+                        <td><label for='wpcf_nd_modal_opacity'><?php _e( "Modal wrapper opacity", "wpcf_nd" ); ?></label></td>
+                        <td>
+                            <input type='text' value='<?php echo $modal_opacity; ?>' id='wpcf_nd_modal_opacity' name='wpcf_nd_modal_opacity' />
+                            <p class='description'><?php _e("Please type value between 0 and 1 (default 0.8)","wpcf_nd"); ?></p>
+                        </td>
+                    </tr>
+                    <tr class="wpcf-modal-customization is-active">
+                        <td><label for='wpcf_nd_modal_inner_bg'><?php _e( "Modal inner background", "wpcf_nd" ); ?></label></td>
+                        <td><input type='text' value='<?php echo $modal_inner_bg; ?>' id='wpcf_nd_modal_inner_bg' name='wpcf_nd_modal_inner_bg' /></td>
+                    </tr>
 			    	<?php do_action( "wpcf_hook_form_builder_table_bottom", $post, $wpcf_nd_settings ); ?>
 			    </table>
 
@@ -993,8 +1034,7 @@ class WP_Contact_Form_ND{
 	function wpcf_nd_save_meta_box_control( $post_id ) {
 
 
-
-	 // Bail if we're doing an auto save
+		// Bail if we're doing an auto save
 	    if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	     
 	    // if our nonce isn't there, or we can't verify it, bail
@@ -1062,6 +1102,18 @@ class WP_Contact_Form_ND{
 		if (isset($_POST['wpcf_nd_message_admin'])) 
 			$wpcf_nd_settings['wpcf_nd_message_admin'] = sanitize_text_field( $_POST['wpcf_nd_message_admin'] );
 
+		$wpcf_nd_basic_settings = array();
+		if( isset( $_POST['wpcf_nd_modal_el'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_el'] = sanitize_text_field( $_POST['wpcf_nd_modal_el'] );
+		if( isset( $_POST['wpcf_nd_modal_el_attr'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'] = sanitize_text_field( $_POST['wpcf_nd_modal_el_attr'] );
+		if( isset( $_POST['wpcf_nd_modal_bg'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_bg'] = sanitize_text_field( $_POST['wpcf_nd_modal_bg'] );
+		if( isset( $_POST['wpcf_nd_modal_opacity'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_opacity'] = sanitize_text_field( $_POST['wpcf_nd_modal_opacity'] );
+		if( isset( $_POST['wpcf_nd_modal_inner_bg'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'] = sanitize_text_field( $_POST['wpcf_nd_modal_inner_bg'] );
+
 		/**
 		 * Themes settings
 		 */
@@ -1069,6 +1121,7 @@ class WP_Contact_Form_ND{
 			update_post_meta( $post_id, 'wpcf_nd_theme', sanitize_text_field( $_POST['wpcf_nd_theme'] ) );
 
 		update_post_meta( $post_id, 'wpcf_nd_email_sending_settings', $wpcf_nd_settings );
+		update_option( 'wpcf_nd_basic_settings', $wpcf_nd_basic_settings );
 
 	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
 	    
@@ -1925,85 +1978,97 @@ class WP_Contact_Form_ND{
         wp_enqueue_style( 'contact-form-ready' );
 
 		$wpcf_nd_styling = get_option("wpcf_nd_styling");
-
-		if ( 0 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {
-			return;
-		}
+		$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
+		$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
+		$modal_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_bg'];
+		$modal_opacity = $wpcf_nd_basic_settings['wpcf_nd_modal_opacity'];
+		$modal_inner_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'];
 
 		$css = '';
-		if (
-			$wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ||
-			$wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ||
-			$wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222'
-        ) {
-			$css .= ".wpcf_nd label {";
-			if ( $wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ) {
-				$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_size'] ) . "px;";
+		if ( 0 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {
+			if (
+				$wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ||
+				$wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ||
+				$wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222'
+			) {
+				$css .= ".wpcf_nd label {";
+				if ( $wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ) {
+					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_size'] ) . "px;";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ) {
+					$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222' ) {
+					$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_color'] ) . ";";
+				}
+				$css .= "}";
 			}
-			if ( $wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ) {
-				$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) . ";";
+
+			if (
+				$wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ||
+				$wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ||
+				$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ||
+				$wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ||
+				$wpcf_nd_styling['wpcf_nd_input_font_color'] !== '#666666'
+			) {
+				$css .= ".wpcf_nd input[type='text'],.wpcf_nd textarea,.wpcf_nd input[type='email'],.wpcf_nd input[type='number'],.wpcf_nd input[type='date'] {";
+				if ( $wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ) {
+					$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_bg_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
+					$css .= "border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ) {
+					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_font_size'] ) . "px;";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
+					$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
+				}
+				$css .= "}";
 			}
-			if ( $wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222' ) {
-				$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_color'] ) . ";";
+
+			if ( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ) {
+				$css .= ".wpcf_nd input[type='text']:focus,.wpcf_nd textarea:focus,.wpcf_nd input[type='email']:focus,.wpcf_nd input[type='number']:focus,.wpcf_nd input[type='date']:focus {border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] ) . ";}";
 			}
-			$css .= "}";
+
+			if (
+				$wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ||
+				$wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ||
+				$wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ||
+				$wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ||
+				$wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none'
+			) {
+				$css .= ".wpcf_nd .wpcf_nd_submit {";
+				if ( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ) {
+					$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ) {
+					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_size'] ) . "px;";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ) {
+					$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ) {
+					$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none' ) {
+					$css .= "text-transform: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) . ";";
+				}
+				$css .= "}";
+			}
+
+			if ( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] !== '#666666' ) {
+				$css .= ".wpcf_nd .wpcf_nd_submit:hover {background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";}";
+			}
 		}
 
-		if (
-			$wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ||
-			$wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ||
-			$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ||
-			$wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ||
-			$wpcf_nd_styling['wpcf_nd_input_font_color'] !== '#666666'
-		) {
-			$css .= ".wpcf_nd input[type='text'],.wpcf_nd textarea,.wpcf_nd input[type='email'],.wpcf_nd input[type='number'],.wpcf_nd input[type='date'] {";
-			if ( $wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ) {
-				$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_bg_color'] ) . ";";
+		if ( '' !== trim( $modal_el ) && ( '#222222' !== $modal_bg || '0.8' !== $modal_opacity || '#ffffff' !== $modal_inner_bg ) ) {
+			if ( '#222222' !== $modal_bg || '0.8' !== $modal_opacity ) {
+				$css .= ".wpcf-modal {background: " . self::wpcf_nd_hex2rgba( $modal_bg, $modal_opacity ) . ";}";
+            }
+			if ( '#ffffff' !== $modal_inner_bg ) {
+				$css .= ".wpcf-modal .wpcf_wrapper {background: " . esc_attr( $modal_inner_bg ) . ";}";
 			}
-			if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
-				$css .= "border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
-			}
-			if ( $wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ) {
-				$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_font_size'] ) . "px;";
-			}
-			if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
-				$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
-			}
-			$css .= "}";
-		}
-
-		if ( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ) {
-			$css .= ".wpcf_nd input[type='text']:focus,.wpcf_nd textarea:focus,.wpcf_nd input[type='email']:focus,.wpcf_nd input[type='number']:focus,.wpcf_nd input[type='date']:focus {border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] ) . ";}";
-		}
-
-		if (
-			$wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ||
-			$wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ||
-			$wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ||
-			$wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ||
-			$wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none'
-		) {
-			$css .= ".wpcf_nd .wpcf_nd_submit {";
-			if ( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ) {
-				$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";";
-			}
-			if ( $wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ) {
-				$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_size'] ) . "px;";
-			}
-			if ( $wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ) {
-				$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_color'] ) . ";";
-			}
-			if ( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ) {
-				$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) . ";";
-			}
-			if ( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none' ) {
-				$css .= "text-transform: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) . ";";
-			}
-			$css .= "}";
-		}
-
-		if ( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] !== '#666666' ) {
-			$css .= ".wpcf_nd .wpcf_nd_submit:hover {background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";}";
 		}
 
 		if ( '' !== $css ) {
@@ -2023,9 +2088,13 @@ class WP_Contact_Form_ND{
 
 	    	global $wpcf_thank_you;
 	    	global $wpcf_error_message;
+
+			$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
+			$modal_el_attr = $wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'];
+			$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
 	    	if ($wpcf_thank_you) { 
 
-    			return "<div class='wpcf-nd-thank-you'>".stripslashes(esc_html($wpcf_thank_you))."</div>";
+    			return "<div class='wpcf-nd-thank-you' data-el='" . esc_attr( $modal_el ) . "' data-el-attr='" . esc_attr( $modal_el_attr ) . "'>".stripslashes(esc_html($wpcf_thank_you))."</div>";
 
 			} else {
 
@@ -2058,7 +2127,9 @@ class WP_Contact_Form_ND{
 					"cfid" => $atts['id'],
 					"submit_string" => $submit_string,
 					"sendto" => $send_to,
-                    "theme" => $theme
+                    "theme" => $theme,
+                    "modal_el_attr" => $modal_el_attr,
+                    "modal_el" => $modal_el,
 				);
 
 				$js_overrides = apply_filters( "wpcf_js_overrides_front_end", "" );
@@ -2078,9 +2149,18 @@ class WP_Contact_Form_ND{
 	}
 
 	function wpcf_nd_filter_control_html_control( $html_data, $data ) {
+		$attrs = '';
+		$form_start = '';
+		if ( '' !== trim( $data['modal_el'] ) ) {
+			$attrs .= ' data-el-attr="' . esc_attr( $data['modal_el_attr'] ) . '" data-el="' . esc_attr( $data['modal_el'] ) . '"';
+			$form_start .= '<div class="wpcf-modal">';
+		}
 		$random_identifier = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 		$theme = 'wpcf_nd--' . $data['theme'];
-		$form_start = '<div class="wpcf_wrapper">'.PHP_EOL;
+		$form_start .= '<div class="wpcf_wrapper"' . $attrs . '>'.PHP_EOL;
+		if ( '' !== trim( $data['modal_el'] ) ) {
+			$form_start .= '<a href="#" class="wpcf-modal__close"></a>';
+		}
 		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.' '. $theme .'" cfid="'.$random_identifier.'">'.PHP_EOL;
 		$id_string = "			<input type='hidden' value='".esc_attr($data['cfid'])."' name='wpcf_nd_send_id' id='wpcf_nd_send_id' />".PHP_EOL;
 		$nonce_string = '			'.wp_nonce_field( 'wpcf_nd', 'wpcf_nonce_field', false, false ).PHP_EOL;
@@ -2091,6 +2171,9 @@ class WP_Contact_Form_ND{
 
 		$form_end = '</form>'.PHP_EOL;
 		$form_end .= '</div>'.PHP_EOL;
+		if ( '' !== trim( $data['modal_el'] ) ) {
+			$form_end .= '</div>';
+		}
 		return $form_start.$id_string.$nonce_string.$html_data.$other_data.$submit_string.$form_end;
 	}
 
@@ -2233,6 +2316,44 @@ class WP_Contact_Form_ND{
 
 
 	
+	}
+
+	public static function wpcf_nd_hex2rgba($color, $opacity = false) {
+
+		$default = 'rgb(0,0,0)';
+
+		//Return default if no color provided
+		if(empty($color))
+			return $default;
+
+		//Sanitize $color if "#" is provided
+		if ($color[0] == '#' ) {
+			$color = substr( $color, 1 );
+		}
+
+		//Check if color has 6 or 3 characters and get values
+		if (strlen($color) == 6) {
+			$hex = array( $color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5] );
+		} elseif ( strlen( $color ) == 3 ) {
+			$hex = array( $color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2] );
+		} else {
+			return $default;
+		}
+
+		//Convert hexadec to rgb
+		$rgb =  array_map('hexdec', $hex);
+
+		//Check if opacity is set(rgba or rgb)
+		if($opacity){
+			if(abs($opacity) > 1)
+				$opacity = 1.0;
+			$output = 'rgba('.implode(",",$rgb).','.$opacity.')';
+		} else {
+			$output = 'rgb('.implode(",",$rgb).')';
+		}
+
+		//Return rgb(a) color string
+		return $output;
 	}
 
 }

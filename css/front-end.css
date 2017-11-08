@@ -170,3 +170,59 @@
 .wpcf_nd--modern input[type="submit"]:hover {
     background-color: #999;
 }
+
+/*
+ * Modal mode
+ */
+.wpcf-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease-in-out;
+    background: rgba(0,0,0,.8);
+}
+
+.wpcf-modal.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.wpcf-modal .wpcf_wrapper {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 20px;
+    background: #fff;
+}
+
+.wpcf-modal .header {
+    padding-top: 0;
+}
+
+.wpcf-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    transition: transform ease-in-out .2s !important;
+    padding: 7px 13px;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #222;
+    font-size: 21px;
+    text-decoration: none !important;
+}
+
+.wpcf-modal__close:after {
+    position: relative;
+    content: '✖';
+}
+
+.wpcf-modal__close:hover {
+    transform: rotate(180deg);
+}

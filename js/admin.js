@@ -139,5 +139,20 @@ var predefined_busy = false;
             themeInput.val(thatItem.data('cf-theme'));
         });
 
+        /* Modal window */
+        var modalEl = $('#wpcf_nd_modal_el');
+
+        function hideModalCustomization() {
+            if (0 === modalEl.val().length) {
+                $('.wpcf-modal-customization').removeClass('is-active');
+            } else {
+                $('.wpcf-modal-customization').addClass('is-active');
+            }
+        }
+
+        hideModalCustomization();
+
+        modalEl.on('keyup', hideModalCustomization);
+
     });
 })(jQuery);
