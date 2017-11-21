@@ -663,7 +663,7 @@ Author: Kevin Chappell <kevin.b.chappell@gmail.com>
         fieldOptions.push(selectFieldOptions(values.name, values.values[i], isMultiple));
       });
       fieldOptions.push('</ol>');
-      fieldOptions.push(utils.markup('<div>', optionActions, {className: 'option-actions'}).outerHTML);
+      fieldOptions.push(utils.markup('div', optionActions, {className: 'option-actions'}).outerHTML);
       fieldOptions.push('</div>');
 
       return utils.markup('div', fieldOptions.join(''), {className: 'form-group field-options'}).outerHTML;
