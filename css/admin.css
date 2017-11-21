@@ -245,6 +245,15 @@
     margin-left: 5px;
 }
 
+.wpcf-admin-styling-wrapper {
+    overflow: hidden;
+}
+
+.wpcf-admin-enable-table-wrapper {
+    width: 400px;
+    float: left;
+}
+
 .wpcf-admin-table th {
     text-align: left;
 }
@@ -259,4 +268,76 @@
 
 .wpcf-modal-customization.is-active {
     display: table-row;
+}
+
+.wpcf-admin-preview-form {
+    float: left;
+    width: 350px;
+    min-width: 350px;
+}
+
+.wpcf_nd label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.wpcf_nd input,
+.wpcf_nd textarea,
+.wpcf_nd .fb-checkbox-label {
+    margin-bottom: 16px !important;
+}
+
+.wpcf_nd input[type="text"],
+.wpcf_nd input[type="email"],
+.wpcf_nd input[type="number"],
+.wpcf_nd textarea {
+    width: 100%;
+}
+
+.wpcf_nd input[type="text"],
+.wpcf_nd input[type="email"],
+.wpcf_nd input[type="number"],
+.wpcf_nd input[type="date"],
+.wpcf_nd textarea {
+    padding: 11px 15px;
+    background-color: transparent;
+    border-color: #222222;
+    box-shadow: none;
+    outline: 0;
+    transition: all .3s;
+    color: #666666;
+    font-size: 16px;
+}
+
+.wpcf_nd input[type="text"]:hover,
+.wpcf_nd input[type="text"]:focus,
+.wpcf_nd input[type="email"]:hover,
+.wpcf_nd input[type="email"]:focus,
+.wpcf_nd input[type="number"]:hover,
+.wpcf_nd input[type="number"]:focus,
+.wpcf_nd input[type="date"]:hover,
+.wpcf_nd input[type="date"]:focus,
+.wpcf_nd textarea:hover,
+.wpcf_nd textarea:focus {
+    border-color: #333333;
+}
+
+.wpcf_nd input[type="submit"] {
+    width: 100%;
+    padding: 12px 9px;
+    background-color: #222222;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1em;
+    text-transform: none;
+}
+
+.wpcf_nd input[type="submit"]:hover {
+    background-color: #999;
+    cursor: pointer;
 }

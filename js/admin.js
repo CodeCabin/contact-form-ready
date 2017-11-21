@@ -154,5 +154,20 @@ var predefined_busy = false;
 
         modalEl.on('keyup', hideModalCustomization);
 
+        /* Color picker inputs */
+        var colorInput = $('.wpcf-color-input');
+
+        colorInput.iris();
+        $(document).click(function (event) {
+            if (! $(event.target).is(".wpcf-color-input, .iris-picker, .iris-picker-inner")) {
+                colorInput.iris('hide');
+            }
+        });
+        colorInput.click(function (event) {
+            colorInput.iris('hide');
+            $(this).iris('show');
+            return false;
+        });
+
     });
 })(jQuery);

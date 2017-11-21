@@ -172,6 +172,48 @@
 }
 
 /*
+ * Round theme
+ */
+.wpcf_nd--round input[type="text"],
+.wpcf_nd--round input[type="email"],
+.wpcf_nd--round input[type="number"],
+.wpcf_nd--round input[type="date"],
+.wpcf_nd--round textarea {
+    padding: 11px 15px;
+    background-color: #e3e3e3;
+    border: none;
+    border-radius: 19px;
+    outline: 0;
+    transition: all .3s;
+}
+
+.wpcf_nd--round input[type="text"]:hover,
+.wpcf_nd--round input[type="text"]:focus,
+.wpcf_nd--round input[type="email"]:hover,
+.wpcf_nd--round input[type="email"]:focus,
+.wpcf_nd--round input[type="number"]:hover,
+.wpcf_nd--round input[type="number"]:focus,
+.wpcf_nd--round input[type="date"]:hover,
+.wpcf_nd--round input[type="date"]:focus,
+.wpcf_nd--round textarea:hover,
+.wpcf_nd--round textarea:focus {
+    background-color: #ebebeb;
+}
+
+.wpcf_nd--round input[type="submit"] {
+    padding: 16px 9px;
+    background-color: #696969;
+    border-radius: 19px;
+    font-size: 13px;
+    line-height: 1em;
+    text-transform: uppercase;
+}
+
+.wpcf_nd--round input[type="submit"]:hover {
+    background-color: #999;
+}
+
+/*
  * Modal mode
  */
 .wpcf-modal {
