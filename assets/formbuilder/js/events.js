@@ -1,16 +1,35 @@
-function formBuilderEventsFn() {
-  'use strict';
+/**
+ * Form Builder events
+ * @return {Object} various events to be trigger
+ */
 
-  var events = {};
+/**
+ * Wrapper to deal with ie11
+ * @param {String} eventName
+ * @return {Event} event
+ */
+function createNewEvent(eventName) {
+  let event
+  if (typeof Event === 'function') {
+    event = new Event(eventName)
+  } else {
+    event = document.createEvent('Event')
+    event.initEvent(eventName, true, true)
+  }
 
-  events.loaded = new Event('loaded');
-  events.viewData = new Event('viewData');
-  events.userDeclined = new Event('userDeclined');
-  events.modalClosed = new Event('modalClosed');
-  events.modalOpened = new Event('modalOpened');
-  events.formSaved = new Event('formSaved');
-  events.fieldAdded = new Event('fieldAdded');
-  events.fieldRemoved = new Event('fieldRemoved');
-
-  return events;
+  return event
 }
+
+const events = {
+  loaded: createNewEvent('loaded'),
+  viewData: createNewEvent('viewData'),
+  userDeclined: createNewEvent('userDeclined'),
+  modalClosed: createNewEvent('modalClosed'),
+  modalOpened: createNewEvent('modalOpened'),
+  formSaved: createNewEvent('formSaved'),
+  fieldAdded: createNewEvent('fieldAdded'),
+  fieldRemoved: createNewEvent('fieldRemoved'),
+  fieldRendered: createNewEvent('fieldRendered'),
+}
+
+export default events

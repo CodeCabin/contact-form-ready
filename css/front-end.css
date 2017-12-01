@@ -21,6 +21,11 @@
     width: 100%;
 }
 
+#wpcf_nd .radio-group input,
+#wpcf_nd .checkbox-group input {
+    width: auto;
+}
+
 /* Integration with WP Live Chat Support */
 
 #wp-live-chat-inner .wpcf_wrapper {

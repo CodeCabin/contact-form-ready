@@ -3,13 +3,26 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 1.13
+  Version: 2.0.00
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ * 2.0.00 - 2017-12-01
+ * Tested on WordPress 4.9.1
+ * Added new themes panel with predefined versions
+ * Added custom settings for fonts, colors of form elements with preview
+ * Added ability to open form in modal box
+ * Added ability to send HTML and Plaintext mail
+ * Added closure and replaced jQuery with $
+ * Updated formBuilder to 2.9.8
+ * Bug Fix: Fixed a bug that caused elements disappeared when form was published in Edge browser
+ * Bug Fix: Fixed a bug that prevents rendering of radio and checkbox groups
+ * Bug Fix: Fixed edit icon
+ * Enhancement: Added automatic copy shortcode to clipboard
+ *
  * 1.13 - 2017-09-21
  * Tested on WordPress 4.8.2
  * Fixed small typo
@@ -40,20 +53,20 @@
  * Added functionality so that you may change the from name and from email address when a contact form is sent
  * Fixed a bug that caused broken HTML to be displayed where checkboxes were used (within the sent email)
  * Fixed a bug that caused the rows in the textareas to not be applied or saved
- * 
+ *
  * 1.09 - 2016-12-23
  * Fixed a bug that caused reCAPTCHA to not be disabled
- * 
+ *
  * 1.08 - 2016-12-23
  * Built in additional extension data and a page for extensions
- * 
+ *
  * 1.07 - 2016-12-23
  * You can now send your contact form via AJAX
- * 
- * 1.06 - 2016-12-22 
+ *
+ * 1.06 - 2016-12-22
  * Fixed the bug that stopped placeholders from working
  * Fixed a bug that caused the user message to be inserted into the admin message
- * 
+ *
  * 1.05 - 2016-11-30
  * Fixed a bug that caused the email address to be left out of the email that is sent to the administrator
  * Added a way for users to vote on new features
@@ -61,12 +74,12 @@
  * Added a welcome panel with dsocumentation links for new users
  * Fixed a bug that caused the 'headers already sent' message to appear
  * Code recatoring to eliminate php warnings
- * 
+ *
  * 1.04 - 2016-11-29
  * Added Google reCAPTCHA
  * Fixed the bug that stopped the "skip" button from working on the welcome page
  * Updated the predefined contact forms to suit the new reCAPTCHA inclusion
- * 
+ *
  * 1.03 - 2016-11-28
  * Fixed a bug that caused a stray open form tag when outputting the contact form
  * Updated FormBuilder to 1.24.2
@@ -80,10 +93,10 @@
  * Fixed a bug that caused the nonce field to be emailed along with the message
  * Added support for shortcodes
  * Fixed a bug that caused hidden text inputs to hide within the contact form builder
- * 
+ *
  * 1.02 - 2016-11-28
  * Added a welcome page
- * 
+ *
  * 1.01 - 2016-11-26
  * Added a nonce to the contact form
  * Code refacotring in the send process
@@ -96,7 +109,7 @@
  * 1.00 - 2016-11-xx
  * Launch
  *
- * 
+ *
  */
 
 // If this file is called directly, abort.
@@ -740,7 +753,7 @@ class WP_Contact_Form_ND{
 
 				?>
 
-				<h2><?php _e("Themes","wpcf_nd"); ?></h2>
+				<h2><?php _e("Advanced Settings","wpcf_nd"); ?></h2>
 
 				<table class='form-table'>					
 					<tr>
@@ -1047,7 +1060,6 @@ class WP_Contact_Form_ND{
 
 
     	);
-
 
 		// Make sure your data is set before trying to save it
 	    if( isset( $_POST['fb-temp-htmldata'] ) ) {
@@ -1386,17 +1398,7 @@ class WP_Contact_Form_ND{
 	    	wp_enqueue_script( 'jquery-ui-core' );
 	    	wp_enqueue_script( 'jquery-ui-tabs' );	    	
 
-	        wp_register_script( 'form-builder-js', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/helpers.js", true );
-	        wp_enqueue_script( 'form-builder-js' );
-	        wp_register_script( 'form-builder-js1', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/events.js", true );
-	        wp_enqueue_script( 'form-builder-js1' );
-	        wp_register_script( 'form-builder-js2', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/kc-toggle.js", true );
-	        wp_enqueue_script( 'form-builder-js2' );
-	        wp_register_script( 'form-builder-js3', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/polyfills.js", true );
-	        wp_enqueue_script( 'form-builder-js3' );
-	        wp_register_script( 'form-builder-js4', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/utils.js", true );
-	        wp_enqueue_script( 'form-builder-js4' );
-	        wp_register_script( 'form-builder-js6', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/form-builder.js", true );
+	        wp_register_script( 'form-builder-js6', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/form-builder.min.js", true );
 	        wp_enqueue_script( 'form-builder-js6' );
 
 	        wp_register_script( 'form-builder-site-js', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/site.js", true );
@@ -2336,7 +2338,7 @@ class WP_Contact_Form_ND{
 
 
 							jQuery.post( 'http://contactformready.com/apif/vote_pull.php', data, function(response){
-								response = JSON.parse(response);
+                                response = JSON.parse(response);
 								ret_html = '<table><thead><th>Feature</th><th></th><th></th></thead>';
 								for (var key in response) {
 								  if (response.hasOwnProperty(key)) {

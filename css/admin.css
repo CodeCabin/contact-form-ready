@@ -341,3 +341,9 @@
     background-color: #999;
     cursor: pointer;
 }
+
+.build-wrap .cb-wrap {
+    position: relative !important;
+    width: 26% !important;
+    left: 0 !important;
+}

@@ -3,7 +3,7 @@ Contributors: NickDuncan
 Donate link: http://nickduncan.co.za
 Tags:  form, forms, form builder, contact form, wordpress contact form, contact, free contact form for website, contact us, custom form, contact form builder, contact form manager 
 Requires at least: 3.8
-Tested up to: 4.7
+Tested up to: 4.9.1
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -166,6 +166,19 @@ Copy and paste the shortcode into your post or page and save your page. Then vie
 Nothing here
 
 == Changelog ==
+
+= 2.0.00 - 2017-12-01
+* Tested on WordPress 4.9.1
+* Added new themes panel with predefined versions
+* Added custom settings for fonts, colors of form elements with preview
+* Added ability to open form in modal box
+* Added ability to send HTML and Plaintext mail
+* Added closure and replaced jQuery with $
+* Updated formBuilder to 2.9.8
+* Bug Fix: Fixed a bug that caused elements disappeared when form was published in Edge browser
+* Bug Fix: Fixed a bug that prevents rendering of radio and checkbox groups
+* Bug Fix: Fixed edit icon
+* Enhancement: Added automatic copy shortcode to clipboard
 
 = 1.13 - 2017-09-21 =
 * Tested on WordPress 4.8.2

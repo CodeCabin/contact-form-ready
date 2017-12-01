@@ -5,10 +5,9 @@ var predefined_busy = false;
     $(document).ready(function () {
 
         document.addEventListener('formSaved', function () {
-            if (!predefined_busy) {
-                console.log(formBuilder);
+            if (!predefined_busy && formBuilder.actions.getData) {
                 // TODO event handler logic
-                var formData = formBuilder.formData;
+                var formData = formBuilder.actions.getData('json');
                 var escapeEl = document.createElement('textarea'),
                     code = document.getElementById('markup'),
                     escapeHTML = function (html) {
@@ -19,17 +18,11 @@ var predefined_busy = false;
                         return html.replace(new RegExp('&gt; &lt;', 'g'), '&gt;\n&lt;').replace(new RegExp('&gt;&lt;', 'g'), '&gt;\n&lt;');
                     };
 
-                var formRenderOpts = {
-                    render: false,
-                    formData: formData
-                };
-
                 // Grab markup and escape it
-                var markup = escapeHTML(new FormRenderFn(formRenderOpts).markup);
+                var markup = jQuery("<div/>");
+                markup.formRender({formData});
 
-
-                var decoded = $("<div/>").html(addLineBreaks(markup)).text();
-
+                var decoded = markup.html();
 
                 $("#fb-temp-formdata").val(formData);
                 $("#fb-temp-htmldata").val(decoded);
@@ -40,7 +33,6 @@ var predefined_busy = false;
 
 
         $("body").on("change", "#wpcf_nd_predfined", function (e) {
-
             var ctype = $(this).val();
 
             if (ctype !== 'x') {
@@ -62,14 +54,16 @@ var predefined_busy = false;
 
                     var formRenderOpts = {
                         render: false,
-                        formData: tformData
+                        formData: tformData,
+                        dataType: 'xml'
                     };
 
                     // Grab markup and escape it
-                    var markup = escapeHTML(new FormRenderFn(formRenderOpts).markup);
+                    var markup = $("<div/>");
+                    markup.formRender(formRenderOpts);
 
 
-                    var decoded = $("<div/>").html(addLineBreaks(markup)).text();
+                    var decoded = markup.html();
 
 
                     $("#fb-temp-formdata").val(tformData);
@@ -80,12 +74,13 @@ var predefined_busy = false;
                         controlPosition: 'left',
                         disableFields: ['autocomplete', 'button', 'file', 'access'],
                         editOnAdd: true,
-                        formData: tformData
+                        formData: tformData,
+                        dataType: 'xml'
                     };
 
 
                     $('.build-wrap').html('');
-                    formBuilder = $('.build-wrap').formBuilder(fbOptions).data('formBuilder');
+                    formBuilder = $('.build-wrap').formBuilder(fbOptions);
 
                     predefined_busy = false;
 
@@ -126,6 +121,9 @@ var predefined_busy = false;
             themeItems      = $('.wpcf-admin-img-item'),
             themeLinks      = $('.wpcf-admin-img-link');
 
+        if ('' === themeInputVal) {
+            themeInputVal = 'default';
+        }
         $('.wpcf-admin-img-item[data-cf-theme="' + themeInputVal + '"]').addClass('is-active');
 
         themeLinks.on('click', function (event) {
@@ -150,7 +148,9 @@ var predefined_busy = false;
             }
         }
 
-        hideModalCustomization();
+        if (modalEl.length) {
+            hideModalCustomization();
+        }
 
         modalEl.on('keyup', hideModalCustomization);
 
