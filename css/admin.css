@@ -290,6 +290,10 @@
     margin-bottom: 16px !important;
 }
 
+.wpcf-admin-preview-submit {
+    border: none;
+}
+
 .wpcf_nd input[type="text"],
 .wpcf_nd input[type="email"],
 .wpcf_nd input[type="number"],
@@ -346,4 +350,12 @@
     position: relative !important;
     width: 26% !important;
     left: 0 !important;
+}
+
+.btn.btn-default.get-data {
+    display: none !important;
+}
+
+.form-builder-dialog.positioned {
+    z-index: 10000;
 }

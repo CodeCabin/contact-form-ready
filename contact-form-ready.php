@@ -1754,7 +1754,7 @@ class WP_Contact_Form_ND{
         }
         ?>
 
-        <form action='' method='POST' name='wpcf_styling_form'>
+        <form action='' method='POST' name='wpcf_styling_form' class="wpcf-styling-form">
             <h1><?php _e("Contact form styling","wpcf_nd"); ?></h1>
 
 
@@ -1875,17 +1875,15 @@ class WP_Contact_Form_ND{
                 </div>
 
                 <div class="wpcf-admin-preview-form wpcf_nd" id="wpcf-nd">
-                    <form action="">
-                        <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-text"><?php _e("Text field","wpcf_nd"); ?></label>
-                        <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-text" type="text"/>
-                        <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-email"><?php _e("Email field","wpcf_nd"); ?></label>
-                        <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-email" type="email"/>
-                        <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-textarea"><?php _e("Text Area","wpcf_nd"); ?></label>
-                        <textarea class="wpcf-admin-preview-input" id="wpcf-admin-preview-textarea"></textarea>
-                        <p>
-                            <input class="wpcf-admin-preview-submit" type="submit" value="<?php _e("Submit","wpcf_nd"); ?>"/>
-                        </p>
-                    </form>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-text"><?php _e("Text field","wpcf_nd"); ?></label>
+                    <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-text" type="text"/>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-email"><?php _e("Email field","wpcf_nd"); ?></label>
+                    <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-email" type="email"/>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-textarea"><?php _e("Text Area","wpcf_nd"); ?></label>
+                    <textarea class="wpcf-admin-preview-input" id="wpcf-admin-preview-textarea"></textarea>
+                    <p>
+                        <input class="wpcf-admin-preview-submit" type="button" value="<?php _e("Submit","wpcf_nd"); ?>"/>
+                    </p>
                 </div>
 
             </div>
@@ -1894,6 +1892,60 @@ class WP_Contact_Form_ND{
 
             <input class="wpcf-submit-save-styling" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
         </form>
+        <style>
+            .wpcf_nd label {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_label_font_size'] ) {
+                    echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_label_font_size'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) {
+                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_label_font_weight'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_label_color'] ) {
+                    echo 'color:' . $wpcf_nd_styling['wpcf_nd_label_color'] . ';';
+                } ?>
+            }
+            .wpcf_nd input[type="text"], .wpcf_nd input[type="email"], .wpcf_nd input[type="number"], .wpcf_nd input[type="date"], .wpcf_nd textarea {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_input_bg_color'] ) {
+                    echo 'background-color:' . $wpcf_nd_styling['wpcf_nd_input_bg_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_input_border_color'] ) {
+                    echo 'border-color:' . $wpcf_nd_styling['wpcf_nd_input_border_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_input_font_size'] ) {
+                    echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_input_font_size'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_input_font_color'] ) {
+                    echo 'color:' . $wpcf_nd_styling['wpcf_nd_input_font_color'] . ';';
+                } ?>
+            }
+            .wpcf_nd input[type="text"]:hover, .wpcf_nd input[type="email"]:hover, .wpcf_nd input[type="number"]:hover, .wpcf_nd input[type="date"]:hover, .wpcf_nd textarea:hover {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_input_border_color'] ) {
+                    echo 'border-color:' . $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] . ';';
+                } ?>
+            }
+            .wpcf-admin-preview-submit {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) {
+                    echo 'background-color:' . $wpcf_nd_styling['wpcf_nd_submit_bg_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_size'] ) {
+                    echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_submit_font_size'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_color'] ) {
+                    echo 'color:' . $wpcf_nd_styling['wpcf_nd_submit_font_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) {
+                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_submit_font_weight'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) {
+                    echo 'text-transform:' . $wpcf_nd_styling['wpcf_nd_submit_text_transform'] . 'px;';
+                } ?>
+            }
+            .wpcf-admin-preview-submit:hover {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] ) {
+                    echo 'background-color:' . $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] . ';';
+                } ?>
+            }
+        </style>
 
     <?php
 	}
@@ -2053,7 +2105,7 @@ class WP_Contact_Form_ND{
 		$modal_inner_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'];
 
 		$css = '';
-		if ( 0 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {
+		if ( 1 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {
 			if (
 				$wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ||
 				$wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ||

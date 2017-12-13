@@ -66,9 +66,23 @@
             }
         });
 
-        $(document).click(function (event) {
-            if (! $(event.target).is(".wpcf-color-input, .iris-picker, .iris-picker-inner")) {
+        $('#wpcf_nd_input_border_focus_color').iris({
+            change: function (event, ui) {
+                previewInputs.css('border-color', ui.color.toString());
+            }
+        });
+
+        $('#wpcf_nd_submit_bg_hover_color').iris({
+            change: function (event, ui) {
+                previewSubmit.css('background', ui.color.toString());
+            }
+        });
+
+        $('.wpcf-styling-form').click(function (event) {
+            var targets = $(".wpcf-color-input, .iris-picker, .iris-picker-inner, .wpcf-submit-save-styling");
+            if (!targets.is(event.target) && targets.has(event.target).length === 0) {
                 colorInput.iris('hide');
+
                 return false;
             }
         });
