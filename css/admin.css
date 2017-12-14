@@ -359,3 +359,7 @@
 .form-builder-dialog.positioned {
     z-index: 10000;
 }
+
+.form-builder-dialog {
+    overflow: visible !important;
+}

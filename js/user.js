@@ -86,7 +86,10 @@ jQuery(document).ready(function() {
 			wpcf_initiatereCaptcha();
 		});
 
-
+        var thankYouMessage = jQuery('.wpcf-nd-thank-you');
+        if (thankYouMessage.length > 1) {
+            thankYouMessage.eq(1).remove();
+        }
 
 		jQuery("body").on("click", "#wp-live-chat-inner #wpcf_nd_submit", function(e) {
 			var cfid = jQuery(this).attr('cfid');
@@ -252,31 +255,34 @@ jQuery(document).ready(function() {
 		}
 
 		// Modal window
-		var wpcfModal = $('.wpcf-modal'),
-			wpcfWrapper = $('.wpcf_wrapper'),
-			wpcfThanks = $('.wpcf-nd-thank-you'),
-			modalEl = (wpcfWrapper.length) ? wpcfWrapper.attr('data-el') : wpcfThanks.attr('data-el'),
-			modalElAttr = (wpcfWrapper.length) ? wpcfWrapper.attr('data-el-attr') : wpcfThanks.attr('data-el-attr'),
-            modalAttr = 'id' === modalElAttr ? '#' : '.',
-            trigger = $(modalAttr+modalEl),
-			isModal = (typeof modalEl !== typeof undefined && modalEl !== false) && (typeof modalElAttr !== typeof undefined && modalElAttr !== false);
+        var wpcfModal = $('.wpcf-modal'),
+            wpcfWrapper = $('.wpcf_wrapper'),
+            wpcfThanks = $('.wpcf-nd-thank-you'),
+            modalEl = (wpcfWrapper.length) ? wpcfWrapper.attr('data-el') : wpcfThanks.attr('data-el'),
+            modalElAttr = (wpcfWrapper.length) ? wpcfWrapper.attr('data-el-attr') : wpcfThanks.attr('data-el-attr'),
+            isModal = '' !== modalEl && (typeof modalEl !== 'undefined' && modalEl !== false) && (typeof modalElAttr !== 'undefined' && modalElAttr !== false);
+        if (isModal) {
+            var modalAttr = 'id' === modalElAttr ? '#' : '.';
+            var trigger = $(modalAttr+modalEl);
 
-        if (wpcfThanks.length && isModal && trigger) {
-			trigger.css({'pointer-events': 'none', cursor: 'default'});
-        }
+            if (wpcfThanks.length && trigger) {
+                trigger.css({'pointer-events': 'none', cursor: 'default'});
+            }
 
-		if(wpcfWrapper.length && isModal && trigger) {
-			trigger.on('click', function (event) {
-				event.preventDefault();
+            if(wpcfWrapper.length && trigger) {
+                trigger.on('click', function (event) {
+                    event.preventDefault();
 
-				wpcfModal.addClass('is-active');
-			});
+                    wpcfModal.addClass('is-active');
+                });
 
-			$('.wpcf-modal__close').on('click', function (event) {
-				event.preventDefault();
+                $('.wpcf-modal__close').on('click', function (event) {
+                    event.preventDefault();
 
-				wpcfModal.removeClass('is-active');
-			});
+                    wpcfModal.removeClass('is-active');
+                });
+            }
+
         }
 
     })(jQuery);

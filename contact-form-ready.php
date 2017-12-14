@@ -2148,7 +2148,7 @@ class WP_Contact_Form_ND{
 			}
 
 			if ( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ) {
-				$css .= ".wpcf_nd input[type='text']:focus,.wpcf_nd textarea:focus,.wpcf_nd input[type='email']:focus,.wpcf_nd input[type='number']:focus,.wpcf_nd input[type='date']:focus {border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] ) . ";}";
+				$css .= ".wpcf_nd input[type='text']:focus,.wpcf_nd textarea:focus,.wpcf_nd input[type='email']:focus,.wpcf_nd input[type='number']:focus,.wpcf_nd input[type='date']:focus, .wpcf_nd input[type='text']:hover,.wpcf_nd textarea:hover,.wpcf_nd input[type='email']:hover,.wpcf_nd input[type='number']:hover,.wpcf_nd input[type='date']:hover {border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] ) . ";}";
 			}
 
 			if (
@@ -2178,7 +2178,7 @@ class WP_Contact_Form_ND{
 			}
 
 			if ( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] !== '#666666' ) {
-				$css .= ".wpcf_nd .wpcf_nd_submit:hover {background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";}";
+				$css .= ".wpcf_nd .wpcf_nd_submit:hover {background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] ) . ";}";
 			}
 		}
 

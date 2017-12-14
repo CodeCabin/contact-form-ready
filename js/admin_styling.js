@@ -68,18 +68,26 @@
 
         $('#wpcf_nd_input_border_focus_color').iris({
             change: function (event, ui) {
-                previewInputs.css('border-color', ui.color.toString());
+                previewInputs.mouseenter(function() {
+                    $(this).css('border-color', ui.color.toString());
+                }).mouseleave(function() {
+                    previewInputs.css('border-color', jQuery('#wpcf_nd_input_border_color').val());
+                });
             }
         });
 
         $('#wpcf_nd_submit_bg_hover_color').iris({
             change: function (event, ui) {
-                previewSubmit.css('background', ui.color.toString());
+                previewSubmit.mouseenter(function() {
+                    previewSubmit.css('background', ui.color.toString());
+                }).mouseleave(function() {
+                    previewSubmit.css('background', jQuery('#wpcf_nd_submit_bg_color').val());
+                });
             }
         });
 
         $('.wpcf-styling-form').click(function (event) {
-            var targets = $(".wpcf-color-input, .iris-picker, .iris-picker-inner, .wpcf-submit-save-styling");
+            var targets = $(".wpcf-color-input, .iris-picker, .iris-picker-inner, .wpcf-submit-save-styling, .wpcf-admin-enable-style-wrapper");
             if (!targets.is(event.target) && targets.has(event.target).length === 0) {
                 colorInput.iris('hide');
 
