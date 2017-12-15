@@ -1757,9 +1757,6 @@ class WP_Contact_Form_ND{
         <form action='' method='POST' name='wpcf_styling_form' class="wpcf-styling-form">
             <h1><?php _e("Contact form styling","wpcf_nd"); ?></h1>
 
-
-            <h2><?php _e("Contact Form Styling","wpcf_nd"); ?></h2>
-
             <div class="wpcf-admin-enable-style-wrapper">
                 <label for="wpcf_nd_enable_style"><?php _e( "Enable custom styling", "wpcf_nd" ); ?></label>
                 <input type="checkbox" name="wpcf_nd_enable_style" class="" id="wpcf_nd_enable_style" value="1" <?php checked( $wpcf_nd_styling['wpcf_nd_enable_style'], 1, true ); ?> />

@@ -352,8 +352,13 @@
     left: 0 !important;
 }
 
-.btn.btn-default.get-data {
+.btn.btn-default.get-data,
+.btn.btn-primary.save-template {
     display: none !important;
+}
+
+.btn.btn-danger.clear-all {
+    border-radius: 4px !important;
 }
 
 .form-builder-dialog.positioned {
