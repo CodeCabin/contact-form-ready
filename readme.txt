@@ -169,7 +169,6 @@ Nothing here
 
 = 2.0.00 - 2017-12-01
 * Tested on WordPress 4.9.1
-* Added new themes panel with predefined versions
 * Added custom settings for fonts, colors of form elements with preview
 * Added ability to open form in modal box
 * Added ability to send HTML and Plaintext mail

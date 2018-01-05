@@ -16,9 +16,10 @@ function wpcf_hook_control_settings_page_bottom_template($wpcf_nd_settings) {
 	<table class='wp-list-table widefat striped fixed'>
 		<tr>
 			<td width='100%'>
-
+                <label for="wpcf_nd_template_html" class="wpcf-hidden" style="position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);"><?php _e( 'Email Template', 'wpcf_nd' ); ?></label>
 				<textarea name='wpcf_nd_template_html' style='width:100%; height:300px;' data-editor='html' rows='12' id='wpcf_nd_template_html'><?php echo htmlentities( stripslashes( $wpcf_nd_settings['wpcf_nd_template_html'] ) ); ?></textarea>
-				<textarea name='wpcf_nd_template_html_default' style='display:none;' id='wpcf_nd_template_html_default'><?php echo htmlentities( stripslashes( $wpcf_default_template ) ); ?></textarea>
+                <label for="wpcf_nd_template_html_default" style="display: none;"><?php _e( 'Email Default Template', 'wpcf_nd' ); ?></label>
+                <textarea name='wpcf_nd_template_html_default' style='display:none;' id='wpcf_nd_template_html_default'><?php echo htmlentities( stripslashes( $wpcf_default_template ) ); ?></textarea>
 				
 				<input type='button' id='wpcf_restore_default_template' class='button button-secondary right' value='<?php echo __( "Restore default", "wpcf_nd" ); ?>'/>
 			</td>

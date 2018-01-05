@@ -91,6 +91,34 @@ jQuery(document).ready(function() {
             thankYouMessage.eq(1).remove();
         }
 
+        radioGroups = $('.fb-radio-group');
+        for (i = 0; i < radioGroups.length; i++) {
+            var that = $(radioGroups[i]);
+            var label = that.children('label');
+            var labelClasses = label.attr('class');
+            label.replaceWith(function () {
+                return $('<legend/>', {
+                    class: labelClasses,
+                    html: this.innerHTML
+                });
+            });
+            that.wrapInner('<fieldset class="fb-radio-group">');
+        }
+
+        checkboxGroups = $('.fb-checkbox-group');
+        for (i = 0; i < checkboxGroups.length; i++) {
+            var that = $(checkboxGroups[i]);
+            var label = that.children('label');
+            var labelClasses = label.attr('class');
+            label.replaceWith(function () {
+                return $('<legend/>', {
+                    class: labelClasses,
+                    html: this.innerHTML
+                });
+            });
+            that.wrapInner('<fieldset class="fb-checkbox-group">');
+        }
+
 		jQuery("body").on("click", "#wp-live-chat-inner #wpcf_nd_submit", function(e) {
 			var cfid = jQuery(this).attr('cfid');
 			e.preventDefault();
