@@ -1,419 +1,263 @@
-'use strict';
-// render the formBuilder XML into html
-function FormRenderFn(options, element) {
+import 'babel-polyfill'
+import 'babel-regenerator-runtime'
+import '../sass/form-render.scss'
+import mi18n from 'mi18n'
+import utils from './utils'
+import events from './events'
+import layout from './layout'
+import control from './control'
+import './control/index'
+import controlCustom from './control/custom'
+import { defaultI18n } from './config'
 
-  var formRender = this,
-    defaults = {
-      destroyTemplate: true, // @todo
-      container: false,
-      dataType: 'xml',
+/**
+ * FormRender Class
+ */
+class FormRender {
+  /**
+   * Create & configure a new FormRender instance
+   * @param {Object} options - an object hash of supported options
+   */
+  constructor(options = {}) {
+    // initialise defaults & options
+    let defaults = {
+      layout: layout, // by default use the layout class, but support a child class being defined & passed as an option
+      layoutTemplates: {}, // allow custom override layout templates to be defined
+      controls: {}, // custom controls
+      controlConfig: {}, // additional configuration for controls
+      destroyTemplate: true, // @todo - still needed?
+      container: false, // string selector or Node element
+      dataType: 'json',
       formData: false,
-      label: {
+      i18n: Object.assign({}, defaultI18n),
+      // subtypes: defaultSubtypes, // @todo - removed this - is it needed now?
+      messages: {
         formRendered: 'Form Rendered',
         noFormData: 'No form data.',
         other: 'Other',
-        selectColor: 'Select Color'
+        selectColor: 'Select Color',
+        invalidControl: 'Invalid control',
       },
+      onRender: () => {},
       render: true,
+      templates: {}, // custom inline defined templates
       notify: {
         error: function(message) {
-          return console.error(message);
+          return console.error(message)
         },
         success: function(message) {
-          return console.log(message);
+          return console.log(message)
         },
         warning: function(message) {
-          return console.warn(message);
-        }
-      }
-    },
-    _helpers = {};
-
-  var opts = jQuery.extend(true, defaults, options);
-
-
-  /**
-   * Require the html element if it has been lost
-   *
-   * @return {object} javascript object for html element
-   */
-  _helpers.getElement = function() {
-    if (!element.id) {
-      element.id = _helpers.makeId(element);
-    }
-
-    return document.getElementById(element.id);
-  };
-
-  /**
-   * Make an ID for this element using current date and tag
-   *
-   * @param  {Boolean} element
-   * @return {String}  new id for element
-   */
-  _helpers.makeId = function(element) {
-    let epoch = new Date().getTime();
-
-    return `${element.tagName}-${epoch}`;
-  };
-
-  if (!opts.formData && element) {
-    element = _helpers.getElement();
-    opts.formData = element.value;
-  }
-
-  /**
-   * Generate markup wrapper where needed
-   *
-   * @param  {string}              tag
-   * @param  {String|Array|Object} content we wrap this
-   * @param  {object}              attrs
-   * @return {String}
-   */
-  _helpers.markup = function(tag, content = '', attrs = {}) {
-    let contentType,
-      field = document.createElement(tag),
-      getContentType = function(content) {
-        return Array.isArray(content) ? 'array' : typeof content;
+          return console.warn(message)
+        },
       },
-      appendContent = {
-        string: function(content) {
-          field.innerHTML = content;
-        },
-        object: function(content) {
-          return field.appendChild(content);
-        },
-        array: function(content) {
-          for (var i = 0; i < content.length; i++) {
-            contentType = getContentType(content[i]);
-            appendContent[contentType](content[i]);
-          }
-        }
-      };
+    }
+    this.options = $.extend(true, defaults, options)
 
-    for (var attr in attrs) {
-      if (attrs.hasOwnProperty(attr)) {
-        let name = _helpers.safeAttrName(attr);
-        field.setAttribute(name, attrs[attr]);
+    if (!mi18n.current) {
+      mi18n.init(this.options.i18n)
+    }
+
+    // parse any passed formData
+    ;(() => {
+      if (!this.options.formData) {
+        return false
+      }
+
+      let setData = {
+        xml: formData => utils.parseXML(formData),
+        json: formData => window.JSON.parse(formData),
+      }
+
+      // if the user hasn't passed a pre-parsed formData object, parse it according to the specified dataType
+      if (typeof this.options.formData !== 'object') {
+        this.options.formData = setData[this.options.dataType](this.options.formData) || false
+      }
+    })()
+
+    // ability for controls to have their own configuration / options of the format control identifier (type, or type.subtype): {options}
+    control.controlConfig = options.controlConfig || {}
+
+    // load in any custom specified controls, or preloaded plugin controls
+    control.loadCustom(options.controls)
+
+    // register any passed custom templates
+    if (Object.keys(this.options.templates).length) {
+      controlCustom.register(this.options.templates)
+    }
+
+    /**
+     * Extend Element prototype to allow us to append fields
+     *
+     * @param  {fields} fields array of elements
+     */
+    if (typeof Element.prototype.appendFormFields !== 'function') {
+      Element.prototype.appendFormFields = function(fields) {
+        if (!Array.isArray(fields)) {
+          fields = [fields]
+        }
+        let renderedFormWrap = utils.markup('div', fields, {
+          className: 'rendered-form',
+        })
+        this.appendChild(renderedFormWrap)
+        fields.forEach(field => {
+          renderedFormWrap.appendChild(field)
+          field.dispatchEvent(events.fieldRendered)
+        })
       }
     }
 
-    contentType = getContentType(content);
-
-    if (content) {
-      appendContent[contentType].call(this, content);
-    }
-
-    return field;
-  };
-
-  /**
-   * Generate preview markup
-   * @param  {object} field
-   * @return {string}       preview markup for field
-   * @todo
-   */
-  _helpers.fieldRender = function(field) {
-    var fieldMarkup = '',
-      fieldLabel = '',
-      optionsMarkup = '';
-    var fieldAttrs = _helpers.parseAttrs(field.attributes),
-      fieldLabelText = fieldAttrs.label || '',
-      fieldDesc = fieldAttrs.description || '',
-      fieldRequired = '',
-      fieldOptions = jQuery('option', field);
-    fieldAttrs.id = fieldAttrs.name;
-
-    fieldAttrs.type = fieldAttrs.subtype || fieldAttrs.type;
-
-    if (fieldAttrs.required) {
-      fieldAttrs.required = null;
-      fieldAttrs['aria-required'] = 'true';
-      fieldRequired = `<span class="required">*</span>`;
-    }
-
-    if (fieldAttrs.type !== 'hidden') {
-      if (fieldDesc) {
-        fieldDesc = `<span class="tooltip-element" tooltip="${fieldDesc}">?</span>`;
-      }
-      fieldLabel = `<label for="${fieldAttrs.id}">${fieldLabelText} ${fieldRequired} ${fieldDesc}</label>`;
-    }
-
-    var fieldLabelVal = fieldAttrs.label;
-
-    delete fieldAttrs.label;
-    delete fieldAttrs.description;
-
-    var fieldAttrsString = _helpers.attrString(fieldAttrs);
-
-    switch (fieldAttrs.type) {
-      case 'textarea':
-      case 'rich-text':
-        delete fieldAttrs.type;
-        delete fieldAttrs.value;
-        fieldMarkup = `${fieldLabel}<textarea ${fieldAttrsString}></textarea>`;
-        break;
-      case 'select':
-        fieldAttrs.type = fieldAttrs.type.replace('-group', '');
-
-        if (fieldOptions.length) {
-          fieldOptions.each(function(index, el) {
-            index = index;
-            let optionAttrs = _helpers.parseAttrs(el.attributes),
-              optionAttrsString = _helpers.attrString(optionAttrs);
-            optionsMarkup += `<option ${optionAttrsString}>${el.textContent}</option>`;
-          });
+    /**
+     * Extend Element prototype to remove content
+     */
+    if (typeof Element.prototype.emptyContainer !== 'function') {
+      Element.prototype.emptyContainer = function() {
+        let element = this
+        while (element.lastChild) {
+          element.removeChild(element.lastChild)
         }
-        fieldMarkup = `${fieldLabel}<select ${fieldAttrsString}>${optionsMarkup}</select>`;
-        break;
-      case 'checkbox-group':
-      case 'radio-group':
-        let enableOther = false;
-        fieldAttrs.type = fieldAttrs.type.replace('-group', '');
-
-
-        if (fieldAttrs['enable-other']) {
-          delete fieldAttrs['enable-other'];
-          enableOther = true;
-        }
-
-        if (fieldOptions.length) {
-          let optionName = fieldAttrs.type === 'checkbox' ? fieldAttrs.name + '[]' : fieldAttrs.name,
-            optionAttrsString;
-          fieldOptions.each(function(index, el) {
-            let optionAttrs = jQuery.extend({}, fieldAttrs, _helpers.parseAttrs(el.attributes));
-
-            if (optionAttrs.selected) {
-              delete optionAttrs.selected;
-              optionAttrs.checked = null;
-            }
-
-            optionAttrs.name = optionName;
-            optionAttrs.id = fieldAttrs.id + '-' + index;
-            optionAttrsString = _helpers.attrString(optionAttrs);
-            optionsMarkup += `<input ${optionAttrsString} /> <label for="${optionAttrs.id}">${el.textContent}</label><br>`;
-          });
-
-          if (enableOther) {
-            let optionAttrs = {
-              id: fieldAttrs.id + '-' + 'other',
-              name: optionName,
-              class: fieldAttrs.class + ' other-option'
-            };
-
-            optionAttrsString = _helpers.attrString(jQuery.extend({}, fieldAttrs, optionAttrs));
-            optionsMarkup += `<input ${optionAttrsString} /> <label for="${optionAttrs.id}">${opts.label.other}</label> <input type="text" data-other-id="${optionAttrs.id}" id="${optionAttrs.id}-value" style="display:none;" />`;
-          }
-
-        }
-        fieldMarkup = `${fieldLabel}<div class="${fieldAttrs.type}-group">${optionsMarkup}</div>`;
-        break;
-      case 'text':
-      case 'password':
-      case 'email':
-      case 'file':
-      case 'hidden':
-      case 'date':
-      case 'autocomplete':
-        fieldMarkup = `${fieldLabel} <input ${fieldAttrsString}>`;
-        break;
-      case 'color':
-        fieldMarkup = `${fieldLabel} <input ${fieldAttrsString}> ${opts.label.selectColor}`;
-        break;
-      case 'button':
-      case 'submit':
-        fieldMarkup = `<button ${fieldAttrsString}>${fieldLabelVal}</button>`;
-        break;
-      case 'checkbox':
-        fieldMarkup = `<input ${fieldAttrsString}> ${fieldLabel}`;
-
-        if (fieldAttrs.toggle) {
-          setTimeout(function() {
-            jQuery(document.getElementById(fieldAttrs.id)).kcToggle();
-          }, 100);
-        }
-        break;
-      default:
-        fieldMarkup = `<${fieldAttrs.type} ${fieldAttrsString}>${fieldLabelVal}</${fieldAttrs.type}>`;
-    }
-
-    if (fieldAttrs.type !== 'hidden') {
-      let className = fieldAttrs.id ? 'form-group field-' + fieldAttrs.id : '';
-      fieldMarkup = _helpers.markup('div', fieldMarkup, {
-        className: className
-      });
-    } else {
-      fieldMarkup = _helpers.markup('input', null, fieldAttrs);
-    }
-
-    return fieldMarkup;
-  };
-
-  /**
-   * Convert camelCase into lowercase-hyphen
-   *
-   * @param  {string} str
-   * @return {string}
-   */
-  _helpers.hyphenCase = (str) => {
-    str = str.replace(/[^\w\s\-]/gi, '');
-    str = str.replace(/([A-Z])/g, function($1) {
-      return '-' + $1.toLowerCase();
-    });
-
-    return str.replace(/\s/g, '-').replace(/^-+/g, '');
-  };
-
-  _helpers.attrString = function(attrs) {
-    let attributes = [];
-
-    for (var attr in attrs) {
-      if (attrs.hasOwnProperty(attr)) {
-        attr = _helpers.safeAttr(attr, attrs[attr]);
-        attributes.push(attr.name + attr.value);
       }
     }
-    return attributes.join(' ');
-  };
-
-  _helpers.safeAttr = function(name, value) {
-    let safeAttr = {
-      className: 'class'
-    };
-
-    name = safeAttr[name] || name;
-    value = value ? window.JSON.stringify(value) : false;
-    value = value ? `=${value}` : '';
-
-    return {
-      name,
-      value
-    };
-  };
-
-  _helpers.safeAttrName = function(name) {
-    let safeAttr = {
-      className: 'class'
-    };
-
-    return safeAttr[name] || _helpers.hyphenCase(name);
-  };
-
-  _helpers.parseAttrs = function(attrNodes) {
-    var fieldAttrs = {};
-    for (var attr in attrNodes) {
-      if (attrNodes.hasOwnProperty(attr)) {
-        fieldAttrs[attrNodes[attr].name] = attrNodes[attr].value;
-      }
-    }
-    return fieldAttrs;
-  };
-
-  /**
-   * Extend Element prototype to allow us to append fields
-   *
-   * @param  {object} fields Node elements
-   */
-  Element.prototype.appendFormFields = function(fields) {
-    var element = this;
-    fields.reverse();
-    for (var i = fields.length - 1; i >= 0; i--) {
-      element.appendChild(fields[i]);
-    }
-  };
-
-  /**
-   * Extend Element prototype to remove content
-   */
-  Element.prototype.emptyContainer = function() {
-    var element = this;
-    while (element.lastChild) {
-      element.removeChild(element.lastChild);
-    }
-  };
-
-  var otherOptionCB = function() {
-    var otherOptions = document.getElementsByClassName('other-option');
-    for (var i = 0; i < otherOptions.length; i++) {
-      let otherInput = document.getElementById(otherOptions[i].id + '-value');
-      otherOptions[i].onclick = function(evt) {
-        let option = this;
-        if (this.checked) {
-          otherInput.style.display = 'inline-block';
-          option.nextElementSibling.style.display = 'none';
-          otherInput.oninput = function(evt) { option.value = this.value };
-        } else {
-          otherInput.style.display = 'none';
-          option.nextElementSibling.style.display = 'inline-block';
-          otherInput.oninput = undefined;
-        }
-      };
-    }
-  };
-
-  var runCallbacks = function(fields) {
-    otherOptionCB();
-  };
-
-  // Begin the core plugin
-  var rendered = [];
-
-  var formData = jQuery.parseXML(opts.formData),
-    fields = jQuery('field', formData);
-  // @todo - form configuration settings (control position, creatorId, theme etc)
-  // settings = jQuery('settings', formData);
-
-  // generate field markup if we have fields
-  if (fields.length) {
-    fields.each(function(index, field) {
-      index = index;
-      rendered.push(_helpers.fieldRender(field));
-    });
-  } else {
-    let noData = _helpers.markup('div', opts.label.noFormData, {
-      className: 'no-form-data'
-    });
-    rendered.push(noData);
-    opts.notify.error(opts.label.noFormData);
   }
 
-  if (opts.render) {
-    if (opts.container) {
-      opts.container = (opts.container instanceof jQuery) ? opts.container[0] : opts.container;
-      opts.container.emptyContainer();
-      opts.container.appendFormFields(rendered);
-    } else if (element) {
-      let renderedFormWrap = document.querySelector('.rendered-form');
-      if (renderedFormWrap) {
-        renderedFormWrap.emptyContainer();
-        renderedFormWrap.appendFormFields(rendered);
+  /**
+   * Clean up passed object configuration to prepare for use with the markup function
+   * @param {Object} field - object of field configuration
+   * @return {Object} sanitized field object
+   */
+  santizeField(field) {
+    let sanitizedField = Object.assign({}, field)
+    sanitizedField.className = field.className || field.class || null
+    delete sanitizedField.class
+    if (field.values) {
+      field.values = field.values.map(option => utils.trimObj(option))
+    }
+    return utils.trimObj(sanitizedField)
+  }
+
+  /**
+   * parses `container` option or returns element
+   * @param  {Object} element
+   * @return {Object} parsedElement
+   */
+  getElement(element) {
+    element = this.options.container || element
+    if (element instanceof jQuery) {
+      element = element[0]
+    } else if (typeof element === 'string') {
+      element = document.querySelector(element)
+    }
+    return element
+  }
+
+  /**
+   * Main render method which produces the form from passed configuration
+   * @param {Object} element - an html element to render the form into (optional)
+   * @return {Object} FormRender
+   */
+  render(element = null) {
+    const formRender = this
+    let opts = this.options
+    element = this.getElement(element)
+
+    let runCallbacks = function() {
+      if (opts.onRender) {
+        opts.onRender()
+      }
+    }
+
+    /**
+     * Retrieve the html markup for a passed array of DomElements
+     * @param {Array} fields - array of dom elements
+     * @return {String} fields html
+     */
+    let exportMarkup = fields => fields.map(elem => elem.innerHTML).join('')
+
+    // Begin the core plugin
+    let rendered = []
+
+    // generate field markup if we have fields
+    if (opts.formData) {
+      // instantiate the layout class & loop through the field configuration
+      let engine = new opts.layout(opts.layoutTemplates)
+      for (let i = 0; i < opts.formData.length; i++) {
+        let fieldData = opts.formData[i]
+        let sanitizedField = this.santizeField(fieldData)
+
+        // determine the control class for this type, and then process it through the layout engine
+        let controlClass = control.getClass(fieldData.type, fieldData.subtype)
+        let field = engine.build(controlClass, sanitizedField)
+        rendered.push(field)
+      }
+
+      // if rendering, inject the fields into the specified wrapper container/element
+      if (opts.render && element) {
+        element.emptyContainer()
+        element.appendFormFields(rendered)
+
+        runCallbacks()
+        opts.notify.success(opts.messages.formRendered)
       } else {
-        renderedFormWrap = _helpers.markup('div', rendered, { className: 'rendered-form' });
-        element.parentNode.insertBefore(renderedFormWrap, element.nextSibling);
-        element.style.display = 'none';
-        element.setAttribute('disabled', 'disabled');
+        formRender.markup = exportMarkup(rendered)
       }
+    } else {
+      let noData = utils.markup('div', opts.messages.noFormData, {
+        className: 'no-form-data',
+      })
+      rendered.push(noData)
+      opts.notify.error(opts.messages.noFormData)
     }
-    if (fields.length) {
-      runCallbacks(fields);
-      opts.notify.success(opts.label.formRendered);
-    }
-  } else {
-    formRender.markup = rendered.map(function(elem) {
-      return elem.innerHTML;
-    }).join('');
+
+    return formRender
   }
 
-  return formRender;
+  /**
+   * Render a single control / field
+   * Expects only a single field configuration to be set in opt.formData
+   * @param {Object} element - an optional DOM element to render the field into - if not specified will just return the rendered field - note if you do this you will need to manually call element.dispatchEvent('fieldRendered') on the returned element when it is rendered into the DOM
+   * @return {Object} the formRender object
+   */
+  renderControl(element = null) {
+    let opts = this.options
+    let fieldData = opts.formData
+    if (!fieldData || Array.isArray(fieldData)) {
+      throw new Error(
+        'To render a single element, please specify a single object of formData for the field in question'
+      )
+    }
+    let sanitizedField = this.santizeField(fieldData)
+
+    // determine the control class for this type, and then build it
+    let engine = new opts.layout()
+    let controlClass = control.getClass(fieldData.type, fieldData.subtype)
+    let forceTemplate = opts.forceTemplate || 'hidden' // support the ability to override what layout template the control is rendered using. This can be used to output the whole row (including label, help etc) using the standard templates if desired.
+    let field = engine.build(controlClass, sanitizedField, forceTemplate)
+    element.appendFormFields(field)
+    opts.notify.success(opts.messages.formRendered)
+    return this
+  }
 }
 
-(function($) {
+;(function($) {
+  $.fn.formRender = function(options) {
+    let elems = this
+    let formRender = new FormRender(options)
+    elems.each(i => formRender.render(elems[i]))
+  }
 
-  jQuery.fn.formRender = function(options) {
-    this.each(function() {
-      let formRender = new FormRenderFn(options, this);
-      return formRender;
-    });
-  };
-
-})(jQuery);
+  /**
+   * renders an individual field into the current element
+   * @param {Object} data - data structure for a single field output from formBuilder
+   * @param {Object} options - optional subset of formRender options - doesn't support container or other form rendering based options.
+   * @return {DOMElement} the rendered field
+   */
+  $.fn.controlRender = function(data, options = {}) {
+    options.formData = data
+    options.dataType = typeof data === 'string' ? 'json' : 'xml'
+    let formRender = new FormRender(options)
+    let elems = this
+    elems.each(i => formRender.renderControl(elems[i]))
+    return elems
+  }
+})(jQuery)

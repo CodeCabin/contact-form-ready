@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wpcf\n"
-"POT-Creation-Date: 2017-10-20 14:01+0200\n"
-"PO-Revision-Date: 2017-10-23 14:28+0200\n"
+"POT-Creation-Date: 2017-12-12 23:26+0100\n"
+"PO-Revision-Date: 2017-12-12 23:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,56 +16,56 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: contact-form-ready.php:349
+#: contact-form-ready.php:367
 msgid "Thank you. Your message has been sent."
 msgstr "Dziękujemy. Twoja wiadomość została wysłana."
 
-#: contact-form-ready.php:459 contact-form-ready.php:467
+#: contact-form-ready.php:477 contact-form-ready.php:486
 msgid "New Contact Form Submission"
 msgstr "Zgłoszenie nowego formularza kontaktowego"
 
-#: contact-form-ready.php:460 contact-form-ready.php:468
-#: contact-form-ready.php:1141
+#: contact-form-ready.php:478 contact-form-ready.php:487
+#: contact-form-ready.php:1297
 msgid "A new message has been received."
 msgstr "Otrzymano nową wiadomość."
 
-#: contact-form-ready.php:462 contact-form-ready.php:470
+#: contact-form-ready.php:481 contact-form-ready.php:490
 msgid "Contact Form Submission Received"
 msgstr "Otrzymano zgłoszenie formularza kontaktowego"
 
-#: contact-form-ready.php:463 contact-form-ready.php:471
-#: contact-form-ready.php:1144 contact-form-ready.php:1183
+#: contact-form-ready.php:482 contact-form-ready.php:491
+#: contact-form-ready.php:1300 contact-form-ready.php:1386
 msgid "Thank you for your message. We will respond to you as soon as possible."
 msgstr ""
 "Dziękujemy za Twoją wiadomość. Odpowiemy tak szybko jak to tylko możliwe."
 
-#: contact-form-ready.php:521
+#: contact-form-ready.php:553
 msgid "Contact Form Data"
 msgstr "Dane Formularza Kontaktowego"
 
-#: contact-form-ready.php:526 contact-form-ready.php:1461
+#: contact-form-ready.php:558 contact-form-ready.php:1963
 msgid "Contact Form Settings"
 msgstr "Ustawienia Formularza Kontaktowego"
 
-#: contact-form-ready.php:530
+#: contact-form-ready.php:562
 msgid "Save all form submissions"
 msgstr "Zapisz wszystkie formularze zgłoszenia"
 
-#: contact-form-ready.php:531 contact-form-ready.php:1663
+#: contact-form-ready.php:563 contact-form-ready.php:2285
 msgid "Need help?"
 msgstr "Potrzebujesz pomocy?"
 
-#: contact-form-ready.php:534
+#: contact-form-ready.php:566
 #, php-format
 msgid "Browse the <a href='%s' target='_BLANK'>documentation</a>."
 msgstr "Sprawdź naszą <a href='%s' target='_BLANK'>dokumantację</a>."
 
-#: contact-form-ready.php:535
+#: contact-form-ready.php:567
 #, php-format
 msgid "Or get in touch with <a href='%s'>nick@codecabin.co.za</a>"
 msgstr "Lub wyślij maila na <a href='%s'>nick@codecabin.co.za</a>"
 
-#: contact-form-ready.php:541
+#: contact-form-ready.php:573
 #, php-format
 msgid ""
 "Store all form submissions using the new <a href='%s' target='_BLANK'>Stored "
@@ -74,184 +74,240 @@ msgstr ""
 "Zachowaj wszystkie zgłoszenia formularzy przy użyciu nowego <a href='%s' "
 "target='_BLANK'>Rozszerzenia Magazyn Zgłoszeń</a> od CFR."
 
-#: contact-form-ready.php:542
+#: contact-form-ready.php:574
 #, php-format
 msgid "Browse more extensions <a href='%s'>here</a>."
 msgstr "Przeglądaj więcej rozszerzeń <a href='%s'>tutaj</a>."
 
-#: contact-form-ready.php:565 contact-form-ready.php:1590
+#: contact-form-ready.php:597 contact-form-ready.php:2194
 msgid "Send"
 msgstr "Wyślij"
 
-#: contact-form-ready.php:575 contact-form-ready.php:600
+#: contact-form-ready.php:622 contact-form-ready.php:651
 msgid "Basic Settings"
 msgstr "Podstawowe Ustawienia"
 
-#: contact-form-ready.php:579
+#: contact-form-ready.php:626 contact-form-ready.php:761
 msgid "Advanced Settings"
 msgstr "Zaawansowane Ustawienia"
 
-#: contact-form-ready.php:605 contact-form-ready.php:1516
+#: contact-form-ready.php:630 contact-form-ready.php:821
+msgid "Themes"
+msgstr "Szablony"
+
+#: contact-form-ready.php:656 contact-form-ready.php:2018
 msgid "Shortcode"
 msgstr "Shortcody"
 
-#: contact-form-ready.php:608
+#: contact-form-ready.php:659
+msgid "Copied to clipboard"
+msgstr "Skopiowany do schowka"
+
+#: contact-form-ready.php:660
 msgid "Copy this to your post or page to show the contact form"
 msgstr ""
 "Skopiuj to do swojego wpisu lub na stronę żeby wyświetlić formularz "
 "kontaktowy"
 
-#: contact-form-ready.php:613
+#: contact-form-ready.php:665
 msgid "Send emails to"
 msgstr "Wyślij email do"
 
-#: contact-form-ready.php:616
+#: contact-form-ready.php:668
 msgid "Multiple emails separated by commas"
 msgstr "Wiele maili oddzielonych przecinkiem"
 
-#: contact-form-ready.php:621
+#: contact-form-ready.php:673
 msgid "Redirect to URL after submit"
 msgstr "Przekieruj na podany adres internetowy po potwierdzeniu"
 
-#: contact-form-ready.php:624
+#: contact-form-ready.php:676
 msgid "Example: /thank-you <br>Leave blank for no redirect"
 msgstr ""
 "Przykład: /dziękuję <br>Pozostaw puste jeżeli nie chcesz przekierowania"
 
-#: contact-form-ready.php:628
+#: contact-form-ready.php:680
 msgid "Submit button value"
 msgstr "Nazwa przycisku wysyłania"
 
-#: contact-form-ready.php:632
+#: contact-form-ready.php:684
 msgid "Form type"
 msgstr "Typ formularza"
 
-#: contact-form-ready.php:635
+#: contact-form-ready.php:687
 msgid "Normal"
 msgstr "Zwykły"
 
-#: contact-form-ready.php:636
+#: contact-form-ready.php:688
 msgid "AJAX (avoids page reloading)"
 msgstr "AJAX (bez konieczności odświeżania strony)"
 
-#: contact-form-ready.php:681
-msgid "Email Settings"
-msgstr "Ustawienia Maila"
+#: contact-form-ready.php:693
+msgid "Open modal window when click on element with"
+msgstr "Otwórz okno kiedy klikniesz na element"
 
-#: contact-form-ready.php:685
+#: contact-form-ready.php:696
+msgid "class"
+msgstr "class"
+
+#: contact-form-ready.php:697
+msgid "id"
+msgstr "id"
+
+#: contact-form-ready.php:700
+msgid "Leave this field empty if you don't want modal window"
+msgstr "Pozostaw to pole puste jeżeli nie chcesz skorzystać z okna popup"
+
+#: contact-form-ready.php:704
+msgid "Modal wrapper background color"
+msgstr "Kolor tła okna popup"
+
+#: contact-form-ready.php:708
+msgid "Modal wrapper opacity"
+msgstr "Przezroczystość"
+
+#: contact-form-ready.php:711
+msgid "Please type value between 0 and 1 (default 0.8)"
+msgstr "Proszę wpisać wartości od 0 do 1 (domyślnie 0.8)"
+
+#: contact-form-ready.php:715
+msgid "Modal inner background"
+msgstr "Kolor wewnętrznego okna popup"
+
+#: contact-form-ready.php:765
 msgid "Email subject (admin)"
 msgstr "Tytuł Maila (administrator)"
 
-#: contact-form-ready.php:689
+#: contact-form-ready.php:769
 msgid "Email body (admin)"
 msgstr "Treść Maila (administrator)"
 
-#: contact-form-ready.php:695
+#: contact-form-ready.php:775
 msgid "Send confirmation email to user?"
 msgstr "Wysłać maila potwierdzającego do użytkownika?"
 
-#: contact-form-ready.php:702
+#: contact-form-ready.php:782
+msgid "Send plaintext email instead of html version?"
+msgstr "Wysłać email tekstowy zamiast wersji html?"
+
+#: contact-form-ready.php:789
 msgid "Email subject (user)"
 msgstr "Tytuł Maila (użytkownik)"
 
-#: contact-form-ready.php:706
+#: contact-form-ready.php:793
 msgid "Email body (user)"
 msgstr "Treść Maila (użytkownik)"
 
-#: contact-form-ready.php:711
+#: contact-form-ready.php:798
 msgid "Set the reply-to as the user's email address"
 msgstr "Ustaw odpowiedz do jako mail użytkownika"
 
-#: contact-form-ready.php:715
+#: contact-form-ready.php:802
 msgid "Will only be set if the form has a valid email field."
 msgstr "Zostanie ustawiony jeżeli formularz ma poprawne pole maila."
 
-#: contact-form-ready.php:771
+#: contact-form-ready.php:825 contact-form-ready.php:828
+msgid "Default Theme"
+msgstr "Domyślny szablon"
+
+#: contact-form-ready.php:832 contact-form-ready.php:835
+msgid "Slick Theme"
+msgstr "Szablon Slick"
+
+#: contact-form-ready.php:839 contact-form-ready.php:842
+msgid "Modern Theme"
+msgstr "Szablon Modern"
+
+#: contact-form-ready.php:846 contact-form-ready.php:849
+msgid "Round Theme"
+msgstr "Szablon Round"
+
+#: contact-form-ready.php:903
 msgid "Select from a predefined list"
 msgstr "Wybierz ze zdefiniowanej listy"
 
-#: contact-form-ready.php:773 includes/integration_wp_live_chat_support.php:22
+#: contact-form-ready.php:905 includes/integration_wp_live_chat_support.php:22
 msgid "Please select"
 msgstr "Proszę wybierz"
 
-#: contact-form-ready.php:793
+#: contact-form-ready.php:925
 msgid "Drag and drop the elements to create your contact form."
 msgstr "Przeciągnij i upuść element żeby utworzyć formularz kontaktowy."
 
-#: contact-form-ready.php:1044 contact-form-ready.php:1055
-#: contact-form-ready.php:1059
+#: contact-form-ready.php:1199 contact-form-ready.php:1210
+#: contact-form-ready.php:1214
 msgid "Contact Forms"
 msgstr "Formularze Kontaktowe"
 
-#: contact-form-ready.php:1045
+#: contact-form-ready.php:1200
 msgid "Contact Form"
 msgstr "Formularz Kontaktowy"
 
-#: contact-form-ready.php:1046 contact-form-ready.php:1049
+#: contact-form-ready.php:1201 contact-form-ready.php:1204
 msgid "New Contact Form"
 msgstr "Nowy Formularz kontaktowy"
 
-#: contact-form-ready.php:1047
+#: contact-form-ready.php:1202
 msgid "Add New Contact Form"
 msgstr "Dodaj Nowy Formularz Kontaktowy"
 
-#: contact-form-ready.php:1048
+#: contact-form-ready.php:1203
 msgid "Edit Contact Form"
 msgstr "Edytuj Formularz Kontaktowy"
 
-#: contact-form-ready.php:1050
+#: contact-form-ready.php:1205
 msgid "All Contact Forms"
 msgstr "Wszystkie Formularze Kontaktowe"
 
-#: contact-form-ready.php:1051
+#: contact-form-ready.php:1206
 msgid "View Contact Form"
 msgstr "Podgląd Formularza Kontaktowego"
 
-#: contact-form-ready.php:1052
+#: contact-form-ready.php:1207
 msgid "Search Contact Forms"
 msgstr "Przeszukaj Formularze Kontaktowe"
 
-#: contact-form-ready.php:1053
+#: contact-form-ready.php:1208
 msgid "No contact forms found"
 msgstr "Nie znaleziono żadnego formularza"
 
-#: contact-form-ready.php:1054
+#: contact-form-ready.php:1209
 msgid "No contact forms in the Trash"
 msgstr "Nie znaleziono formularza w Koszu"
 
-#: contact-form-ready.php:1091
+#: contact-form-ready.php:1246
 msgid "Simple contact form"
 msgstr "Prosty formularz kontaktowy"
 
-#: contact-form-ready.php:1095
+#: contact-form-ready.php:1250
 msgid "Booking form (hotel)"
 msgstr "Formularz rejestracji (hotel)"
 
-#: contact-form-ready.php:1099
+#: contact-form-ready.php:1254
 msgid "Booking form (restaurant)"
 msgstr "Formularz rezerwacji (restauracja)"
 
-#: contact-form-ready.php:1103
+#: contact-form-ready.php:1258
 msgid "Support form"
 msgstr "Formularz pomocy"
 
-#: contact-form-ready.php:1107
+#: contact-form-ready.php:1262
 msgid "How did you hear about us"
 msgstr "Jak o nas się dowiedziałeś"
 
-#: contact-form-ready.php:1111
+#: contact-form-ready.php:1266
 msgid "NPS Score"
 msgstr "Wynik NPS"
 
-#: contact-form-ready.php:1134
+#: contact-form-ready.php:1290
 msgid "New Contact Form Response"
 msgstr "Odpowiedź nowego formularza kontaktowego"
 
-#: contact-form-ready.php:1137
+#: contact-form-ready.php:1293
 msgid "Contact Form Response Received"
 msgstr "Otrzymano odpowiedź z formularza kontaktowego"
 
-#: contact-form-ready.php:1147
+#: contact-form-ready.php:1303
 msgid ""
 "Thank you. Your message has been sent and we will be in touch as soon as "
 "possible."
@@ -259,59 +315,145 @@ msgstr ""
 "Dziękujemy. Twoja wiadomość została wysłana. Skontaktujemy się z Tobą tak "
 "szybko jak jest to możliwe."
 
-#: contact-form-ready.php:1186
+#: contact-form-ready.php:1389
 msgid "Sending..."
 msgstr "Wysyłanie..."
 
-#: contact-form-ready.php:1246
+#: contact-form-ready.php:1451
 msgid "Are you sure you want to restore the default newsletter template?"
 msgstr "Jesteś pewny, że chcesz przywrócić domyślny szablon newslettera?"
 
-#: contact-form-ready.php:1273 includes/module_subscribe.php:13
+#: contact-form-ready.php:1482 includes/module_subscribe.php:13
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: contact-form-ready.php:1274 includes/module_subscribe.php:15
+#: contact-form-ready.php:1483
+msgid "Styling"
+msgstr "Styl"
+
+#: contact-form-ready.php:1484 includes/module_subscribe.php:15
 msgid "Extensions"
 msgstr "Rozszerzenia"
 
-#: contact-form-ready.php:1282
+#: contact-form-ready.php:1492
 msgid "Contact Form Ready Extensions"
 msgstr "Rozszerzenia Formularza Kontaktowego"
 
-#: contact-form-ready.php:1458
+#: contact-form-ready.php:1763
+msgid "Contact form styling"
+msgstr "Ustawienia formularza kontaktowego"
+
+#: contact-form-ready.php:1766
+msgid "Contact Form Styling"
+msgstr "Ustawienia Formularza Kontaktowego"
+
+#: contact-form-ready.php:1769
+msgid "Enable custom styling"
+msgstr "Włącz własne style"
+
+#: contact-form-ready.php:1778
+msgid "Label"
+msgstr "Nagłówek"
+
+#: contact-form-ready.php:1783 contact-form-ready.php:1824
+#: contact-form-ready.php:1850
+msgid "Font size"
+msgstr "Rozmiar czcionki"
+
+#: contact-form-ready.php:1787 contact-form-ready.php:1858
+msgid "Font weight"
+msgstr "Grubość czcionki"
+
+#: contact-form-ready.php:1798 contact-form-ready.php:1828
+#: contact-form-ready.php:1854
+msgid "Font color"
+msgstr "Kolor czcionki"
+
+#: contact-form-ready.php:1807
+msgid "Input"
+msgstr "Pole formularza"
+
+#: contact-form-ready.php:1812 contact-form-ready.php:1842
+msgid "Background color"
+msgstr "Kolor tła"
+
+#: contact-form-ready.php:1816
+msgid "Border color"
+msgstr "Kolor obwódki"
+
+#: contact-form-ready.php:1820
+msgid "Border hover color"
+msgstr "Kolor obwódki aktywnej"
+
+#: contact-form-ready.php:1837
+msgid "Submit button"
+msgstr "Nazwa przycisku wysyłania"
+
+#: contact-form-ready.php:1846
+msgid "Background hover color"
+msgstr "Kolor tła aktywnego"
+
+#: contact-form-ready.php:1869
+msgid "Text transform"
+msgstr "Styl tekstu"
+
+#: contact-form-ready.php:1872
+msgid "none"
+msgstr "brak"
+
+#: contact-form-ready.php:1873
+msgid "uppercase"
+msgstr "duże litery"
+
+#: contact-form-ready.php:1884
+msgid "Text field"
+msgstr "Pole tekstowe"
+
+#: contact-form-ready.php:1886
+msgid "Email field"
+msgstr "Szablon Maila"
+
+#: contact-form-ready.php:1888
+msgid "Text Area"
+msgstr "Pole tekstowe"
+
+#: contact-form-ready.php:1891 templates/welcome.php:46
+msgid "Submit"
+msgstr "Potwierdź"
+
+#: contact-form-ready.php:1960
 msgid "Contact form settings"
 msgstr "Ustawienia formularza kontaktowego"
 
-#: contact-form-ready.php:1465
+#: contact-form-ready.php:1967
 msgid "Email from address"
 msgstr "Adres mail wysyłającego"
 
-#: contact-form-ready.php:1469
+#: contact-form-ready.php:1971
 msgid "Email from name"
 msgstr "Nazwa adresu mail wysyłającego"
 
-#: contact-form-ready.php:1473
+#: contact-form-ready.php:1975
 msgid "Thank you text"
 msgstr "Tekst podziękowania"
 
-#: contact-form-ready.php:1517
+#: contact-form-ready.php:2019
 msgid "Views"
 msgstr "Widok"
 
-#: contact-form-ready.php:1518
+#: contact-form-ready.php:2020
 msgid "Submissions"
 msgstr "Zgłoszenia"
 
-#: contact-form-ready.php:1643
+#: contact-form-ready.php:2265
 msgid "Dismiss"
 msgstr "Odrzuć"
 
-#: contact-form-ready.php:1648
+#: contact-form-ready.php:2270
 msgid "Welcome to Contact Form Ready"
 msgstr "Witamy na stronie Formularza Kontaktowego"
 
-#: contact-form-ready.php:1649
+#: contact-form-ready.php:2271
 msgid ""
 "Thank you for installing Contact Form Ready! We are constantly updating and "
 "improving our plugin. Please vote for the feature you would like to see next "
@@ -322,35 +464,35 @@ msgstr ""
 "stronie na funkcję którą chciałbyś/chciałabyś zobaczyć wkrótce w naszej "
 "wtyczce."
 
-#: contact-form-ready.php:1650
+#: contact-form-ready.php:2272
 msgid "Create a form now"
 msgstr "Utwórz formularz"
 
-#: contact-form-ready.php:1654
+#: contact-form-ready.php:2276
 msgid "Getting Started"
 msgstr "Rozpocznij"
 
-#: contact-form-ready.php:1656
+#: contact-form-ready.php:2278
 msgid "Introduction"
 msgstr "Wprowadzenie"
 
-#: contact-form-ready.php:1657
+#: contact-form-ready.php:2279
 msgid "Creating your first contact form"
 msgstr "Utwórz swój pierwszy formularz kontaktowy"
 
-#: contact-form-ready.php:1658
+#: contact-form-ready.php:2280
 msgid "Adding reCAPTCHA to your form"
 msgstr "Dodawanie reCAPTCHA do formularza"
 
-#: contact-form-ready.php:1660
+#: contact-form-ready.php:2282
 msgid "Browse CFR Extensions"
 msgstr "Przeglądaj Rozszerzenia CFR"
 
-#: contact-form-ready.php:1665
+#: contact-form-ready.php:2287
 msgid "Get help now"
 msgstr "Otrzymaj wsparcie techniczne"
 
-#: contact-form-ready.php:1671
+#: contact-form-ready.php:2293
 msgid "Vote for the features you want next!"
 msgstr "Zagłosuj na funkcję którą chcesz zobaczyć wkrótce!"
 
@@ -472,10 +614,9 @@ msgstr "Inne"
 msgid "Please Explain"
 msgstr "Proszę wytłumacz"
 
-#: templates/welcome.php:46
-msgid "Submit"
-msgstr "Potwierdź"
-
 #: templates/welcome.php:48
 msgid "Skip"
 msgstr "Pomiń"
+
+#~ msgid "Email Settings"
+#~ msgstr "Ustawienia Maila"

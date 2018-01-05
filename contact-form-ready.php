@@ -3,13 +3,26 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 1.13
+  Version: 2.0.00
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ * 2.0.00 - 2017-12-01
+ * Tested on WordPress 4.9.1
+ * Added new themes panel with predefined versions
+ * Added custom settings for fonts, colors of form elements with preview
+ * Added ability to open form in modal box
+ * Added ability to send HTML and Plaintext mail
+ * Added closure and replaced jQuery with $
+ * Updated formBuilder to 2.9.8
+ * Bug Fix: Fixed a bug that caused elements disappeared when form was published in Edge browser
+ * Bug Fix: Fixed a bug that prevents rendering of radio and checkbox groups
+ * Bug Fix: Fixed edit icon
+ * Enhancement: Added automatic copy shortcode to clipboard
+ *
  * 1.13 - 2017-09-21
  * Tested on WordPress 4.8.2
  * Fixed small typo
@@ -40,20 +53,20 @@
  * Added functionality so that you may change the from name and from email address when a contact form is sent
  * Fixed a bug that caused broken HTML to be displayed where checkboxes were used (within the sent email)
  * Fixed a bug that caused the rows in the textareas to not be applied or saved
- * 
+ *
  * 1.09 - 2016-12-23
  * Fixed a bug that caused reCAPTCHA to not be disabled
- * 
+ *
  * 1.08 - 2016-12-23
  * Built in additional extension data and a page for extensions
- * 
+ *
  * 1.07 - 2016-12-23
  * You can now send your contact form via AJAX
- * 
- * 1.06 - 2016-12-22 
+ *
+ * 1.06 - 2016-12-22
  * Fixed the bug that stopped placeholders from working
  * Fixed a bug that caused the user message to be inserted into the admin message
- * 
+ *
  * 1.05 - 2016-11-30
  * Fixed a bug that caused the email address to be left out of the email that is sent to the administrator
  * Added a way for users to vote on new features
@@ -61,12 +74,12 @@
  * Added a welcome panel with dsocumentation links for new users
  * Fixed a bug that caused the 'headers already sent' message to appear
  * Code recatoring to eliminate php warnings
- * 
+ *
  * 1.04 - 2016-11-29
  * Added Google reCAPTCHA
  * Fixed the bug that stopped the "skip" button from working on the welcome page
  * Updated the predefined contact forms to suit the new reCAPTCHA inclusion
- * 
+ *
  * 1.03 - 2016-11-28
  * Fixed a bug that caused a stray open form tag when outputting the contact form
  * Updated FormBuilder to 1.24.2
@@ -80,10 +93,10 @@
  * Fixed a bug that caused the nonce field to be emailed along with the message
  * Added support for shortcodes
  * Fixed a bug that caused hidden text inputs to hide within the contact form builder
- * 
+ *
  * 1.02 - 2016-11-28
  * Added a welcome page
- * 
+ *
  * 1.01 - 2016-11-26
  * Added a nonce to the contact form
  * Code refacotring in the send process
@@ -96,7 +109,7 @@
  * 1.00 - 2016-11-xx
  * Launch
  *
- * 
+ *
  */
 
 // If this file is called directly, abort.
@@ -459,6 +472,7 @@ class WP_Contact_Form_ND{
 			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
 			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
 			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+			$send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? $wpcf_nd_settings['wpcf_nd_send_plaintext'] : '';
 			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
 			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
 
@@ -467,6 +481,7 @@ class WP_Contact_Form_ND{
 			$subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? $wpcf_nd_settings['wpcf_nd_subject_admin'] : $wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Submission","wpcf_nd");
 			$message_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : $wpcf_nd_settings['wpcf_nd_message_admin'] = __("A new message has been received.","wpcf_nd");
 			$send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
+			$send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? $wpcf_nd_settings['wpcf_nd_send_plaintext'] : '';
 			$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : __("Contact Form Submission Received","wpcf_nd");
 			$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : __( "Thank you for your message. We will respond to you as soon as possible." , "wpcf_nd" );;
 
@@ -493,10 +508,15 @@ class WP_Contact_Form_ND{
     	$attachments = array();
     	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid);
 
+		if ( 1 === $send_plaintext ) {
+			require_once( 'includes/class.html-to-plaintext.php' );
+			$converter = new HTMLToPlaintextConverter();
+			$plaintext = @$converter->convert($body);
+		} else {
+			$plaintext = $body;
+		}
 
-
-
-    	@wp_mail( $sendto , stripslashes( $subject_admin ) , $body , $headers , $attachments );
+		@wp_mail( $sendto , stripslashes( $subject_admin ) , $plaintext , $headers , $attachments );
     	
 
     	// SEND TO USER?
@@ -510,7 +530,14 @@ class WP_Contact_Form_ND{
 			);
 			$body = apply_filters( "wpcf_nd_email_wrapper" , $data );
 
-	    	@wp_mail( $sent_data['user_email'] , stripslashes( $cfr_email_subject_user ) , $body , $headers , $attachments );
+		    if ( 1 === $send_plaintext ) {
+			    $converter = new HTMLToPlaintextConverter();
+			    $plaintext = @$converter->convert( $body );
+		    } else {
+			    $plaintext = $body;
+		    }
+
+		    @wp_mail( $sent_data['user_email'] , stripslashes( $cfr_email_subject_user ) , $plaintext , $headers , $attachments );
 	    }
 
 
@@ -567,8 +594,23 @@ class WP_Contact_Form_ND{
 		if (!$form_type || $form_type === null) {
 			$form_type = '0';
 		}
-
 		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+		$wpcf_nd_basic_settings = get_option( "wpcf_nd_basic_settings" );
+		$modal_el_attr = $wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'];
+		$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
+		$modal_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_bg'];
+		$modal_opacity = $wpcf_nd_basic_settings['wpcf_nd_modal_opacity'];
+		$modal_inner_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'];
+		if ('' === trim($modal_bg)) {
+			$modal_bg = '#222222';
+		}
+		if ('' === trim($modal_opacity)) {
+			$modal_opacity = '0.8';
+		}
+		if ('' === trim($modal_inner_bg)) {
+			$modal_inner_bg = '#ffffff';
+		}
+
 
 		$tabs_array = array(
 			'basic-settings' => array(
@@ -577,6 +619,10 @@ class WP_Contact_Form_ND{
 			),
 			'advanced-settings' => array(
 				'name' => __( 'Advanced Settings', 'wpcf_nd' ),
+				'icon' => ''
+			),
+			'themes' => array(
+				'name' => __( 'Themes', 'wpcf_nd' ),
 				'icon' => ''
 			)
 		);
@@ -638,6 +684,32 @@ class WP_Contact_Form_ND{
 			    			</select>
 			    		</td>
 			    	</tr>
+                    <tr>
+                        <td><label for='wpcf_nd_modal_el'><?php _e( "Open modal window when click on element with", "wpcf_nd" ); ?></label></td>
+                        <td>
+                            <select name="wpcf_nd_modal_el_attr">
+                                <option value="class" <?php selected( $modal_el_attr, 'class' ) ?>><?php _e( "class", "wpcf_nd" ); ?></option>
+                                <option value="id" <?php selected( $modal_el_attr, 'id' ) ?>><?php _e( "id", "wpcf_nd" ); ?></option>
+                            </select>
+                            <input type='text' value='<?php echo $modal_el; ?>' id='wpcf_nd_modal_el' name='wpcf_nd_modal_el' />
+                            <p class='description'><?php _e("Leave this field empty if you don't want modal window","wpcf_nd"); ?></p>
+                        </td>
+                    </tr>
+                    <tr class="wpcf-modal-customization is-active">
+                        <td><label for='wpcf_nd_modal_bg'><?php _e( "Modal wrapper background color", "wpcf_nd" ); ?></label></td>
+                        <td><input type='text' value='<?php echo $modal_bg; ?>' id='wpcf_nd_modal_bg' class='wpcf-color-input' name='wpcf_nd_modal_bg' /></td>
+                    </tr>
+                    <tr class="wpcf-modal-customization is-active">
+                        <td><label for='wpcf_nd_modal_opacity'><?php _e( "Modal wrapper opacity", "wpcf_nd" ); ?></label></td>
+                        <td>
+                            <input type='text' value='<?php echo $modal_opacity; ?>' id='wpcf_nd_modal_opacity' name='wpcf_nd_modal_opacity' />
+                            <p class='description'><?php _e("Please type value between 0 and 1 (default 0.8)","wpcf_nd"); ?></p>
+                        </td>
+                    </tr>
+                    <tr class="wpcf-modal-customization is-active">
+                        <td><label for='wpcf_nd_modal_inner_bg'><?php _e( "Modal inner background", "wpcf_nd" ); ?></label></td>
+                        <td><input type='text' value='<?php echo $modal_inner_bg; ?>' id='wpcf_nd_modal_inner_bg' class='wpcf-color-input' name='wpcf_nd_modal_inner_bg' /></td>
+                    </tr>
 			    	<?php do_action( "wpcf_hook_form_builder_table_bottom", $post, $wpcf_nd_settings ); ?>
 			    </table>
 
@@ -661,7 +733,8 @@ class WP_Contact_Form_ND{
 						$cfr_email_body_admin = ( isset($wpcf_nd_settings['wpcf_nd_message_admin'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_admin'] : "";
 						
 						$cfr_send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? $wpcf_nd_settings['wpcf_nd_send_to_user'] : '';
-						
+						$cfr_send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? $wpcf_nd_settings['wpcf_nd_send_plaintext'] : '';
+
 						$cfr_email_subject_user = ( isset($wpcf_nd_settings['wpcf_nd_subject_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : "";
 						$cfr_email_body_user = ( isset($wpcf_nd_settings['wpcf_nd_message_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : "";
 
@@ -671,7 +744,8 @@ class WP_Contact_Form_ND{
 						$cfr_email_body_admin = isset( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_admin'] ) ) : '';
 						
 						$cfr_send_to_user = isset( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_send_to_user'] ) ) : '';
-						
+						$cfr_send_plaintext = isset( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_send_plaintext'] ) ) : '';
+
 						$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ) : '';
 						$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_user'] ) ) : '';
 
@@ -679,7 +753,7 @@ class WP_Contact_Form_ND{
 
 				?>
 
-				<h2><?php _e("Email Settings","wpcf_nd"); ?></h2>
+				<h2><?php _e("Advanced Settings","wpcf_nd"); ?></h2>
 
 				<table class='form-table'>					
 					<tr>
@@ -699,6 +773,13 @@ class WP_Contact_Form_ND{
 
 						<td><input type='checkbox' name='wpcf_nd_send_to_user' id='wpcf_nd_send_to_user' value='1' <?php echo $is_checked; ?> /></td>
 					</tr>
+                    <tr>
+                        <td><?php _e("Send plaintext email instead of html version?","wpcf_nd"); ?></td>
+
+						<?php $plaintext_is_checked = $cfr_send_plaintext == 1 ? "checked" : ""; ?>
+
+                        <td><input type='checkbox' name='wpcf_nd_send_plaintext' id='wpcf_nd_send_plaintext' value='1' <?php echo $plaintext_is_checked; ?> /></td>
+                    </tr>
 					<tr>
 						<td><?php _e("Email subject (user)","wpcf_nd"); ?></td>
 						<td><input type='text' name='wpcf_nd_subject_user' class='regular-text' id='wpcf_nd_subject_user' value='<?php echo $cfr_email_subject_user; ?>' /></td>
@@ -723,8 +804,53 @@ class WP_Contact_Form_ND{
 
 			</div>			
 
+            <div id='themes'>
 
-			<?php
+				<?php
+				$wpcf_nd_theme = get_post_meta( $post->ID, 'wpcf_nd_theme', true );
+				if ( ! isset( $wpcf_nd_theme ) ) {
+					$wpcf_nd_theme = 'default';
+				}
+				?>
+
+                <h2><?php _e("Themes","wpcf_nd"); ?></h2>
+
+                <ul class="wpcf-admin-img-list">
+                    <li class="wpcf-admin-img-item" data-cf-theme="default">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Default Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/default.png" ?>"
+                                 alt="<?php _e("Default Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                    <li class="wpcf-admin-img-item" data-cf-theme="slick">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Slick Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/slick.png" ?>"
+                                 alt="<?php _e("Slick Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                    <li class="wpcf-admin-img-item" data-cf-theme="modern">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Modern Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/modern.png" ?>"
+                                 alt="<?php _e("Modern Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                    <li class="wpcf-admin-img-item" data-cf-theme="round">
+                        <h3 class="wpcf-admin-img-heading"><?php _e("Round Theme","wpcf_nd"); ?></h3>
+                        <a href="#" class="wpcf-admin-img-link">
+                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/round.png" ?>"
+                                 alt="<?php _e("Round Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
+                        </a>
+                    </li>
+                </ul>
+                <input class="wpcf-admin-option-theme" type="hidden" name="wpcf_nd_theme" value="<?php echo $wpcf_nd_theme; ?>" />
+
+            </div>
+
+
+            <?php
 				$wpcf_nd_settings = get_option("wpcf_nd_settings");
 				do_action( "contact_form_ready_settings_content", $post, $wpcf_nd_settings );
 			?>
@@ -935,7 +1061,6 @@ class WP_Contact_Form_ND{
 
     	);
 
-
 		// Make sure your data is set before trying to save it
 	    if( isset( $_POST['fb-temp-htmldata'] ) ) {
 	    	$post_html_data = $_POST['fb-temp-htmldata'];
@@ -951,8 +1076,7 @@ class WP_Contact_Form_ND{
 	function wpcf_nd_save_meta_box_control( $post_id ) {
 
 
-
-	 // Bail if we're doing an auto save
+		// Bail if we're doing an auto save
 	    if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	     
 	    // if our nonce isn't there, or we can't verify it, bail
@@ -1001,6 +1125,12 @@ class WP_Contact_Form_ND{
 			$wpcf_nd_settings['wpcf_nd_send_to_user'] = 0;
 		}
 
+		if ( isset( $_POST['wpcf_nd_send_plaintext'] ) && $_POST['wpcf_nd_send_plaintext'] == '1' ){
+			$wpcf_nd_settings['wpcf_nd_send_plaintext'] = intval(sanitize_text_field( $_POST['wpcf_nd_send_plaintext'] ));
+		} else {
+			$wpcf_nd_settings['wpcf_nd_send_plaintext'] = 0;
+		}
+
 
 
 		if (isset($_POST['wpcf_nd_message_user']))  {
@@ -1020,7 +1150,26 @@ class WP_Contact_Form_ND{
 		if (isset($_POST['wpcf_nd_message_admin'])) 
 			$wpcf_nd_settings['wpcf_nd_message_admin'] = sanitize_text_field( $_POST['wpcf_nd_message_admin'] );
 
+		$wpcf_nd_basic_settings = array();
+		if( isset( $_POST['wpcf_nd_modal_el'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_el'] = sanitize_text_field( $_POST['wpcf_nd_modal_el'] );
+		if( isset( $_POST['wpcf_nd_modal_el_attr'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'] = sanitize_text_field( $_POST['wpcf_nd_modal_el_attr'] );
+		if( isset( $_POST['wpcf_nd_modal_bg'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_bg'] = sanitize_text_field( $_POST['wpcf_nd_modal_bg'] );
+		if( isset( $_POST['wpcf_nd_modal_opacity'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_opacity'] = sanitize_text_field( $_POST['wpcf_nd_modal_opacity'] );
+		if( isset( $_POST['wpcf_nd_modal_inner_bg'] ) )
+			$wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'] = sanitize_text_field( $_POST['wpcf_nd_modal_inner_bg'] );
+
+		/**
+		 * Themes settings
+		 */
+		if (isset($_POST['wpcf_nd_theme']))
+			update_post_meta( $post_id, 'wpcf_nd_theme', sanitize_text_field( $_POST['wpcf_nd_theme'] ) );
+
 		update_post_meta( $post_id, 'wpcf_nd_email_sending_settings', $wpcf_nd_settings );
+		update_option( 'wpcf_nd_basic_settings', $wpcf_nd_basic_settings );
 
 	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
 	    
@@ -1121,6 +1270,7 @@ class WP_Contact_Form_ND{
 
 	function handle_defaults() {
 		$wpcf_nd_settings = get_option("wpcf_nd_settings");
+		$wpcf_nd_styling = get_option("wpcf_nd_styling");
 		/**
 		 * defaults here
 		 */
@@ -1149,6 +1299,53 @@ class WP_Contact_Form_ND{
 
 
 		update_option("wpcf_nd_settings",$wpcf_nd_settings);
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_enable_style']))
+			$wpcf_nd_styling['wpcf_nd_enable_style'] = 0;
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_size']))
+			$wpcf_nd_styling['wpcf_nd_label_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_label_font_weight'] = "600";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_color']))
+			$wpcf_nd_styling['wpcf_nd_label_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_input_bg_color'] = "transparent";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_focus_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = "#333333";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_size']))
+			$wpcf_nd_styling['wpcf_nd_input_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_color']))
+			$wpcf_nd_styling['wpcf_nd_input_font_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_size']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_size'] = "14";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_color'] = "#ffffff";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = "700";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_text_transform']))
+			$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = "none";
+
+		update_option("wpcf_nd_styling",$wpcf_nd_styling);
 	}
 
 	
@@ -1201,17 +1398,7 @@ class WP_Contact_Form_ND{
 	    	wp_enqueue_script( 'jquery-ui-core' );
 	    	wp_enqueue_script( 'jquery-ui-tabs' );	    	
 
-	        wp_register_script( 'form-builder-js', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/helpers.js", true );
-	        wp_enqueue_script( 'form-builder-js' );
-	        wp_register_script( 'form-builder-js1', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/events.js", true );
-	        wp_enqueue_script( 'form-builder-js1' );
-	        wp_register_script( 'form-builder-js2', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/kc-toggle.js", true );
-	        wp_enqueue_script( 'form-builder-js2' );
-	        wp_register_script( 'form-builder-js3', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/polyfills.js", true );
-	        wp_enqueue_script( 'form-builder-js3' );
-	        wp_register_script( 'form-builder-js4', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/utils.js", true );
-	        wp_enqueue_script( 'form-builder-js4' );
-	        wp_register_script( 'form-builder-js6', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/form-builder.js", true );
+	        wp_register_script( 'form-builder-js6', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/form-builder.min.js", true );
 	        wp_enqueue_script( 'form-builder-js6' );
 
 	        wp_register_script( 'form-builder-site-js', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/js/site.js", true );
@@ -1235,21 +1422,37 @@ class WP_Contact_Form_ND{
 				wp_localize_script( 'wpcf-admin', 'tmpformData', '' );
 			}
 
+		    wp_enqueue_style( 'wp-color-picker' );
+		    wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array(
+			    'jquery-ui-draggable',
+			    'jquery-ui-slider',
+			    'jquery-touch-punch'
+		    ), false, 1 );
 
-			
-		    
+		}
 
 
+		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-styling') {
+			wp_enqueue_style( 'wp-color-picker' );
+			wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array(
+				'jquery-ui-draggable',
+				'jquery-ui-slider',
+				'jquery-touch-punch'
+			), false, 1 );
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
 	        wp_enqueue_script( 'wpcf-admin-settings' );
 	        wp_localize_script( 'wpcf-admin-settings', 'wpcf_nd_confirm_restore_template_string', __( 'Are you sure you want to restore the default newsletter template?', 'wpcf_nd' ) );
 		}
+		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-styling') {
+			wp_register_script( 'wpcf-admin-styling', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_styling.js", true );
+			wp_enqueue_script( 'wpcf-admin-styling' );
+		}
 	}
 	function load_admin_styles() {
 	 	global $post_type;
-	    if( "contact-forms-nd" == $post_type || (isset($_GET['page']) && $_GET['page'] == "wpcf-extensions") ) {
+	    if( "contact-forms-nd" == $post_type || (isset($_GET['page']) && ( $_GET['page'] == "wpcf-extensions" || $_GET['page'] == "wpcf-styling" )) ) {
 	        wp_register_style( 'form-builder-css', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/formbuilder/css/form-builder.min.css", true );
 	        wp_enqueue_style( 'form-builder-css' );
 	        wp_register_style( 'wpcf-nd-css', plugins_url(plugin_basename(dirname(__FILE__)))."/css/admin.css", true, $this->current_version );
@@ -1272,6 +1475,7 @@ class WP_Contact_Form_ND{
 
 	public function wpcf_nd_menu_items(){
         add_submenu_page('edit.php?post_type=contact-forms-nd', __('Settings', 'wpcf_nd'), __('Settings', 'wpcf_nd'), 'manage_options', 'wpcf-settings',  array( $this , 'wpcf_settings_page' ) );
+        add_submenu_page('edit.php?post_type=contact-forms-nd', __('Styling', 'wpcf_nd'), __('Styling', 'wpcf_nd'), 'manage_options', 'wpcf-styling',  array( $this , 'wpcf_styling_page' ) );
         add_submenu_page('edit.php?post_type=contact-forms-nd', __('Extensions', 'wpcf_nd'), __('Extensions', 'wpcf_nd'), 'manage_options', 'wpcf-extensions',  array( $this , 'wpcf_extensions_page' ) );
 	}
 
@@ -1400,6 +1604,347 @@ class WP_Contact_Form_ND{
 
 
 		<?php
+	}
+
+	function wpcf_styling_page() {
+		$wpcf_nd_styling = get_option("wpcf_nd_styling");
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_enable_style']))
+			$wpcf_nd_styling['wpcf_nd_enable_style'] = 0;
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_size']))
+			$wpcf_nd_styling['wpcf_nd_label_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_label_font_weight'] = "600";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_label_color']))
+			$wpcf_nd_styling['wpcf_nd_label_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_input_bg_color'] = "transparent";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_border_focus_color']))
+			$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = "#333333";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_size']))
+			$wpcf_nd_styling['wpcf_nd_input_font_size'] = "16";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_input_font_color']))
+			$wpcf_nd_styling['wpcf_nd_input_font_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = "#222222";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = "#666666";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_size']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_size'] = "14";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_color']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_color'] = "#ffffff";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_font_weight']))
+			$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = "700";
+
+		if (!isset($wpcf_nd_styling['wpcf_nd_submit_text_transform']))
+			$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = "none";
+
+		if (isset($_POST['wpcf_submit_save_styling'])) {
+
+			if ( isset( $_POST['wpcf_nd_enable_style'] ) ){
+		        $wpcf_nd_styling['wpcf_nd_enable_style'] = 1;
+	        } else {
+				$wpcf_nd_styling['wpcf_nd_enable_style'] = 0;
+			}
+
+            if ( isset( $_POST['wpcf_nd_label_font_size'] ) ){
+                $wpcf_nd_styling['wpcf_nd_label_font_size'] = sanitize_text_field( $_POST['wpcf_nd_label_font_size'] );
+            } else {
+                $wpcf_nd_styling['wpcf_nd_label_font_size'] = '';
+            }
+
+	        if ( isset( $_POST['wpcf_nd_label_font_weight'] ) ){
+		        $wpcf_nd_styling['wpcf_nd_label_font_weight'] = sanitize_text_field( $_POST['wpcf_nd_label_font_weight'] );
+	        } else {
+		        $wpcf_nd_styling['wpcf_nd_label_font_weight'] = '';
+	        }
+
+	        if ( isset( $_POST['wpcf_nd_label_color'] ) ){
+		        $wpcf_nd_styling['wpcf_nd_label_color'] = sanitize_text_field( $_POST['wpcf_nd_label_color'] );
+	        } else {
+		        $wpcf_nd_styling['wpcf_nd_label_color'] = '';
+	        }
+
+			if ( isset( $_POST['wpcf_nd_input_bg_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_bg_color'] = sanitize_text_field( $_POST['wpcf_nd_input_bg_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_bg_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_border_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_border_color'] = sanitize_text_field( $_POST['wpcf_nd_input_border_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_border_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_border_focus_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = sanitize_text_field( $_POST['wpcf_nd_input_border_focus_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_font_size'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_font_size'] = sanitize_text_field( $_POST['wpcf_nd_input_font_size'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_font_size'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_input_font_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_input_font_color'] = sanitize_text_field( $_POST['wpcf_nd_input_font_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_input_font_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_bg_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = sanitize_text_field( $_POST['wpcf_nd_submit_bg_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_bg_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_bg_hover_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = sanitize_text_field( $_POST['wpcf_nd_submit_bg_hover_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_font_size'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_font_size'] = sanitize_text_field( $_POST['wpcf_nd_submit_font_size'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_font_size'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_font_color'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_font_color'] = sanitize_text_field( $_POST['wpcf_nd_submit_font_color'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_font_color'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_font_weight'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = sanitize_text_field( $_POST['wpcf_nd_submit_font_weight'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_font_weight'] = '';
+			}
+
+			if ( isset( $_POST['wpcf_nd_submit_text_transform'] ) ){
+				$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = sanitize_text_field( $_POST['wpcf_nd_submit_text_transform'] );
+			} else {
+				$wpcf_nd_styling['wpcf_nd_submit_text_transform'] = '';
+			}
+
+            $wpcf_nd_styling = apply_filters("wpcf_filter_save_styling", $wpcf_nd_styling, $_POST);
+
+            update_option( "wpcf_nd_styling" , $wpcf_nd_styling );
+            echo "<span class='update-nag below-h1'>Styling saved</span>";
+
+        }
+        ?>
+
+        <form action='' method='POST' name='wpcf_styling_form' class="wpcf-styling-form">
+            <h1><?php _e("Contact form styling","wpcf_nd"); ?></h1>
+
+            <div class="wpcf-admin-enable-style-wrapper">
+                <label for="wpcf_nd_enable_style"><?php _e( "Enable custom styling", "wpcf_nd" ); ?></label>
+                <input type="checkbox" name="wpcf_nd_enable_style" class="" id="wpcf_nd_enable_style" value="1" <?php checked( $wpcf_nd_styling['wpcf_nd_enable_style'], 1, true ); ?> />
+            </div>
+
+            <div class="wpcf-admin-styling-wrapper">
+                <div class="wpcf-admin-enable-table-wrapper">
+                    <table class='wp-list-table striped fixed wpcf-admin-table'>
+                        <thead>
+                        <tr>
+                            <th><?php _e( "Label", "wpcf_nd" ); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+                            <td><input type='number' name='wpcf_nd_label_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_label_font_size' value='<?php echo$wpcf_nd_styling['wpcf_nd_label_font_size']; ?>' min="10" max="62" /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
+                            <td>
+                                <select name='wpcf_nd_label_font_weight' id='wpcf_nd_label_font_weight'>
+                                    <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+                                    <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+                                    <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+                                    <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_label_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_label_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_label_color'])); ?>' /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table class='wp-list-table striped fixed wpcf-admin-table'>
+                        <thead>
+                            <tr>
+                                <th><?php _e( "Input", "wpcf_nd" ); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
+                                <td><input type='text' name='wpcf_nd_input_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_bg_color'])); ?>' /></td>
+                            </tr>
+                            <tr>
+                                <td width='250'><?php _e("Border color","wpcf_nd"); ?></td>
+                                <td><input type='text' name='wpcf_nd_input_border_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_color'])); ?>' /></td>
+                            </tr>
+                            <tr>
+                                <td width='250'><?php _e("Border hover color","wpcf_nd"); ?></td>
+                                <td><input type='text' name='wpcf_nd_input_border_focus_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_focus_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_focus_color'])); ?>' /></td>
+                            </tr>
+                            <tr>
+                                <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+                                <td><input type='number' name='wpcf_nd_input_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_size'])); ?>' min="10" max="62" /></td>
+                            </tr>
+                            <tr>
+                                <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+                                <td><input type='text' name='wpcf_nd_input_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_color'])); ?>' /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class='wp-list-table striped fixed wpcf-admin-table'>
+                        <thead>
+                        <tr>
+                            <th><?php _e( "Submit button", "wpcf_nd" ); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_submit_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_color'])); ?>' /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Background hover color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_submit_bg_hover_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_hover_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'])); ?>' /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+                            <td><input type='number' name='wpcf_nd_submit_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_size'])); ?>' min="10" max="62" /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+                            <td><input type='text' name='wpcf_nd_submit_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_color'])); ?>' /></td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
+                            <td>
+                                <select name='wpcf_nd_submit_font_weight' id='wpcf_nd_submit_font_weight'>
+                                    <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+                                    <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+                                    <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+                                    <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width='250'><?php _e("Text transform","wpcf_nd"); ?></td>
+                            <td>
+                                <select name='wpcf_nd_submit_text_transform' id='wpcf_nd_submit_text_transform'>
+                                    <option value="none" <?php echo ( 'normal' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "none", "wpcf_nd" ); ?></option>
+                                    <option value="uppercase" <?php echo ( 'uppercase' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "uppercase", "wpcf_nd" ); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="wpcf-admin-preview-form wpcf_nd" id="wpcf-nd">
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-text"><?php _e("Text field","wpcf_nd"); ?></label>
+                    <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-text" type="text"/>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-email"><?php _e("Email field","wpcf_nd"); ?></label>
+                    <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-email" type="email"/>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-textarea"><?php _e("Text Area","wpcf_nd"); ?></label>
+                    <textarea class="wpcf-admin-preview-input" id="wpcf-admin-preview-textarea"></textarea>
+                    <p>
+                        <input class="wpcf-admin-preview-submit" type="button" value="<?php _e("Submit","wpcf_nd"); ?>"/>
+                    </p>
+                </div>
+
+            </div>
+
+            <?php do_action( "wpcf_hook_styling_page_bottom", $wpcf_nd_styling ); ?>
+
+            <input class="wpcf-submit-save-styling" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
+        </form>
+        <style>
+            .wpcf_nd label {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_label_font_size'] ) {
+                    echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_label_font_size'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) {
+                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_label_font_weight'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_label_color'] ) {
+                    echo 'color:' . $wpcf_nd_styling['wpcf_nd_label_color'] . ';';
+                } ?>
+            }
+            .wpcf_nd input[type="text"], .wpcf_nd input[type="email"], .wpcf_nd input[type="number"], .wpcf_nd input[type="date"], .wpcf_nd textarea {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_input_bg_color'] ) {
+                    echo 'background-color:' . $wpcf_nd_styling['wpcf_nd_input_bg_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_input_border_color'] ) {
+                    echo 'border-color:' . $wpcf_nd_styling['wpcf_nd_input_border_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_input_font_size'] ) {
+                    echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_input_font_size'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_input_font_color'] ) {
+                    echo 'color:' . $wpcf_nd_styling['wpcf_nd_input_font_color'] . ';';
+                } ?>
+            }
+            .wpcf_nd input[type="text"]:hover, .wpcf_nd input[type="email"]:hover, .wpcf_nd input[type="number"]:hover, .wpcf_nd input[type="date"]:hover, .wpcf_nd textarea:hover {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_input_border_color'] ) {
+                    echo 'border-color:' . $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] . ';';
+                } ?>
+            }
+            .wpcf-admin-preview-submit {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) {
+                    echo 'background-color:' . $wpcf_nd_styling['wpcf_nd_submit_bg_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_size'] ) {
+                    echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_submit_font_size'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_color'] ) {
+                    echo 'color:' . $wpcf_nd_styling['wpcf_nd_submit_font_color'] . ';';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) {
+                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_submit_font_weight'] . 'px;';
+                }
+                if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) {
+                    echo 'text-transform:' . $wpcf_nd_styling['wpcf_nd_submit_text_transform'] . 'px;';
+                } ?>
+            }
+            .wpcf-admin-preview-submit:hover {
+                <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] ) {
+                    echo 'background-color:' . $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] . ';';
+                } ?>
+            }
+        </style>
+
+    <?php
 	}
 
 	function wpcf_settings_page() {
@@ -1548,6 +2093,104 @@ class WP_Contact_Form_ND{
 	public static function enqueue_user_styles() {
         wp_register_style( 'contact-form-ready', plugins_url(plugin_basename(dirname(__FILE__)))."/css/front-end.css", true );
         wp_enqueue_style( 'contact-form-ready' );
+
+		$wpcf_nd_styling = get_option("wpcf_nd_styling");
+		$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
+		$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
+		$modal_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_bg'];
+		$modal_opacity = $wpcf_nd_basic_settings['wpcf_nd_modal_opacity'];
+		$modal_inner_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'];
+
+		$css = '';
+		if ( 1 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {
+			if (
+				$wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ||
+				$wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ||
+				$wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222'
+			) {
+				$css .= ".wpcf_nd label {";
+				if ( $wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ) {
+					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_size'] ) . "px;";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ) {
+					$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222' ) {
+					$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_color'] ) . ";";
+				}
+				$css .= "}";
+			}
+
+			if (
+				$wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ||
+				$wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ||
+				$wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ||
+				$wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ||
+				$wpcf_nd_styling['wpcf_nd_input_font_color'] !== '#666666'
+			) {
+				$css .= ".wpcf_nd input[type='text'],.wpcf_nd textarea,.wpcf_nd input[type='email'],.wpcf_nd input[type='number'],.wpcf_nd input[type='date'] {";
+				if ( $wpcf_nd_styling['wpcf_nd_input_bg_color'] !== 'transparent' ) {
+					$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_bg_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
+					$css .= "border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_input_font_size'] !== '16' ) {
+					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_font_size'] ) . "px;";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_input_border_color'] !== '#222222' ) {
+					$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_color'] ) . ";";
+				}
+				$css .= "}";
+			}
+
+			if ( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] !== '#333333' ) {
+				$css .= ".wpcf_nd input[type='text']:focus,.wpcf_nd textarea:focus,.wpcf_nd input[type='email']:focus,.wpcf_nd input[type='number']:focus,.wpcf_nd input[type='date']:focus, .wpcf_nd input[type='text']:hover,.wpcf_nd textarea:hover,.wpcf_nd input[type='email']:hover,.wpcf_nd input[type='number']:hover,.wpcf_nd input[type='date']:hover {border-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_input_border_focus_color'] ) . ";}";
+			}
+
+			if (
+				$wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ||
+				$wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ||
+				$wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ||
+				$wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ||
+				$wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none'
+			) {
+				$css .= ".wpcf_nd .wpcf_nd_submit {";
+				if ( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] !== '#222222' ) {
+					$css .= "background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_font_size'] !== '14' ) {
+					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_size'] ) . "px;";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_font_color'] !== '#ffffff' ) {
+					$css .= "color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_color'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] !== '600' ) {
+					$css .= "font-weight: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) . ";";
+				}
+				if ( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] !== 'none' ) {
+					$css .= "text-transform: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) . ";";
+				}
+				$css .= "}";
+			}
+
+			if ( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] !== '#666666' ) {
+				$css .= ".wpcf_nd .wpcf_nd_submit:hover {background-color: " . esc_attr( $wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'] ) . ";}";
+			}
+		}
+
+		if ( '' !== trim( $modal_el ) && ( '#222222' !== $modal_bg || '0.8' !== $modal_opacity || '#ffffff' !== $modal_inner_bg ) ) {
+			if ( '#222222' !== $modal_bg || '0.8' !== $modal_opacity ) {
+				$css .= ".wpcf-modal {background: " . self::wpcf_nd_hex2rgba( $modal_bg, $modal_opacity ) . ";}";
+            }
+			if ( '#ffffff' !== $modal_inner_bg ) {
+				$css .= ".wpcf-modal .wpcf_wrapper {background: " . esc_attr( $modal_inner_bg ) . ";}";
+			}
+		}
+
+		if ( '' !== $css ) {
+			wp_add_inline_style( 'contact-form-ready', $css );
+		}
 	}
 
 	/**
@@ -1562,9 +2205,13 @@ class WP_Contact_Form_ND{
 
 	    	global $wpcf_thank_you;
 	    	global $wpcf_error_message;
+
+			$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
+			$modal_el_attr = $wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'];
+			$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
 	    	if ($wpcf_thank_you) { 
 
-    			return "<div class='wpcf-nd-thank-you'>".stripslashes(esc_html($wpcf_thank_you))."</div>";
+    			return "<div class='wpcf-nd-thank-you' data-el='" . esc_attr( $modal_el ) . "' data-el-attr='" . esc_attr( $modal_el_attr ) . "'>".stripslashes(esc_html($wpcf_thank_you))."</div>";
 
 			} else {
 
@@ -1591,15 +2238,20 @@ class WP_Contact_Form_ND{
 					$submit_string = __("Send","wpcf_nd");
 				}
 
+				$theme = get_post_meta( $atts['id'], 'wpcf_nd_theme', true );
+
 				$data = array(
 					"cfid" => $atts['id'],
 					"submit_string" => $submit_string,
-					"sendto" => $send_to
+					"sendto" => $send_to,
+                    "theme" => $theme,
+                    "modal_el_attr" => $modal_el_attr,
+                    "modal_el" => $modal_el,
 				);
 
 				$js_overrides = apply_filters( "wpcf_js_overrides_front_end", "" );
 
-				$html_data = str_replace(array("\r", "\n"), '', $html_data);
+			    $html_data = str_replace(array("\r", "\n"), '', $html_data);
 				$html_data = apply_filters( "wpcf_nd_html_control" , $html_data, $data );
 				$style = '<style>.form-control { clear: both; display: block; }</style>';
 
@@ -1614,9 +2266,19 @@ class WP_Contact_Form_ND{
 	}
 
 	function wpcf_nd_filter_control_html_control( $html_data, $data ) {
+		$attrs = '';
+		$form_start = '';
+		if ( '' !== trim( $data['modal_el'] ) ) {
+			$attrs .= ' data-el-attr="' . esc_attr( $data['modal_el_attr'] ) . '" data-el="' . esc_attr( $data['modal_el'] ) . '"';
+			$form_start .= '<div class="wpcf-modal">';
+		}
 		$random_identifier = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
-		$form_start = '<div class="wpcf_wrapper">'.PHP_EOL;
-		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.'" cfid="'.$random_identifier.'">'.PHP_EOL;
+		$theme = 'wpcf_nd--' . $data['theme'];
+		$form_start .= '<div class="wpcf_wrapper"' . $attrs . '>'.PHP_EOL;
+		if ( '' !== trim( $data['modal_el'] ) ) {
+			$form_start .= '<a href="#" class="wpcf-modal__close"></a>';
+		}
+		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.' '. $theme .'" cfid="'.$random_identifier.'">'.PHP_EOL;
 		$id_string = "			<input type='hidden' value='".esc_attr($data['cfid'])."' name='wpcf_nd_send_id' id='wpcf_nd_send_id' />".PHP_EOL;
 		$nonce_string = '			'.wp_nonce_field( 'wpcf_nd', 'wpcf_nonce_field', false, false ).PHP_EOL;
 
@@ -1626,6 +2288,9 @@ class WP_Contact_Form_ND{
 
 		$form_end = '</form>'.PHP_EOL;
 		$form_end .= '</div>'.PHP_EOL;
+		if ( '' !== trim( $data['modal_el'] ) ) {
+			$form_end .= '</div>';
+		}
 		return $form_start.$id_string.$nonce_string.$html_data.$other_data.$submit_string.$form_end;
 	}
 
@@ -1722,7 +2387,7 @@ class WP_Contact_Form_ND{
 
 
 							jQuery.post( 'http://contactformready.com/apif/vote_pull.php', data, function(response){
-								response = JSON.parse(response);
+                                response = JSON.parse(response);
 								ret_html = '<table><thead><th>Feature</th><th></th><th></th></thead>';
 								for (var key in response) {
 								  if (response.hasOwnProperty(key)) {
@@ -1768,6 +2433,44 @@ class WP_Contact_Form_ND{
 
 
 	
+	}
+
+	public static function wpcf_nd_hex2rgba($color, $opacity = false) {
+
+		$default = 'rgb(0,0,0)';
+
+		//Return default if no color provided
+		if(empty($color))
+			return $default;
+
+		//Sanitize $color if "#" is provided
+		if ($color[0] == '#' ) {
+			$color = substr( $color, 1 );
+		}
+
+		//Check if color has 6 or 3 characters and get values
+		if (strlen($color) == 6) {
+			$hex = array( $color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5] );
+		} elseif ( strlen( $color ) == 3 ) {
+			$hex = array( $color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2] );
+		} else {
+			return $default;
+		}
+
+		//Convert hexadec to rgb
+		$rgb =  array_map('hexdec', $hex);
+
+		//Check if opacity is set(rgba or rgb)
+		if($opacity){
+			if(abs($opacity) > 1)
+				$opacity = 1.0;
+			$output = 'rgba('.implode(",",$rgb).','.$opacity.')';
+		} else {
+			$output = 'rgb('.implode(",",$rgb).')';
+		}
+
+		//Return rgb(a) color string
+		return $output;
 	}
 
 }
