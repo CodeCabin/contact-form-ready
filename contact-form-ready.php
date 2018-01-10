@@ -124,6 +124,8 @@ include "includes/module_template_editor.php";
 include "includes/module_subscribe.php";
 include "includes/integration_wp_live_chat_support.php";
 
+include "lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php";
+
 class WP_Contact_Form_ND{
 
 	var $current_version;
@@ -181,6 +183,7 @@ class WP_Contact_Form_ND{
 		add_filter( 'wp_mail_from', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_address' ), 10, 1 );
 		add_filter( 'wp_mail_from_name', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_name' ), 10, 1 );
 
+		add_filter( 'codecabin_deactivate_feedback_form_plugins', array( $this, 'wpcf_nd_filter_deactivate_feedback_form' ), 10, 1 );
 	}
 
 	function load_plugin_textdomain() {
@@ -2383,6 +2386,15 @@ class WP_Contact_Form_ND{
 
 	
 	}
+
+	function wpcf_nd_filter_deactivate_feedback_form( $plugins ) {
+	    $plugins[] = (object) array(
+            'slug' => 'contact-form-ready',
+            'version' => '2.0.00'
+        );
+
+	    return $plugins;
+    }
 
 	public static function wpcf_nd_hex2rgba($color, $opacity = false) {
 
