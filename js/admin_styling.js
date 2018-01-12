@@ -2,7 +2,7 @@
 
     $(document).ready(function () {
 
-        var styleTableWrapper = $('.wpcf-admin-enable-table-wrapper'),
+        var styleTableWrapper = $('.wpcf-admin-styling-wrapper'),
             enableStylingInput = $('#wpcf_nd_enable_style');
 
         if (enableStylingInput.is(':checked')) {

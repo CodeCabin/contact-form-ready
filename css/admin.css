@@ -165,49 +165,6 @@
     transform: rotate(-45deg);
 }
 
-/* Themes */
-.wpcf-admin-img-list {
-    overflow: hidden;
-}
-
-.wpcf-admin-img-item {
-    display: inline-block;
-    width: 31.7%;
-    float: left;
-    margin-right: 2%;
-    margin-bottom: 30px;
-}
-
-.wpcf-admin-img-item:nth-child(3n) {
-    margin-right: 0;
-}
-
-.wpcf-admin-img-heading {
-    font-size: 13px;
-    font-weight: 400;
-    text-align: center;
-}
-
-.is-active .wpcf-admin-img-heading {
-    font-weight: 600;
-}
-
-.wpcf-admin-img-link {
-    display: block;
-    border: 1px solid transparent;
-}
-
-.wpcf-admin-img-item:hover .wpcf-admin-img-link,
-.is-active .wpcf-admin-img-link {
-    border-color: rgba(0, 127, 255, .5);
-    box-shadow: 0 0 7px rgba(0, 127, 255, .4);
-}
-
-.wpcf-admin-img-thumb {
-    width: 100%;
-    height: auto;
-}
-
 /* Styling */
 .wpcf-admin-enable-table-wrapper table {
     max-width: 500px;
@@ -276,7 +233,7 @@
     min-width: 350px;
 }
 
-.wpcf_nd label {
+.wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {
     display: block;
     margin-bottom: 8px;
     color: #333333;
@@ -367,4 +324,12 @@
 
 .form-builder-dialog {
     overflow: visible !important;
+}
+
+.wpcf-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
 }

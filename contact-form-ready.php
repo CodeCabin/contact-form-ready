@@ -12,7 +12,6 @@
 /**
  * 2.0.00 - 2017-12-01
  * Tested on WordPress 4.9.1
- * Added new themes panel with predefined versions
  * Added custom settings for fonts, colors of form elements with preview
  * Added ability to open form in modal box
  * Added ability to send HTML and Plaintext mail
@@ -125,6 +124,8 @@ include "includes/module_template_editor.php";
 include "includes/module_subscribe.php";
 include "includes/integration_wp_live_chat_support.php";
 
+include "lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php";
+
 class WP_Contact_Form_ND{
 
 	var $current_version;
@@ -182,6 +183,7 @@ class WP_Contact_Form_ND{
 		add_filter( 'wp_mail_from', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_address' ), 10, 1 );
 		add_filter( 'wp_mail_from_name', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_name' ), 10, 1 );
 
+		add_filter( 'codecabin_deactivate_feedback_form_plugins', array( $this, 'wpcf_nd_filter_deactivate_feedback_form' ), 10, 1 );
 	}
 
 	function load_plugin_textdomain() {
@@ -620,10 +622,6 @@ class WP_Contact_Form_ND{
 			'advanced-settings' => array(
 				'name' => __( 'Advanced Settings', 'wpcf_nd' ),
 				'icon' => ''
-			),
-			'themes' => array(
-				'name' => __( 'Themes', 'wpcf_nd' ),
-				'icon' => ''
 			)
 		);
 
@@ -755,7 +753,7 @@ class WP_Contact_Form_ND{
 
 				<h2><?php _e("Advanced Settings","wpcf_nd"); ?></h2>
 
-				<table class='form-table'>					
+				<table class='form-table'>
 					<tr>
 						<td width='250'><?php _e("Email subject (admin)","wpcf_nd"); ?></td>
 						<td><input type='text' name='wpcf_nd_subject_admin' class='regular-text' id='wpcf_nd_subject_admin' value='<?php echo $cfr_email_subject_admin ?>' /></td>
@@ -768,7 +766,7 @@ class WP_Contact_Form_ND{
 
 					<tr>
 						<td><?php _e("Send confirmation email to user?","wpcf_nd"); ?></td>
-						
+
 						<?php $is_checked = $cfr_send_to_user == 1 ? "checked" : ""; ?>
 
 						<td><input type='checkbox' name='wpcf_nd_send_to_user' id='wpcf_nd_send_to_user' value='1' <?php echo $is_checked; ?> /></td>
@@ -803,52 +801,6 @@ class WP_Contact_Form_ND{
 				</table>
 
 			</div>			
-
-            <div id='themes'>
-
-				<?php
-				$wpcf_nd_theme = get_post_meta( $post->ID, 'wpcf_nd_theme', true );
-				if ( ! isset( $wpcf_nd_theme ) ) {
-					$wpcf_nd_theme = 'default';
-				}
-				?>
-
-                <h2><?php _e("Themes","wpcf_nd"); ?></h2>
-
-                <ul class="wpcf-admin-img-list">
-                    <li class="wpcf-admin-img-item" data-cf-theme="default">
-                        <h3 class="wpcf-admin-img-heading"><?php _e("Default Theme","wpcf_nd"); ?></h3>
-                        <a href="#" class="wpcf-admin-img-link">
-                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/default.png" ?>"
-                                 alt="<?php _e("Default Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
-                        </a>
-                    </li>
-                    <li class="wpcf-admin-img-item" data-cf-theme="slick">
-                        <h3 class="wpcf-admin-img-heading"><?php _e("Slick Theme","wpcf_nd"); ?></h3>
-                        <a href="#" class="wpcf-admin-img-link">
-                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/slick.png" ?>"
-                                 alt="<?php _e("Slick Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
-                        </a>
-                    </li>
-                    <li class="wpcf-admin-img-item" data-cf-theme="modern">
-                        <h3 class="wpcf-admin-img-heading"><?php _e("Modern Theme","wpcf_nd"); ?></h3>
-                        <a href="#" class="wpcf-admin-img-link">
-                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/modern.png" ?>"
-                                 alt="<?php _e("Modern Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
-                        </a>
-                    </li>
-                    <li class="wpcf-admin-img-item" data-cf-theme="round">
-                        <h3 class="wpcf-admin-img-heading"><?php _e("Round Theme","wpcf_nd"); ?></h3>
-                        <a href="#" class="wpcf-admin-img-link">
-                            <img src="<?php echo plugins_url( plugin_basename( dirname( __FILE__ ) ) ) . "/images/themes/round.png" ?>"
-                                 alt="<?php _e("Round Theme","wpcf_nd"); ?>" class="wpcf-admin-img-thumb"/>
-                        </a>
-                    </li>
-                </ul>
-                <input class="wpcf-admin-option-theme" type="hidden" name="wpcf_nd_theme" value="<?php echo $wpcf_nd_theme; ?>" />
-
-            </div>
-
 
             <?php
 				$wpcf_nd_settings = get_option("wpcf_nd_settings");
@@ -1778,12 +1730,12 @@ class WP_Contact_Form_ND{
                         <tr>
                             <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
                             <td>
-                                <select name='wpcf_nd_label_font_weight' id='wpcf_nd_label_font_weight'>
-                                    <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>300</option>
-                                    <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>400</option>
-                                    <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>600</option>
-                                    <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>700</option>
-                                </select>
+                            <select name='wpcf_nd_label_font_weight' id='wpcf_nd_label_font_weight'>
+                                <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+                                <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+                                <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+                                <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+                            </select>
                             </td>
                         </tr>
                         <tr>
@@ -1849,21 +1801,21 @@ class WP_Contact_Form_ND{
                         <tr>
                             <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
                             <td>
-                                <select name='wpcf_nd_submit_font_weight' id='wpcf_nd_submit_font_weight'>
-                                    <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>300</option>
-                                    <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>400</option>
-                                    <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>600</option>
-                                    <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>700</option>
-                                </select>
+                            <select name='wpcf_nd_submit_font_weight' id='wpcf_nd_submit_font_weight'>
+                                <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+                                <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+                                <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+                                <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+                            </select>
                             </td>
                         </tr>
                         <tr>
                             <td width='250'><?php _e("Text transform","wpcf_nd"); ?></td>
                             <td>
-                                <select name='wpcf_nd_submit_text_transform' id='wpcf_nd_submit_text_transform'>
-                                    <option value="none" <?php echo ( 'normal' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "none", "wpcf_nd" ); ?></option>
-                                    <option value="uppercase" <?php echo ( 'uppercase' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "uppercase", "wpcf_nd" ); ?></option>
-                                </select>
+                            <select name='wpcf_nd_submit_text_transform' id='wpcf_nd_submit_text_transform'>
+                                <option value="none" <?php echo ( 'normal' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "none", "wpcf_nd" ); ?></option>
+                                <option value="uppercase" <?php echo ( 'uppercase' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "uppercase", "wpcf_nd" ); ?></option>
+                            </select>
                             </td>
                         </tr>
                         </tbody>
@@ -1890,7 +1842,7 @@ class WP_Contact_Form_ND{
             <input class="wpcf-submit-save-styling" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
         </form>
         <style>
-            .wpcf_nd label {
+            .wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {
                 <?php if ( '' !== $wpcf_nd_styling['wpcf_nd_label_font_size'] ) {
                     echo 'font-size:' . $wpcf_nd_styling['wpcf_nd_label_font_size'] . 'px;';
                 }
@@ -2020,7 +1972,7 @@ class WP_Contact_Form_ND{
 						<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
 					</tr>
 				</table>
-				
+
 				<?php do_action( "wpcf_hook_settings_page_bottom", $wpcf_nd_settings ); ?>
 
 				<input type='submit' value='Save settings' name='wpcf_submit_save_settings' />
@@ -2108,7 +2060,7 @@ class WP_Contact_Form_ND{
 				$wpcf_nd_styling['wpcf_nd_label_font_weight'] !== '600' ||
 				$wpcf_nd_styling['wpcf_nd_label_color'] !== '#222222'
 			) {
-				$css .= ".wpcf_nd label {";
+				$css .= ".wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {";
 				if ( $wpcf_nd_styling['wpcf_nd_label_font_size'] !== '16' ) {
 					$css .= "font-size: " . esc_attr( $wpcf_nd_styling['wpcf_nd_label_font_size'] ) . "px;";
 				}
@@ -2434,6 +2386,15 @@ class WP_Contact_Form_ND{
 
 	
 	}
+
+	function wpcf_nd_filter_deactivate_feedback_form( $plugins ) {
+	    $plugins[] = (object) array(
+            'slug' => 'contact-form-ready',
+            'version' => '2.0.00'
+        );
+
+	    return $plugins;
+    }
 
 	public static function wpcf_nd_hex2rgba($color, $opacity = false) {
 
