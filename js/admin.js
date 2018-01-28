@@ -72,7 +72,7 @@ var predefined_busy = false;
 
                     fbOptions = {
                         controlPosition: 'left',
-                        disableFields: ['autocomplete', 'button', 'file', 'access'],
+                        disableFields: ['autocomplete', 'button', 'access'],
                         editOnAdd: true,
                         formData: tformData,
                         dataType: 'xml'

@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
         editing = true,
         fbOptions = {
             controlPosition: 'left',
-            disableFields: ['autocomplete', 'button', 'file', 'access'],
+            disableFields: ['autocomplete', 'button', 'access'],
             editOnAdd: true,
             dataType: 'xml',
             formData: tmpformData
