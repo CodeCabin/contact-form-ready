@@ -281,6 +281,22 @@ class WP_Contact_Form_ND{
         $body = "<table width='100%'>";
         $txt_only = "";
 
+		$attachments = array();
+		if ( ! empty( $_FILES ) ) {
+			foreach ($_FILES as $file_name => $file ) {
+				foreach ($file['name'] as $key => $name) {
+					$f = array(
+						'name' => $file['name'][$key],
+						'type' => $file['type'][$key],
+						'tmp_name' => $file['tmp_name'][$key],
+						'error' => $file['error'][$key],
+						'size' => $file['size'][$key]
+					);
+					array_push($attachments, $this->wpcf_nd_upload_user_file($f));
+				}
+			}
+		}
+
         foreach ( $_POST as $key => $val ) {
 
         	if ( is_array( $val ) ) {
@@ -343,7 +359,8 @@ class WP_Contact_Form_ND{
         	'user_name' => $user_name,
         	'from_form' => $cfid,
         	'uri' => $_SERVER['REQUEST_URI'],
-        	'post_data' => $_POST
+        	'post_data' => $_POST,
+            'attachments' => $attachments
     	);
 
     	$this->send_to_integrations( $cfid, $txt_only, $data );
@@ -365,7 +382,19 @@ class WP_Contact_Form_ND{
     	}
 	}
 
+	function wpcf_nd_upload_user_file( $file ) {
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
 
+		$upload_overrides = array( 'test_form' => false );
+		$movefile = wp_handle_upload( $file, $upload_overrides );
+		if ( $movefile && ! isset( $movefile['error'] ) ) {
+			return $movefile['file'];
+		} else {
+			return false;
+		}
+	}
 
 	function wpcf_nd_api_post() {
 
@@ -508,6 +537,11 @@ class WP_Contact_Form_ND{
 
     	$headers = apply_filters("wpcf_nd_filter_mail_headers",$headers,$cfid);
     	$attachments = array();
+		if ( isset( $sent_data['attachments'] ) ) {
+			foreach ($sent_data['attachments'] as $attachment) {
+				array_push($attachments, $attachment);
+			}
+		}
     	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid);
 
 		if ( 1 === $send_plaintext ) {
@@ -1395,7 +1429,17 @@ class WP_Contact_Form_ND{
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
 	        wp_enqueue_script( 'wpcf-admin-settings' );
+			wp_register_style( 'wpcf-codemirror-style', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/codemirror.css", true );
+			wp_enqueue_style( 'wpcf-codemirror-style' );
+			wp_register_style( 'wpcf-codemirror-theme', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/monokai.css", true );
+			wp_enqueue_style( 'wpcf-codemirror-theme' );
 	        wp_localize_script( 'wpcf-admin-settings', 'wpcf_nd_confirm_restore_template_string', __( 'Are you sure you want to restore the default newsletter template?', 'wpcf_nd' ) );
+			wp_register_script( 'wpcf-codemirror-script', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/codemirror.js", true );
+			wp_enqueue_script( 'wpcf-codemirror-script' );
+			wp_register_script( 'wpcf-codemirror-mode', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/htmlmixed.js", true );
+			wp_enqueue_script( 'wpcf-codemirror-mode' );
+			wp_register_script( 'wpcf-codemirror-xml-mode', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/xml.js", true );
+			wp_enqueue_script( 'wpcf-codemirror-xml-mode' );
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-styling') {
 			wp_register_script( 'wpcf-admin-styling', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_styling.js", true );
@@ -2172,6 +2216,8 @@ class WP_Contact_Form_ND{
 				$this->increase_views(intval($atts['id']));
 
 				$html_data = get_post_meta( $atts['id'], 'wpcf_nd_html_data' , true );
+			    $form_data = get_post_meta( $atts['id'], 'wpcf_nd_form_data' , true );
+			    $form_data = json_decode($form_data, true);
 				$send_to = get_post_meta( $atts['id'], 'wpcf_nd_send_to' , true );
 				$form_type = get_post_meta( $atts['id'], 'wpcf_nd_submit_type' , true );
 				if (!$form_type || $form_type === null) {
@@ -2208,8 +2254,19 @@ class WP_Contact_Form_ND{
 				$style = '<style>.form-control { clear: both; display: block; }</style>';
 
 				$other_data = '';
-				if ($wpcf_error_message) 
-					$other_data = "<div class='wpcf-nd-error-message'>".$wpcf_error_message."</div>";
+				if ($wpcf_error_message) {
+				    $other_data = "<div class='wpcf-nd-error-message'>".$wpcf_error_message."</div>";
+				}
+			    $other_data .= "<script>setTimeout(function() {";
+			    foreach ($form_data as $key => $obj) {
+				    if ($obj['type'] === 'file') {
+					    $other_data .= "jQuery('#" . $obj['name'] . "').attr('name', '" . $obj['name'] . "[]');";
+					    if (isset($obj['multiple']) && $obj['multiple']) {
+						    $other_data .= "jQuery('#" . $obj['name'] . "').attr('multiple', 'multiple');";
+					    }
+				    }
+			    }
+			    $other_data .= "}, 100);</script>";
 
 				return $style.$other_data.do_shortcode($html_data);
 			}
