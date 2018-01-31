@@ -281,21 +281,6 @@ class WP_Contact_Form_ND{
         $body = "<table width='100%'>";
         $txt_only = "";
 
-		$attachments = array();
-		if ( ! empty( $_FILES ) ) {
-			foreach ($_FILES as $file_name => $file ) {
-				foreach ($file['name'] as $key => $name) {
-					$f = array(
-						'name' => $file['name'][$key],
-						'type' => $file['type'][$key],
-						'tmp_name' => $file['tmp_name'][$key],
-						'error' => $file['error'][$key],
-						'size' => $file['size'][$key]
-					);
-					array_push($attachments, $this->wpcf_nd_upload_user_file($f));
-				}
-			}
-		}
 
         foreach ( $_POST as $key => $val ) {
 
@@ -360,10 +345,10 @@ class WP_Contact_Form_ND{
         	'from_form' => $cfid,
         	'uri' => $_SERVER['REQUEST_URI'],
         	'post_data' => $_POST,
-            'attachments' => $attachments
     	);
+		$data = apply_filters( 'wpcf_nd_filter_main_post_data', $data, 1, 10 );
 
-    	$this->send_to_integrations( $cfid, $txt_only, $data );
+		$this->send_to_integrations( $cfid, $txt_only, $data );
         $this->wpcf_send_email( $cfid , $body , $data );
     	
     	$wpcf_nd_redirect_uri = get_post_meta( $cfid, 'wpcf_nd_redirect_uri', true );
@@ -382,19 +367,6 @@ class WP_Contact_Form_ND{
     	}
 	}
 
-	function wpcf_nd_upload_user_file( $file ) {
-		if ( ! function_exists( 'wp_handle_upload' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		}
-
-		$upload_overrides = array( 'test_form' => false );
-		$movefile = wp_handle_upload( $file, $upload_overrides );
-		if ( $movefile && ! isset( $movefile['error'] ) ) {
-			return $movefile['file'];
-		} else {
-			return false;
-		}
-	}
 
 	function wpcf_nd_api_post() {
 
@@ -537,12 +509,7 @@ class WP_Contact_Form_ND{
 
     	$headers = apply_filters("wpcf_nd_filter_mail_headers",$headers,$cfid);
     	$attachments = array();
-		if ( isset( $sent_data['attachments'] ) ) {
-			foreach ($sent_data['attachments'] as $attachment) {
-				array_push($attachments, $attachment);
-			}
-		}
-    	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid);
+    	$attachments = apply_filters("wpcf_nd_filter_mail_attachments",$attachments,$cfid, $sent_data);
 
 		if ( 1 === $send_plaintext ) {
 			require_once( 'includes/class.html-to-plaintext.php' );
@@ -2257,16 +2224,7 @@ class WP_Contact_Form_ND{
 				if ($wpcf_error_message) {
 				    $other_data = "<div class='wpcf-nd-error-message'>".$wpcf_error_message."</div>";
 				}
-			    $other_data .= "<script>setTimeout(function() {";
-			    foreach ($form_data as $key => $obj) {
-				    if ($obj['type'] === 'file') {
-					    $other_data .= "jQuery('#" . $obj['name'] . "').attr('name', '" . $obj['name'] . "[]');";
-					    if (isset($obj['multiple']) && $obj['multiple']) {
-						    $other_data .= "jQuery('#" . $obj['name'] . "').attr('multiple', 'multiple');";
-					    }
-				    }
-			    }
-			    $other_data .= "}, 100);</script>";
+			    $other_data = apply_filters( 'wpcf_filter_shortcode_other_data', $other_data, $form_data );
 
 				return $style.$other_data.do_shortcode($html_data);
 			}
@@ -2287,7 +2245,7 @@ class WP_Contact_Form_ND{
 		if ( '' !== trim( $data['modal_el'] ) ) {
 			$form_start .= '<a href="#" class="wpcf-modal__close"></a>';
 		}
-		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.' '. $theme .'" cfid="'.$random_identifier.'">'.PHP_EOL;
+		$form_start .= '<form action="" method="POST" name="wpcf_nd" id="wpcf_nd" class="wpcf_nd wpcf_nd_'.$random_identifier.' '. $theme .'" cfid="'.$random_identifier.'" enctype="multipart/form-data">'.PHP_EOL;
 		$id_string = "			<input type='hidden' value='".esc_attr($data['cfid'])."' name='wpcf_nd_send_id' id='wpcf_nd_send_id' />".PHP_EOL;
 		$nonce_string = '			'.wp_nonce_field( 'wpcf_nd', 'wpcf_nonce_field', false, false ).PHP_EOL;
 
