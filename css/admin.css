@@ -333,3 +333,11 @@
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
     clip: rect(1px, 1px, 1px, 1px);
 }
+
+.wpcf-admin-styling-wrapper.is-active .wpcf-admin-table:after {
+    content: none;
+}
+
+.build-wrap .icon-file.input-control {
+    display: none;
+}
