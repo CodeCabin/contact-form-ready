@@ -3,14 +3,18 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.00
+  Version: 2.0.01
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
- * 2.0.00 - 2017-12-01
+ * 2.0.01 - 2018-02-05
+ * 
+ * Added a deactivation survey
+ * 
+ * 2.0.00 - 2018-01-05
  * Tested on WordPress 4.9.1
  * Added custom settings for fonts, colors of form elements with preview
  * Added ability to open form in modal box
@@ -132,7 +136,7 @@ class WP_Contact_Form_ND{
 
 	public function __construct(){
 
-		$this->current_version = "1.13";
+		$this->current_version = "2.0.01";
 
 		$this->upload_dir =(defined('WP_CONTENT_DIR')) ? WP_CONTENT_DIR . '/uploads' : ABSPATH . 'wp-content' . $this->DS() . 'uploads';
 		$this->upload_url =(defined('WP_CONTENT_URL')) ? WP_CONTENT_URL . '/uploads' : get_option('siteurl') . '/wp-content/uploads';
@@ -1450,7 +1454,7 @@ class WP_Contact_Form_ND{
 		<h1><?php echo __( "Contact Form Ready Extensions", "wpcf_nd" ); ?></h1>
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Stored Submissions</h3>
-			<a href="http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/storedsubm.png" ?>" class="attachment-showcase wp-post-image" alt="Stored Submissions" title="Stored Submissions">
 			</a>
 			<p></p>
@@ -1458,12 +1462,25 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Save all sent form data in WordPress.</p>
-			<a href="http://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/stored-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+		</div>
+
+		<div class="wpcf-extension">
+			<h3 class="wpcf-extension-title">Themes</h3>
+			<a href="https://www.contactformready.com/extensions/themes/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" target="_BLANK">
+				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/cfr-themes.jpg" ?>" class="attachment-showcase wp-post-image" alt="Contact Form Themes" title="Contact Form Themes">
+			</a>
+			<p></p>
+			<p></p>
+			<div class="wpcf-extension-label-box"></div>
+			<p>Price: <em>$8.99 once off</em></p>
+			<p>Choose a theme for your contact form and modify the styles of all the elements.</p>
+			<a href="https://www.contactformready.com/extensions/themes/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=storedsub" title="Stored Submissions Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">MailChimp</h3>
-			<a href="http://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mailchimp" title="Mailchimp Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mailchimp" title="Mailchimp Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/MailChimp.png" ?>" class="attachment-showcase wp-post-image" alt="MailChimp" title="MailChimp">
 			</a>
 			<p></p>
@@ -1471,12 +1488,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Store submission email addresses to a MailChimp subscriber list</p>			
-			<a href="http://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mailchimp" title="MailChimp Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/mailchimp/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=mailchimp" title="MailChimp Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Slack Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=slack" title="Slack Notifications Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=slack" title="Slack Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/Slack.png" ?>" class="attachment-showcase wp-post-image" alt="Slack Notifications" title="Slack Notifications">
 			</a>
 			<p></p>
@@ -1484,12 +1501,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via Slack when a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=slack" title="Slack Notifications Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/slack-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=slack" title="Slack Notifications Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">PDF Submissions</h3>
-			<a href="http://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=pdf" title="PDF Submissions Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=pdf" title="PDF Submissions Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/pdf.png" ?>" class="attachment-showcase wp-post-image" alt="PDF Submissions" title="PDF Submissions">
 			</a>
 			<p></p>
@@ -1497,12 +1514,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Store all sent form data in a PDF file</p>			
-			<a href="http://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=pdf" title="PDF Submissions" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/pdf-submissions/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=pdf" title="PDF Submissions" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">ClickSend Text Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clicksend" title="ClickSend Text Notifications Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clicksend" title="ClickSend Text Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/ClickSend.png" ?>" class="attachment-showcase wp-post-image" alt="ClickSend Text Notifications" title="ClickSend Text Notifications">
 			</a>
 			<p></p>
@@ -1510,12 +1527,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via text message via ClickSend as soon as a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clicksend" title="ClickSend Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/clicksend-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clicksend" title="ClickSend Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">BulkSMS Text Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=bulksms" title="ClickSend Text Notifications Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=bulksms" title="ClickSend Text Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/BulkSMS.png" ?>" class="attachment-showcase wp-post-image" alt="BulkSMS Text Notifications" title="BulkSMS Text Notifications">
 			</a>
 			<p></p>
@@ -1523,12 +1540,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via text message via BulkSMS as soon as a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=bulksms" title="BulkSMS Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/bulksms-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=bulksms" title="BulkSMS Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Clickatell Text Notifications</h3>
-			<a href="http://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clickatell" title="ClickSend Text Notifications Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clickatell" title="ClickSend Text Notifications Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/ClickaTell.png" ?>" class="attachment-showcase wp-post-image" alt="Clickatell Text Notifications" title="Clickatell Text Notifications">
 			</a>
 			<p></p>
@@ -1536,12 +1553,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Get notified via text message via Clickatell as soon as a new submission is received</p>			
-			<a href="http://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clickatell" title="Clickatell Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/clickatell-text-notifications/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=clickatell" title="Clickatell Text Notifications" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Zendesk</h3>
-			<a href="http://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zendesk" title="Zendesk Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zendesk" title="Zendesk Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/Zendesk.png" ?>" class="attachment-showcase wp-post-image" alt="Zendesk Extension" title="Zendesk Extension">
 			</a>
 			<p></p>
@@ -1549,12 +1566,12 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Convert submitted form data into a ticket on Zendesk</p>			
-			<a href="http://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zendesk" title="Zendesk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/zendesk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zendesk" title="Zendesk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 		<div class="wpcf-extension">
 			<h3 class="wpcf-extension-title">Nifty Desk</h3>
-			<a href="http://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" target="_BLANK">
+			<a href="https://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" target="_BLANK">
 				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/niftyd.png" ?>" class="attachment-showcase wp-post-image" alt="Nifty Desk Extension" title="Nifty Desk Extension">
 			</a>
 			<p></p>
@@ -1562,7 +1579,7 @@ class WP_Contact_Form_ND{
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
 			<p>Convert submitted form data into a ticket on Nifty Desk</p>			
-			<a href="http://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+			<a href="https://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
 
@@ -2340,7 +2357,7 @@ class WP_Contact_Form_ND{
 								jQuery(".wpcf_vote_count_"+feature).html(currentvotes);
 
 
-								jQuery.post( 'http://contactformready.com/apif/vote_pull.php', data, function(response){
+								jQuery.post( 'https://contactformready.com/apif/vote_pull.php', data, function(response){
 									
 									
 								});
@@ -2353,15 +2370,29 @@ class WP_Contact_Form_ND{
 							}
 
 
-							jQuery.post( 'http://contactformready.com/apif/vote_pull.php', data, function(response){
+							jQuery.post( 'https://contactformready.com/apif/vote_pull.php', data, function(response){
                                 response = JSON.parse(response);
 								ret_html = '<table><thead><th>Feature</th><th></th><th></th></thead>';
 								for (var key in response) {
 								  if (response.hasOwnProperty(key)) {
 								    current_feature = response[key];
+								    console.log(current_feature);
 								    if (typeof current_feature.title !== "undefined") {
 
-								    	ret_html = ret_html+'<tr><td>'+current_feature.title+'</td><td><span class="wpcf_vote_count_'+current_feature.featureid+'">'+current_feature.votes + '</span> ' +(current_feature.votes > 1 ? 'votes' : 'vote &nbsp;' ) + '</td><td><a href="javascript:void(0);" class="button button-secondary wpcf_nd_vote dashicons dashicons-thumbs-up" feature="'+current_feature.featureid+'"> </a></td>';
+								    	if (typeof current_feature.available !== "undefined") {
+											ret_html = ret_html+'<tr><td>'+current_feature.title+'</td><td><span class="wpcf_vote_count_'+current_feature.featureid+'">'+current_feature.votes + '</span> ' +(current_feature.votes > 1 ? 'votes' : 'vote &nbsp;' ) + '</td><td><a href="'+current_feature.uri+'" target="_BLANK" class="button button-primary" >Now available! Click here!</a></td>';
+
+								    	} else {
+
+								    		if (current_feature.title === "Autoresponder") {
+												ret_html = ret_html+'<tr><td>'+current_feature.title+'</td><td><span class="wpcf_vote_count_'+current_feature.featureid+'">'+current_feature.votes + '</span> ' +(current_feature.votes > 1 ? 'votes' : 'vote &nbsp;' ) + '</td><td><i>Built into version 2.0</i></td>';
+								    		} else {
+								    			ret_html = ret_html+'<tr><td>'+current_feature.title+'</td><td><span class="wpcf_vote_count_'+current_feature.featureid+'">'+current_feature.votes + '</span> ' +(current_feature.votes > 1 ? 'votes' : 'vote &nbsp;' ) + '</td><td><a href="javascript:void(0);" class="button button-secondary wpcf_nd_vote dashicons dashicons-thumbs-up" feature="'+current_feature.featureid+'"> </a></td>';
+								    		}
+
+
+								    	}
+
 								    }
 								  }
 								}
@@ -2371,6 +2402,7 @@ class WP_Contact_Form_ND{
 						});
 
 					</script>
+
 
 					<div class='wpcf_nd_vote_wrapper'>
 
