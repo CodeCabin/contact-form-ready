@@ -20,22 +20,37 @@ function wpcf_hook_control_settings_page_bottom_recpatcha($wpcf_nd_settings) {
 	?>
 
 	<h2><?php _e("Anti Spam Settings","wpcf_nd"); ?></h2>
-
-    <div class="wpcf-form-section">
-        <div class="wpcf-form-section__row">
-            <label for='wpcf_nd_enable_recaptcha'><?php _e("Enable reCAPTCHA?","wpcf_nd"); ?></label>
-	        <?php
+	<table class="wp-list-table widefat striped fixed">
+		<tbody>
+			<tr>
+				<td width='250'><label for='wpcf_nd_enable_recaptcha'><?php _e("Enable reCAPTCHA?","wpcf_nd"); ?></label></td>
+				<td><?php
 	        $is_checked = (isset($wpcf_nd_settings['wpcf_nd_enable_recaptcha']) && $wpcf_nd_settings['wpcf_nd_enable_recaptcha'] == 1) ? "checked" : "";
 	        ?>
-            <input type='checkbox' name='wpcf_nd_enable_recaptcha' id='wpcf_nd_enable_recaptcha' value='1' <?php echo $is_checked; ?> /> <span class='description'><?php echo sprintf(__("Click <a href='%s' target='_BLANK'>here</a> to set up your reCAPTCHA profile.","wpcf_nd"),"https://www.google.com/recaptcha/intro/index.html");  ?></span>
+            <input type='checkbox' name='wpcf_nd_enable_recaptcha' id='wpcf_nd_enable_recaptcha' value='1' <?php echo $is_checked; ?> /> <span class='description'><?php echo sprintf(__("Click <a href='%s' target='_BLANK'>here</a> to set up your reCAPTCHA profile.","wpcf_nd"),"https://www.google.com/recaptcha/intro/index.html");  ?></span></td>
+			</tr>
+			<tr>
+				<td><label for='wpcf_nd_recaptcha_site_key'><?php _e("Site key","wpcf_nd"); ?></label></td>
+				<td><input type='text' name='wpcf_nd_recaptcha_site_key' class='regular-text' id='wpcf_nd_recaptcha_site_key' value='<?php echo $wpcf_nd_settings['wpcf_nd_recaptcha_site_key']; ?>' /></td>
+			</tr>
+			<tr>
+				<td><label for='wpcf_nd_recaptcha_secret_key'><?php _e("Secret key","wpcf_nd"); ?></label></td>
+				<td><input type='text' name='wpcf_nd_recaptcha_secret_key' class='regular-text' id='wpcf_nd_recaptcha_secret_key' value='<?php echo $wpcf_nd_settings['wpcf_nd_recaptcha_secret_key']; ?>' /></td>
+			</tr>
+		</tbody>			
+	</table>
+    <div class="wpcf-form-section">
+        <div class="wpcf-form-section__row">
+            
+	        
         </div>
         <div class="wpcf-form-section__row">
-            <label for='wpcf_nd_recaptcha_site_key'><?php _e("Site key","wpcf_nd"); ?></label>
-            <input type='text' name='wpcf_nd_recaptcha_site_key' class='regular-text' id='wpcf_nd_recaptcha_site_key' value='<?php echo $wpcf_nd_settings['wpcf_nd_recaptcha_site_key']; ?>' />
+            
+            
         </div>
         <div class="wpcf-form-section__row">
-            <label for='wpcf_nd_recaptcha_secret_key'><?php _e("Secret key","wpcf_nd"); ?></label>
-            <input type='text' name='wpcf_nd_recaptcha_secret_key' class='regular-text' id='wpcf_nd_recaptcha_secret_key' value='<?php echo $wpcf_nd_settings['wpcf_nd_recaptcha_secret_key']; ?>' />
+            
+            
         </div>
     </div>
 	<?php
