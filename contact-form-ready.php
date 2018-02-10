@@ -11,8 +11,8 @@
 
 /**
  * 2.0.01 - 2018-02-05
- * 
  * Added a deactivation survey
+ * Added Code Mirror support to code fields
  * 
  * 2.0.00 - 2018-01-05
  * Tested on WordPress 4.9.1
@@ -1931,7 +1931,7 @@ class WP_Contact_Form_ND{
 		$wpcf_nd_settings = get_option("wpcf_nd_settings");
 
 
-		if (isset($_GET['page']) && $_GET['page'] == 'wpcf-settings' && isset($_GET['action']) && $_GET['action'] == 'wpcf_nd_welcome') {
+		if (isset($_GET['page']) && $_GET['page'] == 'wpcf-settings' && isset($_GET['action']) && ($_GET['action'] == 'wpcf_nd_welcome' || $_GET['action'] == 'wpcf_nd_credits')) {
 
 	        if (class_exists("APC_Object_Cache")) {
 	            /* do nothing here as this caches the "first time" option and the welcome page just loads over and over again. quite annoying really... */
@@ -2294,28 +2294,6 @@ class WP_Contact_Form_ND{
 
 		<div class="welcome-block-content">
 			<div class="welcome-block-column-container">
-				<div class="welcome-block-column">
-					<h3><?php echo _e( 'Welcome to Contact Form Ready', 'wpcf_nd' ); ?></h3>
-					<p class="message"><?php echo __( "Thank you for installing Contact Form Ready! We are constantly updating and improving our plugin. Please vote for the feature you would like to see next by using the voting feature to the right.", 'wpcf_nd' ); ?></p>
-					<p><a href='<?php echo admin_url("post-new.php?post_type=contact-forms-nd"); ?>' class='button button-primary'><?php echo __( "Create a form now", "wpcf_nd" ); ?></a>
-				</div>
-
-				<div class="welcome-block-column">
-					<h3><?php echo __( 'Getting Started', 'wpcf_nd' ); ?></h3>
-					<ul>
-						<li><a href='http://www.contactformready.com/news/contact-form-ready-launched/?utm_source=plugin&utm_medium=click&utm_campaign=intro' target='_BLANK'><?php echo __('Introduction', 'wpcf_nd'); ?></a></li>
-						<li><a href='http://www.contactformready.com/documentation/creating-your-first-contact-form/?utm_source=plugin&utm_medium=click&utm_campaign=welcome_create_first' target='_BLANK'><?php echo __('Creating your first contact form', 'wpcf_nd'); ?></a></li>
-						<li><a href='http://www.contactformready.com/documentation/adding-recaptcha-to-your-contact-form/?utm_source=plugin&utm_medium=click&utm_campaign=recaptcha' target='_BLANK'><?php echo __('Adding reCAPTCHA to your form', 'wpcf_nd'); ?></a></li>
-						<li>&nbsp;</li>
-						<li><a href='<?php echo admin_url( 'edit.php?post_type=contact-forms-nd&page=wpcf-extensions' ); ?>'><?php echo __('Browse CFR Extensions', 'wpcf_nd'); ?></a></li>
-					</ul>
-					<p>&nbsp;</p>
-					<h3><?php echo __( 'Need help?', 'wpcf_nd' ); ?></h3>
-					<ul>
-						<li><a href='http://www.contactformready.com/contact-me/?utm_source=plugin&utm_medium=click&utm_campaign=needhelp' target='_BLANK'><?php echo __('Get help now', 'wpcf_nd'); ?></a></li>
-						<li></li>
-					</ul>
-				</div>
 
 				<div class="welcome-block-column">
 					<h3><?php echo esc_html( __( 'Vote for the features you want next!', 'wpcf_nd' ) ); ?></h3>
@@ -2323,8 +2301,6 @@ class WP_Contact_Form_ND{
      
 			
 					$wpcf_close_welcome_nonce = wp_create_nonce("wpcf_close_welcome");
-
-				
 
 				?>
 				
@@ -2417,8 +2393,17 @@ class WP_Contact_Form_ND{
 			</div>
 		</div>
 	</div>
+    <style>
+        .welcome-block-column { width: 50%; float: left; }
+        .welcome-block-column h3 { margin-top: 0; }
+        .wpcf_nd_vote_wrapper table { width: 100%; }
+        .wpcf_nd_vote_wrapper table tbody tr:nth-child(odd) { background-color: #e8e8e8; }
+        .wpcf_nd_vote_wrapper table tbody td { padding: 5px; }
+        .wpcf_nd_vote_wrapper table thead th { text-align: left; padding: 5px; }
+    </style>
 	<?php
 	} 
+
 	return $content;
 	}
 
