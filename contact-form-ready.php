@@ -181,7 +181,11 @@ class WP_Contact_Form_ND{
 		add_filter( 'manage_contact-forms-nd_posts_columns', array( $this, 'set_custom_edit_columns' ) ) ;
 		add_action( 'manage_contact-forms-nd_posts_custom_column' , array( $this, 'custom_column' ) , 10, 2  ) ;
 
-	
+		add_action( 'wpcf_hook_settings_page_bottom', array( $this, 'privacy_settings_content' ), 10, 1 );
+		add_action( 'admin_notices', array( $this, 'disable_gdpr_notice') );
+		add_action('wpcf_gdpr_cron_hook', array( $this, 'wpcf_gdpr_cron_delete_messages') );
+		add_action('wpcf_gdpr_reg_cron_hook', array( $this, 'wpcf_gdpr_register_cron') );
+
 		add_filter( 'views_edit-contact-forms-nd', array( $this, 'wpcf_nd_view_message_welcome' ), 10, 1 );
 
 		add_filter( 'wp_mail_from', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_address' ), 10, 1 );
@@ -285,8 +289,7 @@ class WP_Contact_Form_ND{
         $body = "<table width='100%'>";
         $txt_only = "";
 
-
-        foreach ( $_POST as $key => $val ) {
+		foreach ( $_POST as $key => $val ) {
 
         	if ( is_array( $val ) ) {
         		// checkbox
@@ -338,7 +341,29 @@ class WP_Contact_Form_ND{
 		        }
 		    }
         }
-        $body .= "</table>";
+		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+		$cfr_enable_gdpr = ( isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == 1 );
+		$cfr_enable_gdpr_delete_button = ( isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] == 1 );
+		$cfr_enable_gdpr_download_button = ( isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] == 1 );
+		if ( $cfr_enable_gdpr && isset( $_POST['gdpr_agree'] ) ) {
+			$value = ( 'on' === $_POST['gdpr_agree'] ) ? __("YES", "wpcf_nd") : __("NO", "wpcf_nd");
+			$body .= "<tr>";
+			$body .= "<td width='50%' align='right' valign='top'><strong>" . __("GDPR consent", "wpcf_nd") . "</strong></td><td align='left'>: " . $value . "</td>";
+			$body .= "</tr>";
+		}
+		if ( $cfr_enable_gdpr_download_button && isset( $_POST['gdpr_send_data'] ) ) {
+			$value = ( 'on' === $_POST['gdpr_send_data'] ) ? __("YES", "wpcf_nd") : __("NO", "wpcf_nd");
+			$body .= "<tr>";
+			$body .= "<td width='50%' align='right' valign='top'><strong>" . __("Send submitted data to user", "wpcf_nd") . "</strong></td><td align='left'>: " . $value . "</td>";
+			$body .= "</tr>";
+		}
+		if ( $cfr_enable_gdpr_delete_button && isset( $_POST['gdpr_delete_data'] ) ) {
+			$value = ( 'on' === $_POST['gdpr_delete_data'] ) ? __("YES", "wpcf_nd") : __("NO", "wpcf_nd");
+			$body .= "<tr>";
+			$body .= "<td width='50%' align='right' valign='top'><strong>" . __("Delete submitted data", "wpcf_nd") . "</strong></td><td align='left'>: " . $value . "</td>";
+			$body .= "</tr>";
+		}
+		$body .= "</table>";
 
 		$this->increase_submissions( $cfid );
 
@@ -369,6 +394,7 @@ class WP_Contact_Form_ND{
     	} else {
     		$wpcf_thank_you = __("Thank you. Your message has been sent.","wpcf_nd");
     	}
+
 	}
 
 
@@ -820,7 +846,84 @@ class WP_Contact_Form_ND{
         <?php
 	}
 
-	 
+	function privacy_settings_content( $wpcf_nd_settings ) { ?>
+		<?php
+		wp_nonce_field( 'wpcf_nd_add_cf_control_metabox', 'wpcf_nd_nonce_control' );
+
+		$cfr_enable_gdpr = ( isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == 1 ) ? "checked" : "";
+		$cfr_gdpr_company_name = ( isset($wpcf_nd_settings['wpcf_nd_gdpr_company_name'] ) ) ? $wpcf_nd_settings['wpcf_nd_gdpr_company_name'] : "";
+		$cfr_gdpr_retention_purpose = ( isset($wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'] ) ) ? $wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'] : "";
+		$cfr_gdpr_retention_period = ( isset($wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] ) ) ? $wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] : '30';
+		$cfr_gdpr_notice = ( isset($wpcf_nd_settings['wpcf_nd_gdpr_notice'] ) ) ? stripslashes( esc_html($wpcf_nd_settings['wpcf_nd_gdpr_notice']) ) : "";
+		$cfr_enable_gdpr_delete_button = ( isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] == 1 ) ? "checked" : "";
+		$cfr_enable_gdpr_download_button = ( isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] == 1 ) ? "checked" : "";
+		?>
+        <h2 id="cfr-nd-privacy"><?php _e("Privacy","wpcf_nd"); ?></h2>
+
+        <table class='wp-list-table widefat striped fixed'>
+            <tr>
+                <td width='250'><label for='wpcf_nd_enable_gdpr'><?php _e("Enable GDPR Compliance","wpcf_nd"); ?></label></td>
+                <td>
+                    <input type='checkbox' name='wpcf_nd_enable_gdpr' id='wpcf_nd_enable_gdpr' value='1' <?php echo $cfr_enable_gdpr; ?> /> <span class='description'><?php echo sprintf(__("<a href='%s' target='_BLANK'>Importance of GDPR Compliance</a>","wpcf_nd"),"https://www.eugdpr.org/");  ?></span>
+                </td>
+            </tr>
+            <tr>
+                <td width='250'><?php _e("Company Name","wpcf_nd"); ?></td>
+                <td><input type='text' name='wpcf_nd_gdpr_company_name' class='regular-text' id='wpcf_nd_gdpr_company_name' value='<?php echo $cfr_gdpr_company_name; ?>' /></td>
+            </tr>
+            <tr>
+                <td width='250'><?php _e("Retention Purpose","wpcf_nd"); ?></td>
+                <td><input type='text' name='wpcf_nd_gdpr_retention_purpose' class='regular-text' id='wpcf_nd_gdpr_retention_purpose' value='<?php echo $cfr_gdpr_retention_purpose; ?>' /></td>
+            </tr>
+            <tr>
+                <td width='250'><label for='wpcf_nd_gdpr_retention_period'><?php _e("Retention Period","wpcf_nd"); ?></label></td>
+                <td><input type='text' name='wpcf_nd_gdpr_retention_period' id='wpcf_nd_gdpr_retention_period' value='<?php echo $cfr_gdpr_retention_period; ?>' /> <span class='description'><?php echo __("days","wpcf_nd");  ?></span></td>
+            </tr>
+            <tr>
+                <td width='250'><?php _e("GDPR Notice","wpcf_nd"); ?></td>
+                <td><textarea name='wpcf_nd_gdpr_notice' class='regular-text' id='wpcf_nd_gdpr_notice' rows="6"><?php echo $cfr_gdpr_notice; ?></textarea></td>
+            </tr>
+            <tr>
+                <td width='250'><label for='wpcf_nd_enable_gdpr_delete_button'><?php _e("Enable Delete data checkbox","wpcf_nd"); ?></label></td>
+                <td>
+                    <input type='checkbox' name='wpcf_nd_enable_gdpr_delete_button' id='wpcf_nd_enable_gdpr_delete_button' value='1' <?php echo $cfr_enable_gdpr_delete_button; ?> />
+                </td>
+            </tr>
+            <tr>
+                <td width='250'><label for='wpcf_nd_enable_gdpr_download_button'><?php _e("Enable Download data checkbox","wpcf_nd"); ?></label></td>
+                <td>
+                    <input type='checkbox' name='wpcf_nd_enable_gdpr_download_button' id='wpcf_nd_enable_gdpr_download_button' value='1' <?php echo $cfr_enable_gdpr_download_button; ?> />
+                </td>
+            </tr>
+        </table>
+        <style>.wpcf-notice-secondary { display: block; margin-top: 5px; color: red; font-style: italic; }.wpcf-notice-secondary.is-hidden { display: none; }</style>
+        <?php
+    }
+
+
+    function disable_gdpr_notice() {
+	    if ( isset($_GET['post_type']) && $_GET['post_type'] === 'contact-forms-nd' ) {
+		    $wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+		    if ( isset($_POST['wpcf_nd_enable_gdpr'] ) ) {
+			    $cfr_enable_gdpr = $_POST['wpcf_nd_enable_gdpr'] == 1;
+		    } else {
+		        $cfr_enable_gdpr = isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == 1;
+		    }
+		    if ( ! $cfr_enable_gdpr ) { ?>
+                <div class="update-nag notice notice-error is-dismissible" style="border-color: #dd0000; max-width: 600px;margin-left: 0;">
+                    <p><strong><?php _e( 'Warning - GDPR Compliance Disabled - Action Required', 'wpcf_nd' ); ?></strong></p>
+                    <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="#">EU GDPR</a> </p>
+                    <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="#">Privacy Policy</a> </p>
+                    <p><?php _e( 'It is highly recommended that you enable GDPR compliance to ensure your user data is regulated.', 'wpcf_nd' ); ?></p>
+                    <p><a href="?post_type=contact-forms-nd&page=wpcf-settings#cfr-nd-privacy" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
+                </div>
+			    <?php
+		    }
+	    }
+    }
+
+
+
 	/**
 	 * Meta box display callback.
 	 *
@@ -1252,8 +1355,22 @@ class WP_Contact_Form_ND{
 			$wpcf_nd_settings['wpcf_nd_message_user'] = __("Thank you for your message. We will respond to you as soon as possible.","wpcf_nd"); 
 
 		if (!isset($wpcf_nd_settings['wpcf_nd_thank_you_text']))
-			$wpcf_nd_settings['wpcf_nd_thank_you_text'] = __("Thank you. Your message has been sent and we will be in touch as soon as possible.","wpcf_nd"); 
+			$wpcf_nd_settings['wpcf_nd_thank_you_text'] = __("Thank you. Your message has been sent and we will be in touch as soon as possible.","wpcf_nd");
 
+		if (!isset($wpcf_nd_styling['wpcf_nd_enable_gdpr']))
+			$wpcf_nd_styling['wpcf_nd_enable_gdpr'] = 1;
+		if(!isset( $wpcf_nd_settings['wpcf_nd_gdpr_company_name'] ) )
+			$wpcf_nd_settings['wpcf_nd_gdpr_company_name'] = '';
+		if(!isset( $wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'] ) )
+			$wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'] = '';
+		if(!isset( $wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] ) )
+			$wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] = '30';
+		if(!isset( $wpcf_nd_settings['wpcf_nd_gdpr_notice'] ) )
+			$wpcf_nd_settings['wpcf_nd_gdpr_notice'] = __('I agree for my personal data, provided via chat, to be processed by {company_name}, for the purpose of {purpose}, for the time of {period} days as per the GDPR.', 'wpcf_nd');
+		if (!isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button']))
+			$wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] = 1;
+		if (!isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button']))
+			$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = 1;
 
 		update_option("wpcf_nd_settings",$wpcf_nd_settings);
 
@@ -1447,6 +1564,7 @@ class WP_Contact_Form_ND{
 	}
 
 	function wpcf_nd_save_settings() {
+		$this->wpcf_gdpr_check_for_cron();
 	}
 
 	function wpcf_extensions_page() {
@@ -1957,16 +2075,52 @@ class WP_Contact_Form_ND{
 					$wpcf_nd_settings['wpcf_nd_email_from_name'] = ''; 
 				}
 
-
-				if (isset($_POST['wpcf_nd_thank_you_text'])) 
+				if (isset($_POST['wpcf_nd_thank_you_text']))
 					$wpcf_nd_settings['wpcf_nd_thank_you_text'] = sanitize_text_field( $_POST['wpcf_nd_thank_you_text'] );
+
+				if (isset($_POST['wpcf_nd_enable_gdpr'])  && $_POST['wpcf_nd_enable_gdpr'] == '1' ) {
+					$wpcf_nd_settings['wpcf_nd_enable_gdpr'] = intval(sanitize_text_field( $_POST['wpcf_nd_enable_gdpr'] ));
+				} else {
+					$wpcf_nd_settings['wpcf_nd_enable_gdpr'] = 0;
+				}
+				if (isset($_POST['wpcf_nd_gdpr_company_name']))
+					$wpcf_nd_settings['wpcf_nd_gdpr_company_name'] = sanitize_text_field( $_POST['wpcf_nd_gdpr_company_name'] );
+				if (isset($_POST['wpcf_nd_gdpr_retention_purpose']))
+					$wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'] = sanitize_text_field( $_POST['wpcf_nd_gdpr_retention_purpose'] );
+				if (isset($_POST['wpcf_nd_gdpr_retention_period']))
+					$wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] = sanitize_text_field( $_POST['wpcf_nd_gdpr_retention_period'] );
+				if (isset($_POST['wpcf_nd_gdpr_notice']))
+					$wpcf_nd_settings['wpcf_nd_gdpr_notice'] = sanitize_text_field( $_POST['wpcf_nd_gdpr_notice'] );
+				if (isset($_POST['wpcf_nd_enable_gdpr_delete_button'])  && $_POST['wpcf_nd_enable_gdpr_delete_button'] == '1' ) {
+					$wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] = intval(sanitize_text_field( $_POST['wpcf_nd_enable_gdpr_delete_button'] ));
+				} else {
+					$wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] = 0;
+				}
+				if (isset($_POST['wpcf_nd_enable_gdpr_download_button'])  && $_POST['wpcf_nd_enable_gdpr_download_button'] == '1' ) {
+					$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = intval(sanitize_text_field( $_POST['wpcf_nd_enable_gdpr_download_button'] ));
+				} else {
+					$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = 0;
+				}
+
 
 
 				$wpcf_nd_settings = apply_filters("wpcf_filter_save_settings", $wpcf_nd_settings, $_POST);
 				
 				update_option( "wpcf_nd_settings" , $wpcf_nd_settings );
-				echo "<span class='update-nag below-h1'>Settings saved</span>";
 
+                $cfr_enable_gdpr = isset($_POST['wpcf_nd_enable_gdpr']) && $_POST['wpcf_nd_enable_gdpr'] == 1;
+                if ( ! $cfr_enable_gdpr ) { ?>
+                    <div class="update-nag notice notice-error is-dismissible" style="border-color: #dd0000; max-width: 600px;margin-left: 0;">
+                        <p><strong><?php _e( 'Warning - GDPR Compliance Disabled - Action Required', 'wpcf_nd' ); ?></strong></p>
+                        <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="#">EU GDPR</a> </p>
+                        <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="#">Privacy Policy</a> </p>
+                        <p><?php _e( 'It is highly recommended that you enable GDPR compliance to ensure your user data is regulated.', 'wpcf_nd' ); ?></p>
+                        <p><a href="?post_type=contact-forms-nd&page=wpcf-settings#cfr-nd-privacy" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
+                    </div>
+                    <?php
+                } else {
+                    echo "<span class='update-nag below-h1'>Settings saved</span>";
+                }
 			}
 
 
@@ -2189,7 +2343,7 @@ class WP_Contact_Form_ND{
 			$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
 			$modal_el_attr = $wpcf_nd_basic_settings['wpcf_nd_modal_el_attr'];
 			$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
-	    	if ($wpcf_thank_you) { 
+	    	if ($wpcf_thank_you) {
 
     			return "<div class='wpcf-nd-thank-you' data-el='" . esc_attr( $modal_el ) . "' data-el-attr='" . esc_attr( $modal_el_attr ) . "'>".stripslashes(esc_html($wpcf_thank_you))."</div>";
 
@@ -2250,6 +2404,17 @@ class WP_Contact_Form_ND{
 	}
 
 	function wpcf_nd_filter_control_html_control( $html_data, $data ) {
+		$wpcf_nd_settings = get_option("wpcf_nd_settings");
+		$gdpr_is_enabled = isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == 1;
+		$gdpr_notice = (isset($wpcf_nd_settings['wpcf_nd_gdpr_notice'])) ? $wpcf_nd_settings['wpcf_nd_gdpr_notice'] : '';
+		$gdpr_delete_button_is_enabled = isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] == 1;
+		$gdpr_download_button_is_enabled = isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] == 1;
+		$gdpr_company_name = (isset($wpcf_nd_settings['wpcf_nd_gdpr_company_name'])) ? $wpcf_nd_settings['wpcf_nd_gdpr_company_name'] : '';
+		$gdpr_retention_purpose = (isset($wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'])) ? $wpcf_nd_settings['wpcf_nd_gdpr_retention_purpose'] : '';
+		$gdpr_retention_period = (isset($wpcf_nd_settings['wpcf_nd_gdpr_retention_period'])) ? $wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] : '30';
+		$gdpr_notice = str_replace( '{company_name}', $gdpr_company_name, $gdpr_notice );
+		$gdpr_notice = str_replace( '{purpose}', $gdpr_retention_purpose, $gdpr_notice );
+		$gdpr_notice = str_replace( '{period}', $gdpr_retention_period, $gdpr_notice );
 		$attrs = '';
 		$form_start = '';
 		if ( '' !== trim( $data['modal_el'] ) ) {
@@ -2267,6 +2432,18 @@ class WP_Contact_Form_ND{
 		$nonce_string = '			'.wp_nonce_field( 'wpcf_nd', 'wpcf_nonce_field', false, false ).PHP_EOL;
 
 		$other_data = apply_filters( "wpcf_filter_other_form_data_frontend", "", $random_identifier, $data );
+
+		$gdpr_data = '';
+		if ( $gdpr_is_enabled ) {
+			$gdpr_data .= '<p><input type="checkbox" name="gdpr_agree" id="gdpr_agree" class="gdpr_input" /><label for="gdpr_agree" class="gdpr_label">'. $gdpr_notice .'</label></p>';
+		}
+		if ( $gdpr_delete_button_is_enabled ) {
+			$gdpr_data .= '<p><input type="checkbox" name="gdpr_send_data" id="gdpr_send_data" class="gdpr_input" /><label for="gdpr_send_data" class="gdpr_label">'. __( "Send me my data" , "wpcf_nd") .'</label></p>';
+		}
+		if ( $gdpr_download_button_is_enabled ) {
+			$gdpr_data .= '<p><input type="checkbox" name="gdpr_delete_data" id="gdpr_delete_data" class="gdpr_input" /><label for="gdpr_delete_data" class="gdpr_label">'. __( "Delete my data" , "wpcf_nd") .'</label></p>';
+		}
+
 		$submit_button_status = apply_filters( "wpcf_filter_submit_button_initial_status", "" );
 		$submit_string = PHP_EOL."<p><input type='submit' ".$submit_button_status." value='".esc_attr($data['submit_string'])."' name='wpcf_nd_submit' id='wpcf_nd_submit' class='wpcf_nd_submit wpcf_nd_submit_".$random_identifier."' cfid='".$random_identifier."' /></p>".PHP_EOL;
 
@@ -2275,7 +2452,7 @@ class WP_Contact_Form_ND{
 		if ( '' !== trim( $data['modal_el'] ) ) {
 			$form_end .= '</div>';
 		}
-		return $form_start.$id_string.$nonce_string.$html_data.$other_data.$submit_string.$form_end;
+		return $form_start.$id_string.$nonce_string.$html_data.$other_data.$gdpr_data.$submit_string.$form_end;
 	}
 
 
@@ -2427,6 +2604,55 @@ class WP_Contact_Form_ND{
 
 	    return $plugins;
     }
+
+	/**
+	 * Checks if cron is still registered
+	 */
+	function wpcf_gdpr_check_for_cron(){
+		$cron_jobs = get_option( 'cron' );
+		$cron_found = false;
+		foreach ($cron_jobs as $cron_key => $cron_data) {
+			if(is_array($cron_data)){
+				foreach ($cron_data as $cron_inner_key => $cron_inner_data) {
+					if($cron_inner_key === "wpcf_gdpr_cron_hook"){
+						$cron_found = true;
+					}
+				}
+			}
+		}
+
+		if(!$cron_found){
+			do_action('wpcf_gdpr_reg_cron_hook'); //The cron was unregistered at some point. Lets fix that
+		}
+	}
+
+	/**
+	 * Cron Register
+	 */
+	function wpcf_gdpr_register_cron(){
+		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+		if(isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == '1'){
+			wp_schedule_event( time(), 'daily', 'wpcf_gdpr_cron_hook' );
+		}
+
+	}
+
+	/**
+	 * GDPR Cron for deleting messages
+	 */
+	function wpcf_gdpr_cron_delete_messages(){
+		global $wpdb;
+		$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+		if(isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == '1'){
+			$period_replacement = isset($wpcf_nd_settings['wpcf_nd_gdpr_retention_period']) ? intval($wpcf_nd_settings['wpcf_nd_gdpr_retention_period']) : 30;
+
+			if($period_replacement < 1){ $period_replacement = 1; }
+
+			$days_ago = date('Y-m-d', strtotime('-' . $period_replacement . ' days', time()));
+
+			$results = $wpdb->get_results("DELETE p, pm FROM wp_posts p INNER JOIN wp_postmeta pm ON pm.post_id = p.ID WHERE p.post_date < '$days_ago'", ARRAY_A);
+		}
+	}
 
 	public static function wpcf_nd_hex2rgba($color, $opacity = false) {
 

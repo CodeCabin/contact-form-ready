@@ -26,4 +26,13 @@ jQuery(document).ready(function() {
         });
     }
 
+    var gdprNotice = jQuery('.wpcf-notice-secondary');
+    var gdprInput = jQuery('input[name=wpcf_nd_enable_gdpr]');
+    gdprInput.on('change', gdprIsChecked);
+    gdprIsChecked();
+
+    function gdprIsChecked() {
+        gdprInput.prop('checked') ? gdprNotice.addClass('is-hidden') : gdprNotice.removeClass('is-hidden');
+    }
+
 });
