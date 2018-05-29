@@ -3,16 +3,22 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.01
+  Version: 2.0.02
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
- * 2.0.01 - 2018-02-05
- * Added a deactivation survey
+ *
+ * 2.0.02 - 2018-05-29
+ * Fixed predefined template issue
+ * Fixed small typo
+ *
+ * 2.0.01 - 2018-05-28
+ * Added deactivation survey
  * Added Code Mirror support to code fields
+ * Added GDPR compliance
  * 
  * 2.0.00 - 2018-01-05
  * Tested on WordPress 4.9.1
@@ -136,7 +142,7 @@ class WP_Contact_Form_ND{
 
 	public function __construct(){
 
-		$this->current_version = "2.0.01";
+		$this->current_version = "2.0.02";
 
 		$this->upload_dir =(defined('WP_CONTENT_DIR')) ? WP_CONTENT_DIR . '/uploads' : ABSPATH . 'wp-content' . $this->DS() . 'uploads';
 		$this->upload_url =(defined('WP_CONTENT_URL')) ? WP_CONTENT_URL . '/uploads' : get_option('siteurl') . '/wp-content/uploads';
@@ -1002,7 +1008,7 @@ class WP_Contact_Form_ND{
 	 */
 	function wpcf_nd_save_meta_box( $post_id ) {
 
-	 // Bail if we're doing an auto save
+		// Bail if we're doing an auto save
 	    if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	     
 	    // if our nonce isn't there, or we can't verify it, bail
@@ -1122,7 +1128,7 @@ class WP_Contact_Form_ND{
     	);
 
 		// Make sure your data is set before trying to save it
-	    if( isset( $_POST['fb-temp-htmldata'] ) ) {
+		if( isset( $_POST['fb-temp-htmldata'] ) ) {
 	    	$post_html_data = $_POST['fb-temp-htmldata'];
 	    	$post_html_data = str_replace(array("\r", "\n"), '', $post_html_data);
 	        update_post_meta( $post_id, 'wpcf_nd_html_data', wp_kses( $post_html_data , $allowed_html ) );
@@ -1366,7 +1372,7 @@ class WP_Contact_Form_ND{
 		if(!isset( $wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] ) )
 			$wpcf_nd_settings['wpcf_nd_gdpr_retention_period'] = '30';
 		if(!isset( $wpcf_nd_settings['wpcf_nd_gdpr_notice'] ) )
-			$wpcf_nd_settings['wpcf_nd_gdpr_notice'] = __('I agree for my personal data, provided via chat, to be processed by {company_name}, for the purpose of {purpose}, for the time of {period} days as per the GDPR.', 'wpcf_nd');
+			$wpcf_nd_settings['wpcf_nd_gdpr_notice'] = __('I agree for my personal data, provided via form submission, to be processed by {company_name}, for the purpose of {purpose}, for the time of {period} days as per the GDPR.', 'wpcf_nd');
 		if (!isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button']))
 			$wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] = 1;
 		if (!isset($wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button']))
@@ -2599,7 +2605,7 @@ class WP_Contact_Form_ND{
 	function wpcf_nd_filter_deactivate_feedback_form( $plugins ) {
 	    $plugins[] = (object) array(
             'slug' => 'contact-form-ready',
-            'version' => '2.0.00'
+            'version' => '2.0.02'
         );
 
 	    return $plugins;

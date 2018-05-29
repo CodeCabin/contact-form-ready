@@ -53,7 +53,6 @@ var predefined_busy = false;
                         };
 
                     var formRenderOpts = {
-                        render: false,
                         formData: tformData,
                         dataType: 'xml'
                     };

@@ -3,7 +3,7 @@ Contributors: NickDuncan
 Donate link: http://nickduncan.co.za
 Tags:  form, forms, form builder, contact form, wordpress contact form, contact, free contact form for website, contact us, custom form, contact form builder, contact form manager 
 Requires at least: 3.8
-Tested up to: 4.9.1
+Tested up to: 4.9.6
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -166,6 +166,15 @@ Copy and paste the shortcode into your post or page and save your page. Then vie
 Nothing here
 
 == Changelog ==
+
+= 2.0.02 - 2018-05-29 =
+* Fixed predefined template issue
+* Fixed small typo
+
+= 2.0.01 - 2018-05-28 =
+* Added deactivation survey
+* Added Code Mirror support to code fields
+* Added GDPR compliance
 
 = 2.0.00 - 2017-12-01
 * Tested on WordPress 4.9.1
