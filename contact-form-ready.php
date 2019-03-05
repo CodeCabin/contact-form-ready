@@ -3,13 +3,16 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.01
+  Version: 2.0.02
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ * 2.0.02 - 2019-03-05
+ * Added FR language file. Thanks to Erik Damiano
+ * 
  * 2.0.01 - 2018-02-05
  * 
  * Added a deactivation survey
@@ -136,7 +139,7 @@ class WP_Contact_Form_ND{
 
 	public function __construct(){
 
-		$this->current_version = "2.0.01";
+		$this->current_version = "2.0.02";
 
 		$this->upload_dir =(defined('WP_CONTENT_DIR')) ? WP_CONTENT_DIR . '/uploads' : ABSPATH . 'wp-content' . $this->DS() . 'uploads';
 		$this->upload_url =(defined('WP_CONTENT_URL')) ? WP_CONTENT_URL . '/uploads' : get_option('siteurl') . '/wp-content/uploads';

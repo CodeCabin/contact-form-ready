@@ -1,0 +1,827 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wpcf\n"
+"POT-Creation-Date: 2019-02-19 08:53+0100\n"
+"PO-Revision-Date: 2019-03-05 14:16+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: js\n"
+"X-Poedit-SearchPathExcluded-1: assets\n"
+
+#: contact-form-ready.php:364 contact-form-ready.php:370
+#: contact-form-ready.php:376
+msgid "YES"
+msgstr "OUI"
+
+#: contact-form-ready.php:364 contact-form-ready.php:370
+#: contact-form-ready.php:376
+msgid "NO"
+msgstr "NON"
+
+#: contact-form-ready.php:366
+msgid "GDPR consent"
+msgstr "Consentement au RGPD"
+
+#: contact-form-ready.php:372
+msgid "Send submitted data to user"
+msgstr "Envoyer ses données à l'utilisateur"
+
+#: contact-form-ready.php:378
+msgid "Delete submitted data"
+msgstr "Effacer les données de l'utilisateur"
+
+#: contact-form-ready.php:410
+msgid "Thank you. Your message has been sent."
+msgstr "Merci. Votre message a été envoyé."
+
+#: contact-form-ready.php:520 contact-form-ready.php:529
+msgid "New Contact Form Submission"
+msgstr "Nouveau message reçu depuis le formulaire de contact."
+
+#: contact-form-ready.php:521 contact-form-ready.php:530
+#: contact-form-ready.php:1367
+msgid "A new message has been received."
+msgstr "Un nouveau message a été reçu."
+
+#: contact-form-ready.php:524 contact-form-ready.php:533
+msgid "Contact Form Submission Received"
+msgstr "Message reçu"
+
+#: contact-form-ready.php:525 contact-form-ready.php:534
+#: contact-form-ready.php:1370 contact-form-ready.php:1470
+msgid "Thank you for your message. We will respond to you as soon as possible."
+msgstr "Merci pour votre message, nous y répondrons dès que possible."
+
+#: contact-form-ready.php:596
+msgid "Contact Form Data"
+msgstr "Données du formulaire de contact"
+
+#: contact-form-ready.php:601 contact-form-ready.php:2156
+msgid "Contact Form Settings"
+msgstr "Réglages du formulaire de contact"
+
+#: contact-form-ready.php:605
+msgid "Save all form submissions"
+msgstr "Enregistrer les envois de message"
+
+#: contact-form-ready.php:606 templates/welcome.php:47
+msgid "Need help?"
+msgstr "Besoin d'aide ?"
+
+#: contact-form-ready.php:609
+#, php-format
+msgid "Browse the <a href='%s' target='_BLANK'>documentation</a>."
+msgstr "Parcourez la <a href='%s' target='_BLANK'>documentation</a>."
+
+#: contact-form-ready.php:610
+#, php-format
+msgid "Or get in touch with <a href='%s'>nick@codecabin.co.za</a>"
+msgstr "Ou contactez <a href='%s'>nick@codecabin.co.za</a>"
+
+#: contact-form-ready.php:616
+#, php-format
+msgid ""
+"Store all form submissions using the new <a href='%s' target='_BLANK'>Stored "
+"Submission Extension</a> from CFR."
+msgstr ""
+"Enregistrez tous les envois de message en utilisant la nouvelle extension <a "
+"href='%s' target='_BLANK'>Stored Submission</a> de Contact Form Ready."
+
+#: contact-form-ready.php:617
+#, php-format
+msgid "Browse more extensions <a href='%s'>here</a>."
+msgstr "Parcourez plus d'extensions <a href='%s'>ici</a>."
+
+#: contact-form-ready.php:640 contact-form-ready.php:2389
+msgid "Send"
+msgstr "Envoyer"
+
+#: contact-form-ready.php:665 contact-form-ready.php:690
+msgid "Basic Settings"
+msgstr "Réglages de base"
+
+#: contact-form-ready.php:669 contact-form-ready.php:800
+msgid "Advanced Settings"
+msgstr "Réglages avancés"
+
+#: contact-form-ready.php:695 contact-form-ready.php:2211
+msgid "Shortcode"
+msgstr ""
+
+#: contact-form-ready.php:698
+msgid "Copied to clipboard"
+msgstr "Copié dans le presse papier"
+
+#: contact-form-ready.php:699
+msgid "Copy this to your post or page to show the contact form"
+msgstr ""
+"Copiez ceci dans votre article ou votre page pour afficher le formulaire de "
+"contact"
+
+#: contact-form-ready.php:704
+msgid "Send emails to"
+msgstr "Envoyer les emails à"
+
+#: contact-form-ready.php:707
+msgid "Multiple emails separated by commas"
+msgstr "Emails multiples séparés par des virgules"
+
+#: contact-form-ready.php:712
+msgid "Redirect to URL after submit"
+msgstr "Rediriger vers cette adresse après envoi du formulaire"
+
+#: contact-form-ready.php:715
+msgid "Example: /thank-you <br>Leave blank for no redirect"
+msgstr "Exemple : /Merci <br>Laisser à blanc pour ne pas rediriger"
+
+#: contact-form-ready.php:719
+msgid "Submit button value"
+msgstr "Texte du bouton Envoyer"
+
+#: contact-form-ready.php:723
+msgid "Form type"
+msgstr "Type de formulaire"
+
+#: contact-form-ready.php:726
+msgid "Normal"
+msgstr ""
+
+#: contact-form-ready.php:727
+msgid "AJAX (avoids page reloading)"
+msgstr "AJAX (évite le rechargement de la page)"
+
+#: contact-form-ready.php:732
+msgid "Open modal window when click on element with"
+msgstr "Ouvrir une fenêtre modale quand un clic sur l'élément a lieu avec"
+
+#: contact-form-ready.php:735
+msgid "class"
+msgstr ""
+
+#: contact-form-ready.php:736
+msgid "id"
+msgstr ""
+
+#: contact-form-ready.php:739
+msgid "Leave this field empty if you don't want modal window"
+msgstr "Laisser à blanc si vous ne voulez pas de fenêtre modale"
+
+#: contact-form-ready.php:743
+msgid "Modal wrapper background color"
+msgstr "Couleur du fond extérieur de la fenêtre"
+
+#: contact-form-ready.php:747
+msgid "Modal wrapper opacity"
+msgstr "Opacité de la fenêtre"
+
+#: contact-form-ready.php:750
+msgid "Please type value between 0 and 1 (default 0.8)"
+msgstr "Veuillez entrer une valeur entre 0 et 1 (0.8 par défaut)"
+
+#: contact-form-ready.php:754
+msgid "Modal inner background"
+msgstr "Couleur du fond intérieur de la fenêtre"
+
+#: contact-form-ready.php:804
+msgid "Email subject (admin)"
+msgstr "Sujet de l'email (administrateurs)"
+
+#: contact-form-ready.php:808
+msgid "Email body (admin)"
+msgstr "Corps de l'email (administrateurs)"
+
+#: contact-form-ready.php:814
+msgid "Send confirmation email to user?"
+msgstr "Envoyer la confirmation à l'utilisateur ?"
+
+#: contact-form-ready.php:821
+msgid "Send plaintext email instead of html version?"
+msgstr "Envoyer un email texte plutôt qu'HTML ?"
+
+#: contact-form-ready.php:828
+msgid "Email subject (user)"
+msgstr "Sujet de l'email (utilisateur)"
+
+#: contact-form-ready.php:832
+msgid "Email body (user)"
+msgstr "Corps de l'email (utilisateur)"
+
+#: contact-form-ready.php:837
+msgid "Set the reply-to as the user's email address"
+msgstr "L'adresse email de réponse est celle de l'utilisateur"
+
+#: contact-form-ready.php:841
+msgid "Will only be set if the form has a valid email field."
+msgstr ""
+"Ce ne sera le cas que si le formulaire contient une adresse email valide"
+
+#: contact-form-ready.php:876
+msgid "Privacy"
+msgstr "Confidentialité"
+
+#: contact-form-ready.php:880
+msgid "Enable GDPR Compliance"
+msgstr "Activer la conformité au RGPD"
+
+#: contact-form-ready.php:882
+#, php-format
+msgid "<a href='%s' target='_BLANK'>Importance of GDPR Compliance</a>"
+msgstr "<a href='%s' target='_BLANK'>Importance de la conformité au RGPD</a>"
+
+#: contact-form-ready.php:886
+msgid "Company Name"
+msgstr "Nom de la structure"
+
+#: contact-form-ready.php:890
+msgid "Retention Purpose"
+msgstr "But de la rétention de données"
+
+#: contact-form-ready.php:894
+msgid "Retention Period"
+msgstr "Temps de rétention de données"
+
+#: contact-form-ready.php:895
+msgid "days"
+msgstr "jours"
+
+#: contact-form-ready.php:898
+msgid "GDPR Notice"
+msgstr "Annonce RGPD"
+
+#: contact-form-ready.php:902
+msgid "Enable Delete data checkbox"
+msgstr "Activer la case à cocher de suppression des données"
+
+#: contact-form-ready.php:908
+msgid "Enable Download data checkbox"
+msgstr "Activer la case à cocher de téléchargement des données"
+
+#: contact-form-ready.php:929 contact-form-ready.php:2129
+msgid "Warning - GDPR Compliance Disabled - Action Required"
+msgstr "Attention - Conformité au RGPD désactivée - Action requise"
+
+#: contact-form-ready.php:930 contact-form-ready.php:2130
+msgid ""
+"GDPR compliance has been disabled, read more about the implications of this "
+"here:"
+msgstr ""
+"La conformité au RGPD a été désactivée, veuillez lire les implications de "
+"cette décision ici :"
+
+#: contact-form-ready.php:931 contact-form-ready.php:2131
+msgid "Additionally please take a look at Contact Form Ready"
+msgstr "Aussi, jetez un oeil à Contact Form Ready"
+
+#: contact-form-ready.php:932 contact-form-ready.php:2132
+msgid ""
+"It is highly recommended that you enable GDPR compliance to ensure your user "
+"data is regulated."
+msgstr ""
+"Il est hautement recommandé d'activer la conformité au RGPD pour vous "
+"assurer que vos données utilisateurs sont régulées."
+
+#: contact-form-ready.php:933 contact-form-ready.php:2133
+msgid "Privacy Settings"
+msgstr "Réglages de confidentialité"
+
+#: contact-form-ready.php:973
+msgid "Select from a predefined list"
+msgstr "Sélectionner dans la liste"
+
+#: contact-form-ready.php:975 includes/integration_wp_live_chat_support.php:22
+msgid "Please select"
+msgstr "Veuillez sélectionner"
+
+#: contact-form-ready.php:995
+msgid "Drag and drop the elements to create your contact form."
+msgstr ""
+"Glissez et déposez les éléments pour créer votre formulaire de contact."
+
+#: contact-form-ready.php:1269 contact-form-ready.php:1280
+#: contact-form-ready.php:1284
+msgid "Contact Forms"
+msgstr "Formulaires de contact"
+
+#: contact-form-ready.php:1270
+msgid "Contact Form"
+msgstr "Formulaire de contact"
+
+#: contact-form-ready.php:1271 contact-form-ready.php:1274
+msgid "New Contact Form"
+msgstr "Nouveau formulaire de contact"
+
+#: contact-form-ready.php:1272
+msgid "Add New Contact Form"
+msgstr "Ajouter un nouveau formulaire de contact"
+
+#: contact-form-ready.php:1273
+msgid "Edit Contact Form"
+msgstr "Modifier le formulaire de contact"
+
+#: contact-form-ready.php:1275
+msgid "All Contact Forms"
+msgstr "Tous les formulaires de contact"
+
+#: contact-form-ready.php:1276
+msgid "View Contact Form"
+msgstr "Voir le formulaire de contact"
+
+#: contact-form-ready.php:1277
+msgid "Search Contact Forms"
+msgstr "Rechercher les formulaires de contact"
+
+#: contact-form-ready.php:1278
+msgid "No contact forms found"
+msgstr "Aucun formulaire de contact trouvé"
+
+#: contact-form-ready.php:1279
+msgid "No contact forms in the Trash"
+msgstr "Aucun formulaire de contact dans la corbeille"
+
+#: contact-form-ready.php:1316
+msgid "Simple contact form"
+msgstr "Formulaire de contact simple"
+
+#: contact-form-ready.php:1320
+msgid "Booking form (hotel)"
+msgstr "Réservation (hotel)"
+
+#: contact-form-ready.php:1324
+msgid "Booking form (restaurant)"
+msgstr "Réservation (restaurant)"
+
+#: contact-form-ready.php:1328
+msgid "Support form"
+msgstr "Demande de support"
+
+#: contact-form-ready.php:1332
+msgid "How did you hear about us"
+msgstr "Comment avez-vous entendu parler de nous"
+
+#: contact-form-ready.php:1336
+msgid "NPS Score"
+msgstr "Net Promoter Score"
+
+#: contact-form-ready.php:1360
+msgid "New Contact Form Response"
+msgstr "Nouveau message depuis le formulaire de contact"
+
+#: contact-form-ready.php:1363
+msgid "Contact Form Response Received"
+msgstr "Un nouveau message a été reçu."
+
+#: contact-form-ready.php:1373
+msgid ""
+"Thank you. Your message has been sent and we will be in touch as soon as "
+"possible."
+msgstr "Merci pour votre message, nous y répondrons dès que possible."
+
+#: contact-form-ready.php:1384
+msgid ""
+"I agree for my personal data, provided via form submission, to be processed "
+"by {company_name}, for the purpose of {purpose}, for the time of {period} "
+"days as per the GDPR."
+msgstr ""
+"J&apos;accepte que mes données personnelles fournies via ce formulaire "
+"soient traitées par {company_name}, dans le but de {purpose}, pour une durée "
+"de {period} jours selon le RGPD."
+
+#: contact-form-ready.php:1473
+msgid "Sending..."
+msgstr "Envoi en cours..."
+
+#: contact-form-ready.php:1539
+msgid "Are you sure you want to restore the default newsletter template?"
+msgstr "Êtes-vous sûr de vouloir restaurer le modèle par défaut ?"
+
+#: contact-form-ready.php:1576 includes/module_subscribe.php:13
+msgid "Settings"
+msgstr "Réglages"
+
+#: contact-form-ready.php:1577
+msgid "Styling"
+msgstr "Styles"
+
+#: contact-form-ready.php:1578 includes/module_subscribe.php:15
+msgid "Extensions"
+msgstr ""
+
+#: contact-form-ready.php:1587
+msgid "Contact Form Ready Extensions"
+msgstr "Extensions Contact Form Ready"
+
+#: contact-form-ready.php:1871
+msgid "Contact form styling"
+msgstr "Styles du formulaire de contact"
+
+#: contact-form-ready.php:1874
+msgid "Enable custom styling"
+msgstr "Activer les styles personnalisés"
+
+#: contact-form-ready.php:1883
+msgid "Label"
+msgstr "Étiquette"
+
+#: contact-form-ready.php:1888 contact-form-ready.php:1929
+#: contact-form-ready.php:1955
+msgid "Font size"
+msgstr "Taille de la police"
+
+#: contact-form-ready.php:1892 contact-form-ready.php:1963
+msgid "Font weight"
+msgstr "Poids de la police"
+
+#: contact-form-ready.php:1903 contact-form-ready.php:1933
+#: contact-form-ready.php:1959
+msgid "Font color"
+msgstr "Couleur de la police"
+
+#: contact-form-ready.php:1912
+msgid "Input"
+msgstr "Entrée"
+
+#: contact-form-ready.php:1917 contact-form-ready.php:1947
+msgid "Background color"
+msgstr "Couleur de fond"
+
+#: contact-form-ready.php:1921
+msgid "Border color"
+msgstr "Couleur de bordure"
+
+#: contact-form-ready.php:1925
+msgid "Border hover color"
+msgstr "Couleur de bordure lors du survol"
+
+#: contact-form-ready.php:1942
+msgid "Submit button"
+msgstr "Bouton Envoyer"
+
+#: contact-form-ready.php:1951
+msgid "Background hover color"
+msgstr "Couleur de fond lors du survol"
+
+#: contact-form-ready.php:1974
+msgid "Text transform"
+msgstr "Transformation du texte"
+
+#: contact-form-ready.php:1977
+msgid "none"
+msgstr "aucun"
+
+#: contact-form-ready.php:1978
+msgid "uppercase"
+msgstr "majuscules"
+
+#: contact-form-ready.php:1988
+msgid "Text field"
+msgstr "Champ texte"
+
+#: contact-form-ready.php:1990
+msgid "Email field"
+msgstr "Champ email"
+
+#: contact-form-ready.php:1992
+msgid "Text Area"
+msgstr "Zone de texte"
+
+#: contact-form-ready.php:1995 templates/welcome.php:94
+msgid "Submit"
+msgstr "Envoyer"
+
+#: contact-form-ready.php:2153
+msgid "Contact form settings"
+msgstr "Réglages du formulaire de contact"
+
+#: contact-form-ready.php:2160
+msgid "Email from address"
+msgstr "Adresse email d'envoi"
+
+#: contact-form-ready.php:2164
+msgid "Email from name"
+msgstr "Nom d'envoi"
+
+#: contact-form-ready.php:2168
+msgid "Thank you text"
+msgstr "Texte de remerciement"
+
+#: contact-form-ready.php:2212
+msgid "Views"
+msgstr "Vues"
+
+#: contact-form-ready.php:2213
+msgid "Submissions"
+msgstr "Envois"
+
+#: contact-form-ready.php:2456
+msgid "Send me my data"
+msgstr "Envoyez-moi mes données"
+
+#: contact-form-ready.php:2459
+msgid "Delete my data"
+msgstr "Effacez mes données"
+
+#: contact-form-ready.php:2485
+msgid "Dismiss"
+msgstr "Annulation"
+
+#: contact-form-ready.php:2491
+msgid "Vote for the features you want next!"
+msgstr "Votez pour les prochaines fonctionnalités que vous voudriez !"
+
+#: includes/integration_wp_live_chat_support.php:25
+msgid "Unnamed contact form"
+msgstr "Formulaire de contact sans nom"
+
+#: includes/integration_wp_live_chat_support.php:32
+#, php-format
+msgid ""
+"Replaces the normal offline message form with the above contact form created "
+"by <a href='%s' target='_BLANK'>Contact Form Ready</a>."
+msgstr ""
+"Remplace le formulaire de contact standard par celui créé par  <a href='%s' "
+"target='_BLANK'>Contact Form Ready</a>."
+
+#: includes/integration_wp_live_chat_support.php:35
+#, php-format
+msgid ""
+"There are no contact forms to use. Please <a href='%s'>create one first</a>."
+msgstr ""
+"Il n'y a pas de formulaire de contact. Veuillez <a href='%s'>en créer un</"
+"a>. "
+
+#: includes/module_recaptcha.php:22
+msgid "Anti Spam Settings"
+msgstr "Réglages Anti Spam"
+
+#: includes/module_recaptcha.php:26
+msgid "Enable reCAPTCHA?"
+msgstr "Activer reCAPTCHA ?"
+
+#: includes/module_recaptcha.php:30
+#, php-format
+msgid ""
+"Click <a href='%s' target='_BLANK'>here</a> to set up your reCAPTCHA profile."
+msgstr ""
+"Cliquez <a href='%s' target='_BLANK'>ici</a> pour régler votre profil "
+"reCAPTCHA."
+
+#: includes/module_recaptcha.php:33
+msgid "Site key"
+msgstr "Clé du site"
+
+#: includes/module_recaptcha.php:37
+msgid "Secret key"
+msgstr "Clé secrète"
+
+#: includes/module_recaptcha.php:153
+msgid "The reCAPTCHA wasn't entered correctly. Please try sagain."
+msgstr "Le reCAPTCHA n'a pas été entré correctement. Veuillez réessayer."
+
+#: includes/module_recaptcha.php:180
+msgid ""
+"reCAPTCHA failed. Please tick the reCAPTCHA checkbox to prove you are human."
+msgstr ""
+"Le reCAPTCHA a échoué. Veuillez cocher la case reCAPTCHA pour prover que "
+"vous êtes humain."
+
+#: includes/module_subscribe.php:59
+msgid ""
+"I would like to receive information on your latest updates, beta version and "
+"specials. I understand my information will be processed in terms of the "
+"GDPR, and I may wihtdraw it at any time."
+msgstr ""
+"J'aimerais recevoir des informations sur vos dernières nouveautés, versions "
+"béta et autres. Je comprends que mes informations seront traitées dans les "
+"termes du RGPD et que je peux me désinscrire n'importe quand."
+
+#: includes/module_subscribe.php:62
+msgid "Sign up"
+msgstr "S'inscrire"
+
+#: includes/module_template_editor.php:15
+#: includes/module_template_editor.php:19
+msgid "Email Template"
+msgstr "Modèle d'email"
+
+#: includes/module_template_editor.php:21
+msgid "Email Default Template"
+msgstr "Modèle d'email par défaut"
+
+#: includes/module_template_editor.php:24
+msgid "Restore default"
+msgstr "Restaurer par défaut"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:29
+msgid "Quick Feedback"
+msgstr "Retour d'expérience rapide"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:30
+msgid "If you would be kind enough, please tell us why you're deactivating?"
+msgstr ""
+"Seriez-vous assez gentil pour nous expliquer les raisons de votre "
+"désactivation ?"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:31
+msgid "Please tell us which plugin?"
+msgstr "Quel est le nom du plugin ?"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:32
+msgid "Please tell us the reason so we can improve the plugin"
+msgstr ""
+"Veuillez nous expliquer la raison pour que nous puissions améliorer notre "
+"extension"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:33
+msgid "Do not send my e-mail address with this feedback"
+msgstr "Ne pas envoyer mon adresse email avec ce retour d'expérience"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:35
+msgid "Please give us any feedback that could help us improve"
+msgstr ""
+"Veuillez nous donner un retour d'expérience qui pourrait nous aider à "
+"améliorer notre extension"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:37
+msgid "Cancel"
+msgstr "Annuler"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:38
+msgid "Skip &amp; Deactivate"
+msgstr "Passer et désactiver"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:39
+msgid "Submit &amp; Deactivate"
+msgstr "Envoyer et désactiver"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:40
+msgid "Please wait"
+msgstr "Veuillez patienter"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:41
+msgid "Thank you!"
+msgstr "Merci !"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:49
+msgid "The plugin suddenly stopped working"
+msgstr "L'extension a arrêté de fonctionner soudainement"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:50
+msgid "The plugin broke my site"
+msgstr "L'extension a cassé mon site"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:51
+msgid "I don't need this plugin any more"
+msgstr "Je n'ai plus besoin de cette extension"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:52
+msgid "I found a better plugin"
+msgstr "J'ai trouvé une meilleure extension"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:53
+msgid "It's a temporary deactivation, I'm troubleshooting"
+msgstr "J'ai désactivé temporairement, je débugge"
+
+#: lib/codecabin/plugin-deactivation-survey/deactivate-feedback-form.php:54
+#: templates/welcome.php:82
+msgid "Other"
+msgstr "Autre"
+
+#: templates/welcome.php:2
+msgid "Welcome to Contact Form Ready"
+msgstr "Bienvenue dans Contact Form Ready"
+
+#: templates/welcome.php:4
+msgid ""
+"Contact Form Ready is the easiest to use drag and drop contact form builder, "
+"with amazing features."
+msgstr ""
+"Contact Form Ready est le plus simple des formulaires de contact créés par "
+"Glisser/Déposer, avec des fonctionnalités étonnantes."
+
+#: templates/welcome.php:7
+msgid "Skip intro and create new form"
+msgstr "Passer l'intro et créer un nouveau formulaire"
+
+#: templates/welcome.php:22
+msgid "Welcome"
+msgstr "Bienvenue"
+
+#: templates/welcome.php:24
+msgid "Credits"
+msgstr "Crédits"
+
+#: templates/welcome.php:30
+msgid "Getting Started"
+msgstr "Démarrage"
+
+#: templates/welcome.php:34
+msgid "Introduction"
+msgstr ""
+
+#: templates/welcome.php:37
+msgid "Creating your first contact form"
+msgstr "Créer votre premier formulaire de contact"
+
+#: templates/welcome.php:40
+msgid "Adding reCAPTCHA to your form"
+msgstr "Ajouter reCAPTCHA à votre formulaire"
+
+#: templates/welcome.php:43
+msgid "Browse CFR Extensions"
+msgstr "Parcourir les Extensions de Contact Form Ready"
+
+#: templates/welcome.php:51
+msgid "Get help now"
+msgstr "Obtenir de l'aide"
+
+#: templates/welcome.php:57
+msgid "How did you find us?"
+msgstr "Comment avez-vous entendu parler de nous ?"
+
+#: templates/welcome.php:63
+msgid "WordPress.org plugin repository "
+msgstr "Espace de dépôt d'extension Wordpress"
+
+#: templates/welcome.php:65
+msgid "Search Term"
+msgstr "Rechercher un terme"
+
+#: templates/welcome.php:70
+msgid "Google or other search Engine"
+msgstr "Google ou un autre moteur de recherche"
+
+#: templates/welcome.php:76
+msgid "Friend recommendation"
+msgstr "Recommandation d'un ami"
+
+#: templates/welcome.php:84
+msgid "Please Explain"
+msgstr "Veuillez expliquer"
+
+#: templates/welcome.php:102
+msgid ""
+"Contact Form Support is supported by an international team of developers."
+msgstr ""
+"Le support de Contact Form ready est effectué par une équipe de développeurs "
+"internationale."
+
+#: templates/welcome.php:111
+msgid "Founder"
+msgstr "Fondateur"
+
+#: templates/welcome.php:111 templates/welcome.php:120
+msgid "Developer"
+msgstr "Développeur"
+
+#: templates/welcome.php:112 templates/welcome.php:120
+msgid "Support"
+msgstr ""
+
+#: templates/welcome.php:120
+msgid "Project Manager"
+msgstr "Directeur de projet"
+
+#: templates/welcome.php:121
+msgid "Testing"
+msgstr "Testeur"
+
+#: templates/welcome.php:125
+msgid "OK! Let's start"
+msgstr "Ok ! Démarrons "
+
+#~ msgid "Email Settings"
+#~ msgstr "Réglages des email"
+
+#~ msgid ""
+#~ "Thank you for installing Contact Form Ready! We are constantly updating "
+#~ "and improving our plugin. Please vote for the feature you would like to "
+#~ "see next by using the voting feature to the right."
+#~ msgstr ""
+#~ "Merci d'avoir installé Contact Form Ready ! Nous modifions et améliorons "
+#~ "constamment notre extension. Veuillez voter pour les fonctionnalités que "
+#~ "vous aimeriez avoir en utilisant le système de vote à droite."
+
+#~ msgid "Create a form now"
+#~ msgstr "Créer un formulaire"
+
+#~ msgid ""
+#~ "Sign up to our newsletter and get information on the latest updates, beta "
+#~ "versions and specials."
+#~ msgstr ""
+#~ "Inscrivez-vous à la newsletter et obtenez des informations sur les "
+#~ "dernières nouveautés, versions béta et autres."
+
+#~ msgid "Welcome to Contact Form Ready!"
+#~ msgstr "Bienvenue dans Contact Form Ready !"
+
+#~ msgid "Skip"
+#~ msgstr "Passer"
