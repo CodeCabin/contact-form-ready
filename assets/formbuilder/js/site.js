@@ -12,7 +12,8 @@ jQuery(document).ready(function($) {
             disableFields: ['autocomplete', 'button', 'access'],
             editOnAdd: true,
             dataType: 'xml',
-            formData: tmpformData
+            formData: tmpformData,
+            disableHTMLLabels: true,
         };
     var isJson = false;
     try {

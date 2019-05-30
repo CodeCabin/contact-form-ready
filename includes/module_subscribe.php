@@ -56,7 +56,7 @@ function cfr_plugin_row( $plugin_meta, $plugin_file, $plugin_data, $status ) {
         if (!$check) {
             $ret = '<div style="margin-top:10px; color:#333; display:block; white-space:normal;">';
             $ret .= '<form>';
-            $ret .= '<p><label for="cfr_signup_newsletter" style="font-style:italic; margin-bottom:5px;">' . __( 'Sign up to our newsletter and get information on the latest updates, beta versions and specials.', 'wpcf_nd' ) . '</label></p>';
+            $ret .= '<p><input type="checkbox" name="cfr_signup_newsletter" id="cfr_signup_newsletter"><label for="cfr_signup_newsletter" style="font-style:italic; margin-bottom:5px;">' . __( 'I would like to receive information on your latest updates, beta version and specials. I understand my information will be processed in terms of the GDPR, and I may wihtdraw it at any time.', 'wpcf_nd' ) . '</label></p>';
             $ret .= '<span id="cfr_subscribe_div">';
             $ret .= '<input type="text" name="cfr_signup_newsletter" id="cfr_signup_newsletter" value="'.get_option( 'admin_email' ).'"></option>';
             $ret .= '<input type="button" class="button button-primary"  id="cfr_signup_newsletter_btn" name="cfr_signup_newsletter_btn" value="' . __( 'Sign up', 'wpcf_nd' ) . '" />';
