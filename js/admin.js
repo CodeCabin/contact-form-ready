@@ -29,6 +29,31 @@ var predefined_busy = false;
             }
         });
 
+        jQuery('body').on('click keyup', '.build-wrap', function(e){
+            if (!predefined_busy && formBuilder.actions.getData) {
+                // TODO event handler logic
+                var formData = formBuilder.actions.getData('json');
+                var escapeEl = document.createElement('textarea'),
+                    code = document.getElementById('markup'),
+                    escapeHTML = function (html) {
+                        escapeEl.textContent = html;
+                        return escapeEl.innerHTML;
+                    },
+                    addLineBreaks = function (html) {
+                        return html.replace(new RegExp('&gt; &lt;', 'g'), '&gt;\n&lt;').replace(new RegExp('&gt;&lt;', 'g'), '&gt;\n&lt;');
+                    };
+
+                // Grab markup and escape it
+                var markup = jQuery("<div/>");
+                markup.formRender({formData});
+
+                var decoded = markup.html();
+
+                $("#fb-temp-formdata").val(formData);
+                $("#fb-temp-htmldata").val(decoded);
+            }
+        });
+
         var can_continue = false;
 
 
@@ -53,7 +78,6 @@ var predefined_busy = false;
                         };
 
                     var formRenderOpts = {
-                        render: false,
                         formData: tformData,
                         dataType: 'xml'
                     };
@@ -75,7 +99,8 @@ var predefined_busy = false;
                         disableFields: ['autocomplete', 'button', 'access'],
                         editOnAdd: true,
                         formData: tformData,
-                        dataType: 'xml'
+                        dataType: 'xml',
+                        disableHTMLLabels: true
                     };
 
 

@@ -3,7 +3,8 @@ Contributors: NickDuncan
 Donate link: http://nickduncan.co.za
 Tags:  form, forms, form builder, contact form, wordpress contact form, contact, free contact form for website, contact us, custom form, contact form builder, contact form manager 
 Requires at least: 3.8
-Tested up to: 4.9.1
+Requires PHP: 5.3
+Tested up to: 5.2.1
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -166,6 +167,31 @@ Copy and paste the shortcode into your post or page and save your page. Then vie
 Nothing here
 
 == Changelog ==
+
+= 2.0.06 - 2019-05-30 =
+* Bug Fix: Fixed label not saving
+* Bug Fix: Removed support for HTML inside the label box
+* Bug Fix: Download/Delete data options can only be enabled if the GDPR option is enabled
+* Removed polypill warning
+
+= 2.0.05 - 2018-07-25 =
+* Bug Fix: Fixed a bug that caused sending email via offline chat box even when required fields were empty
+
+= 2.0.04 - 2018-07-20 =
+* Fixed small typo
+
+= 2.0.03 - 2018-07-19 - High priority =
+* Tested on WordPress 4.9.7
+* Bug Fix: Fixed a bug in GDPR which may remove posts
+
+= 2.0.02 - 2018-05-29 =
+* Fixed predefined template issue
+* Fixed small typo
+
+= 2.0.01 - 2018-05-28 =
+* Added deactivation survey
+* Added Code Mirror support to code fields
+* Added GDPR compliance
 
 = 2.0.00 - 2017-12-01
 * Tested on WordPress 4.9.1
