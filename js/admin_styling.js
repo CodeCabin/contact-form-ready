@@ -125,6 +125,21 @@
             previewSubmit.css('text-transform', $(this).val());
         });
 
+        jQuery(".wpcf-color-input").each(function(){
+            var row = jQuery(this).parent().parent();
+
+            row.append('<td><div class="wpcf-live-color-preview"></div></td>');
+            row.find(".wpcf-live-color-preview").css("background", jQuery(this).val());
+        });
+
+        jQuery("body").on('click', '.iris-picker', function(){
+            jQuery(".wpcf-color-input").each(function(){
+                var row = jQuery(this).parent().parent();
+
+            row.find(".wpcf-live-color-preview").css("background", jQuery(this).val());
+            });
+        });
+
     });
 
 

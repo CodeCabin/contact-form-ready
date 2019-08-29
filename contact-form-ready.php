@@ -3,13 +3,17 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.06
+  Version: 2.0.07
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ * 2.0.07 - 2019-08-28
+ * Added Gutenberg integration
+ * Added color picker enhancement when selecting styles	
+ *
  * 2.0.06 - 2019-05-30
  * Bug Fix: Fixed label not saving
  * Bug Fix: Removed support for HTML inside the Label box
@@ -2690,3 +2694,83 @@ class WP_Contact_Form_ND{
 }
 
 $contact_form_nd = new WP_Contact_Form_ND();
+
+
+// First check if Gutenberg is available.
+if ( function_exists( 'register_block_type' ) ) {
+   			 
+	/**
+	 * Registers our Gutenberg Block
+	 */
+	function cfr_gutenberg_block_renderer() {
+		// Register our block editor script.
+		wp_register_script(
+			'cfr-gutenberg-block',
+			plugins_url( 'gutenberg/block.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' )
+		);
+
+		// Register our styles for backend to represent what the user would see on the frontend
+		// specifically adjust the default WordPress styling to our own.
+		    wp_register_style(
+	        'cfr-gutenberg-block-style',
+	        plugins_url( 'gutenberg/style.css', __FILE__ ),
+	        array( ),
+	        filemtime( plugin_dir_path( __FILE__ ) . 'gutenberg/style.css' )
+	    );
+		 // Gets our contact forms and loops through giving us a drop down list to use when
+		 // selecting a contact form
+		$forms = get_posts(
+			array(
+				'numberposts' => -1, 
+				'post_type' => 'contact-forms-nd'
+			)
+		);
+		
+		$localized_forms = array();
+
+		foreach ($forms as $key => $form) {
+			$localized_forms[] = array(
+				'value' => $form->ID,
+				'label' => $form->post_name
+			);
+		}
+
+		wp_localize_script('cfr-gutenberg-block', 'cfr_localized_forms', $localized_forms);
+
+		// Register our block, and define attributes we accept.
+		register_block_type( 'contact-form-ready/cfr-gutenberg-block', array(
+			'attributes'      => array(
+				'cfid' => array(
+					'type' => 'string',
+				),
+				'alignment' => array(
+					'type' => 'string',
+				)
+			),
+			'editor_script'   => 'cfr-gutenberg-block', // The script name we gave in the wp_register_script() call.
+			'render_callback' => 'cfr_gutenberg_block_render',
+			'editor_style' => 'cfr-gutenberg-block-style', // the style name we gave in the WP_register_style() call.
+		) );
+	}
+
+	add_action( 'init', 'cfr_gutenberg_block_renderer' );
+
+	/**
+	 * Renders our Gutenberg Block
+	 */
+	function cfr_gutenberg_block_render( $attributes ) {
+
+		$style = '';
+
+		if(!empty($attributes['alignment'])){
+			$style = 'style="text-align:' . $attributes['alignment'] . ';"';
+		}
+
+		if(empty($attributes['cfid'])){
+			return "<p $style>Please Select A Form</p>";
+		}
+
+		return "<div $style>" . do_shortcode('[cform-nd id="' . $attributes['cfid'] . '"]') . "</div>";
+	}
+}
