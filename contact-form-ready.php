@@ -3,13 +3,18 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.07
+  Version: 2.0.08
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ * 2.0.08 - 2019-08-30
+ * Improved color preview enhancement
+ * Corrected Gutenberg Bug when you only have one contact form
+ * Corrected bug where error was being displayed due to passing of empty string
+ *
  * 2.0.07 - 2019-08-28
  * Added Gutenberg integration
  * Added color picker enhancement when selecting styles	
@@ -1300,7 +1305,8 @@ class WP_Contact_Form_ND{
 	        'exclude_from_search' => false,
 	        'query_var' => true,
 	        'has_archive' => true,
-	        'register_meta_box_cb' => array($this, 'wpcf_nd_add_events_metaboxes' )
+	        'register_meta_box_cb' => array($this, 'wpcf_nd_add_events_metaboxes' ),
+	        'menu_icon' => 'dashicons-email-alt'
 	    );
 	    if (post_type_exists('contact-forms-nd')) {
 
@@ -1513,12 +1519,15 @@ class WP_Contact_Form_ND{
 			wp_localize_script( 'wpcf-admin', 'wpcf_nd_types', $contact_form_types );
 
 			if ( is_object( $post ) ) {
-				$formdata = get_post_meta( $post->ID, 'wpcf_nd_form_data', true );
-	    		$formdata = preg_replace('/>\s+</', "><", $formdata);
-				wp_localize_script( 'wpcf-admin', 'tmpformData', $formdata );
-			} else {
-				wp_localize_script( 'wpcf-admin', 'tmpformData', '' );
-			}
+                $formdata = get_post_meta( $post->ID, 'wpcf_nd_form_data', true );
+                $formdata = preg_replace('/>\s+</', "><", $formdata);
+                if(empty($formdata)){
+                    $formdata = 'false';
+                }
+                wp_localize_script( 'wpcf-admin', 'tmpformData', $formdata );
+            } else {
+                wp_localize_script( 'wpcf-admin', 'tmpformData', 'false' );
+            }
 
 		    wp_enqueue_style( 'wp-color-picker' );
 		    wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array(

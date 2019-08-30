@@ -168,9 +168,14 @@ Nothing here
 
 == Changelog ==
 
- = 2.0.07 - 2019-08-28 =
- * Added Gutenberg integration
- * Added color picker enhancement when selecting styles	
+= 2.0.08 - 2019-08-30 =
+* Improved color preview enhancement
+* Bug Fix: Corrected Gutenberg Bug when you only have one contact form so it would not select
+* Bug Fix: Corrected error that was being displayed due to passing of an empty string
+
+= 2.0.07 - 2019-08-28 =
+* Added Gutenberg integration
+* Added color picker enhancement when selecting styles	
 
 = 2.0.06 - 2019-05-30 =
 * Bug Fix: Fixed label not saving
