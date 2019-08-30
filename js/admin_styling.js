@@ -87,7 +87,7 @@
         });
 
         $('.wpcf-styling-form').click(function (event) {
-            var targets = $(".wpcf-color-input, .iris-picker, .iris-picker-inner, .wpcf-submit-save-styling, .wpcf-admin-enable-style-wrapper");
+            var targets = $(".wpcf-color-input, .iris-picker, .iris-picker-inner, .wpcf-submit-save-styling, .wpcf-admin-enable-style-wrapper, .wpcf-live-color-preview");
             if (!targets.is(event.target) && targets.has(event.target).length === 0) {
                 colorInput.iris('hide');
 
@@ -96,7 +96,7 @@
         });
 
         colorInput.click(function (event) {
-            colorInput.iris({hide: true});
+            colorInput.iris('hide');
             $(this).iris('show');
             return false;
         });
@@ -125,21 +125,26 @@
             previewSubmit.css('text-transform', $(this).val());
         });
 
-        jQuery(".wpcf-color-input").each(function(){
-            var row = jQuery(this).parent().parent();
-
+       $(".wpcf-color-input").each(function(){
+            var row = $(this).parent().parent();
+ 
             row.append('<td><div class="wpcf-live-color-preview"></div></td>');
-            row.find(".wpcf-live-color-preview").css("background", jQuery(this).val());
+            row.find(".wpcf-live-color-preview").css("background", $(this).val());
         });
-
-        jQuery("body").on('click', '.iris-picker', function(){
-            jQuery(".wpcf-color-input").each(function(){
-                var row = jQuery(this).parent().parent();
-
-            row.find(".wpcf-live-color-preview").css("background", jQuery(this).val());
+ 
+        $("body").on('click', '.iris-picker', function(){
+            $(".wpcf-color-input").each(function(){
+                var row = $(this).parent().parent();
+ 
+            row.find(".wpcf-live-color-preview").css("background", $(this).val());
             });
         });
-
+ 
+        $('.wpcf-live-color-preview').on('click', function(){
+            var row = $(this).parent().parent();
+ 
+            row.find('.wpcf-color-input').click(); 
+        });
     });
 
 
