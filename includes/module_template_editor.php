@@ -1,5 +1,8 @@
 <?php
 
+if (!defined('ABSPATH')) {
+	exit;
+}
 
 add_action( "wpcf_hook_settings_page_bottom", "wpcf_hook_control_settings_page_bottom_template" , 10, 1 );
 function wpcf_hook_control_settings_page_bottom_template($wpcf_nd_settings) {

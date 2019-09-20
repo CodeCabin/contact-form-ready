@@ -2,6 +2,10 @@
 
 namespace codecabin;
 
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 if(!is_admin())
 	return;
 

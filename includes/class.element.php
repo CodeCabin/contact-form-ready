@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 namespace WPGMZA;
 
 require_once(__DIR__ . '/class.selector-to-xpath.php');
