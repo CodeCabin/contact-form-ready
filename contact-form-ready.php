@@ -10,14 +10,15 @@
 
 
 /**
- * 2.0.08 - 2019-08-30
- * Improved color preview enhancement
- * Corrected Gutenberg Bug when you only have one contact form
- * Corrected bug where error was being displayed due to passing of empty string
- *
- * 2.0.07 - 2019-08-28
- * Added Gutenberg integration
- * Added color picker enhancement when selecting styles	
+ * 2.0.08 - 2019-09-20 
+ * Enhancement: Improved color preview enhancement
+ * Enhancement: Added if !defined ABSPATH security checks
+ * Bug Fix: Corrected Gutenberg Bug when you only have one contact form so it would not select
+ * Bug Fix: Corrected error that was being displayed due to passing of an empty string
+
+ * 2.0.07 - 2019-08-28 
+ * Enhancement: Added Gutenberg integration
+ * Enhancement: Added color picker enhancement when selecting styles	
  *
  * 2.0.06 - 2019-05-30
  * Bug Fix: Fixed label not saving
@@ -146,8 +147,8 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
-	die;
+if (!defined('ABSPATH')) {
+	exit;
 }
 global $wpcf_thank_you;
 global $wpcf_error_message;

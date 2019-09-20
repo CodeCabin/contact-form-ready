@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 add_action( "wpcf_user_js", "wpcf_hook_control_user_js", 10, 1);
 function wpcf_hook_control_user_js() {
 	wp_register_script( 'reCAPTCHA', "https://www.google.com/recaptcha/api.js?onload=wpcf_onloadCallback&render=explicit", true );

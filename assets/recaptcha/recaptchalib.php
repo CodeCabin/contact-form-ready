@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 /*
  * This is a PHP library that handles calling reCAPTCHA.
  *    - Documentation and latest version

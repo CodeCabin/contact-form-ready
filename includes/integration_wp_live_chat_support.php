@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 add_action( "wplc_hook_offline_custom_fields_integration_settings", "cfnd_hook_control_offline_custom_fields_integration_settings", 2 );
 
 

@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 require_once('class.document.php');
 
 class HTMLToPlaintextConverter

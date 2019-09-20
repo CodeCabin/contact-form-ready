@@ -1,3 +1,9 @@
+<?php 
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
+
 <div class="about-wrap">
     <h1 style='margin-right: 0;'><?php _e( "Welcome to Contact Form Ready", "wpcf_nd" ); ?></h1>
 
