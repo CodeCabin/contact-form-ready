@@ -3,13 +3,17 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.08
+  Version: 2.0.09
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
+ *  * 2.0.09 - 2019-10-29 
+ * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
+ * Bug Fix: Fixed duplicate GDPR warning
+ * 
  * 2.0.08 - 2019-09-20 
  * Enhancement: Improved color preview enhancement
  * Enhancement: Added if !defined ABSPATH security checks
@@ -1478,7 +1482,16 @@ class WP_Contact_Form_ND{
        		wp_enqueue_style( 'cfr-jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"' );
 
 	        wp_register_script( 'contact-form-ready', plugins_url(plugin_basename(dirname(__FILE__)))."/js/user.js", true, $this->current_version );
-	        wp_enqueue_script( 'contact-form-ready' );
+			//localize invisible recaptcha settings
+			$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
+
+			$invisible_recaptcha_localize_options = array(
+				'invisible_recaptcha_enabled' => $wpcf_nd_settings['wpcf_nd_enable_invisible_recaptcha'] == '1',
+				'wpcf_invisible_recaptcha_api' => $wpcf_nd_settings['wpcf_nd_invisible_recaptcha_site_key']
+			);
+		 
+			wp_localize_script( 'contact-form-ready', 'invisible_recaptcha_options', $invisible_recaptcha_localize_options);
+			wp_enqueue_script( 'contact-form-ready' );
 	        wp_localize_script( 'contact-form-ready', 'wpcf_nd_nonce', $wpcf_nonce );
 	        wp_localize_script( 'contact-form-ready', 'wpcf_nd_ajaxurl', $wpcf_ajaxurl );
 
@@ -2146,15 +2159,6 @@ class WP_Contact_Form_ND{
                 if ( ! $cfr_enable_gdpr ) { 
 					$wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] = 0;
 					$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = 0;
-					?>
-                    <div class="update-nag notice notice-error is-dismissible" style="border-color: #dd0000; max-width: 600px;margin-left: 0;">
-                        <p><strong><?php _e( 'Warning - GDPR Compliance Disabled - Action Required', 'wpcf_nd' ); ?></strong></p>
-                        <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="#">EU GDPR</a> </p>
-                        <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="#">Privacy Policy</a> </p>
-                        <p><?php _e( 'It is highly recommended that you enable GDPR compliance to ensure your user data is regulated.', 'wpcf_nd' ); ?></p>
-                        <p><a href="?post_type=contact-forms-nd&page=wpcf-settings#cfr-nd-privacy" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
-                    </div>
-                    <?php
                 } else {
                     echo "<span class='update-nag below-h1'>Settings saved</span>";
                 }
