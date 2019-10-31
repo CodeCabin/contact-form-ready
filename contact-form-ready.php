@@ -10,9 +10,10 @@
 
 
 /**
- *  * 2.0.09 - 2019-10-29 
+ *  * 2.0.09 - 2019-10-31 
  * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
  * Bug Fix: Fixed duplicate GDPR warning
+ * Improved UI/UX of settings page
  * 
  * 2.0.08 - 2019-09-20 
  * Enhancement: Improved color preview enhancement
