@@ -1,0 +1,119 @@
+label { font-weight: bolder; }  
+#sola_cfr_tabs .ui-tabs-nav {
+   padding:0; 
+   height:auto;  
+}
+
+#sola_cfr_tabs .ui-tabs-nav {
+   border-bottom: none !important; 
+   margin-top: 0px !important;
+}
+#sola_cfr_tabs .ui-tabs-panel{
+   padding:0;
+}
+#sola_cfr_tabs .ui-tabs-panel table {
+   padding: 5px;
+}
+#sola_cfr_tabs .ui-state-default{
+width: 180px;
+background-color: #e9e9e9;
+height: 35px;
+padding: 0px;
+line-height: 30px;
+border: none !important;
+
+}
+#sola_cfr_tabs .ui-state-default a{
+   color:#000;
+   text-decoration:none;
+   text-align: center;
+   display: block;
+}
+#sola_cfr_tabs .ui-state-default a:hover{
+   text-decoration:none;    
+   cursor: pointer;
+   color: #000;
+   display: block;
+}
+
+
+
+#sola_cfr_tabs .ui-state-active a:hover{
+   cursor: pointer;
+border: none !important;
+}
+#sola_cfr_tabs .ui-state-active {
+   background-color: #fff;
+   border: none !important;
+}
+#sola_cfr_tabs .ui-state-active a{
+   color: #000 !important;
+}
+#sola_cfr_tabs .ui-tabs-nav {
+   text-align: left;
+}
+
+.ui-tabs .ui-tabs-nav {
+   margin: 0;
+   padding: .2em .2em 0 !important;
+}
+
+.ui-widget-header {
+   border: 1px solid #dddddd;
+   color: #333333;
+   font-weight: bold;
+}
+.ui-helper-reset {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   line-height: 1.3;
+   text-decoration: none;
+   font-size: 100%;
+   list-style: none;
+}
+.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+   content: "";
+   display: table;
+   border-collapse: collapse;
+}
+.ui-helper-clearfix:after {
+   clear: both;
+}
+.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+   content: "";
+   display: table;
+   border-collapse: collapse;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+   margin-bottom: -1px;
+   padding-bottom: 10px;
+}
+
+.ui-tabs .ui-tabs-nav li {
+   list-style: none;
+   float: left;
+   position: relative;
+   top: 0;
+   margin: 1px .2em 0 0;
+   border-bottom-width: 0;
+   white-space: nowrap;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+   border: none !important;
+
+   font-weight: normal;
+   color: #ffffff;
+}
+#sola_cfr_tabs .ui-tabs-nav {
+   border-bottom: none !important;
+   margin-top: 15px !important;
+}
+
+.ui-tabs-anchor,
+.ui-tabs-anchor:active,
+.ui-tabs-anchor:focus{
+   outline: none !important;
+box-shadow: none !important;
+}

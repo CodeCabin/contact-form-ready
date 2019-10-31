@@ -216,7 +216,7 @@ class WP_Contact_Form_ND{
 		add_filter( 'manage_contact-forms-nd_posts_columns', array( $this, 'set_custom_edit_columns' ) ) ;
 		add_action( 'manage_contact-forms-nd_posts_custom_column' , array( $this, 'custom_column' ) , 10, 2  ) ;
 
-		add_action( 'wpcf_hook_settings_page_bottom', array( $this, 'privacy_settings_content' ), 10, 1 );
+		add_action( 'wpcf_hook_settings_page_bottom_privacy', array( $this, 'privacy_settings_content' ), 10, 1 );
 		add_action( 'admin_notices', array( $this, 'disable_gdpr_notice') );
 //		add_action('wpcf_gdpr_reg_cron_hook', array( $this, 'wpcf_gdpr_register_cron') );
 
@@ -1563,7 +1563,11 @@ class WP_Contact_Form_ND{
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
-	        wp_enqueue_script( 'wpcf-admin-settings' );
+			wp_enqueue_script( 'wpcf-admin-settings' );
+			wp_register_script( 'wpcf-tabs', plugins_url(plugin_basename(dirname(__FILE__)))."/js/wpcf_tabs.js", true );
+			wp_enqueue_script( 'wpcf-tabs' );
+			wp_register_style( 'wpcf-tabs-style', plugins_url(plugin_basename(dirname(__FILE__)))."/css/wpcf-tabs-style.css", true );
+			wp_enqueue_style( 'wpcf-tabs-style' );
 			wp_register_style( 'wpcf-codemirror-style', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/codemirror.css", true );
 			wp_enqueue_style( 'wpcf-codemirror-style' );
 			wp_register_style( 'wpcf-codemirror-theme', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/monokai.css", true );
@@ -2174,33 +2178,50 @@ class WP_Contact_Form_ND{
 
 
 			?>
+			<div id="sola_cfr_tabs">
+				<form action='' method='POST' name='wpcf_settings_form'>
+					<h1><?php _e("Contact form settings","wpcf_nd"); ?></h1>
+					<ul>
+    					<li><a href="#tabs-1">Contact form settings</a></li>
+						<li><a href="#tabs-2">Anti Spam Settings</a></li>
+						<li><a href="#tabs-3">Email template</a></li>
+						<li><a href="#tabs-4">Privacy</a></li>
+					</ul>
+					
+					<div id="tabs-1">
+						<h2><?php _e("Contact Form Settings","wpcf_nd"); ?></h2>
 
-			<form action='' method='POST' name='wpcf_settings_form'>
-				<h1><?php _e("Contact form settings","wpcf_nd"); ?></h1>
-				
+						<table class='wp-list-table widefat striped fixed'>
+							<tr>
+								<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
+								<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>
+							</tr>
+							<tr>
+								<td width='250'><?php _e("Email from name","wpcf_nd"); ?></td>
+								<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo $wpcf_nd_settings['wpcf_nd_email_from_name']; ?>' /></td>
+							</tr>
+							<tr>
+								<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
+								<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
+							</tr>
+						</table>
+					</div>
 
-				<h2><?php _e("Contact Form Settings","wpcf_nd"); ?></h2>
+					<div id="tabs-2">
+						<?php do_action( "wpcf_hook_settings_page_bottom_anti_spam", $wpcf_nd_settings ); ?>
+					</div>
 
-				<table class='wp-list-table widefat striped fixed'>
-					<tr>
-						<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>
-					</tr>
-					<tr>
-						<td width='250'><?php _e("Email from name","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo $wpcf_nd_settings['wpcf_nd_email_from_name']; ?>' /></td>
-					</tr>
-					<tr>
-						<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
-					</tr>
-				</table>
+					<div id="tabs-3">
+						<?php do_action( "wpcf_hook_settings_page_bottom_temp", $wpcf_nd_settings ); ?>
+					</div>
 
-				<?php do_action( "wpcf_hook_settings_page_bottom", $wpcf_nd_settings ); ?>
+					<div id="tabs-4">
+						<?php do_action( "wpcf_hook_settings_page_bottom_privacy", $wpcf_nd_settings ); ?>
+					</div>
 
-				<input type='submit' value='Save settings' name='wpcf_submit_save_settings' />
-			</form>
-
+					<input type='submit' value='Save settings' name='wpcf_submit_save_settings' />
+				</form>
+			</div>
 
 
 
