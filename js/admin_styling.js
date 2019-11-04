@@ -147,5 +147,8 @@
         });
     });
 
+    jQuery("document").ready(function(){
+        jQuery( "#sola_cfr_styling_tabs" ).tabs({ active: 0 });
+    });
 
 })(jQuery);
