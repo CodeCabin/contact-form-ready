@@ -10,9 +10,11 @@
 
 
 /**
- *  * 2.0.09 - 2019-10-29 
+ *  * 2.0.09 - 2019-10-31 
  * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
  * Bug Fix: Fixed duplicate GDPR warning
+ * Improved UI/UX of settings page
+ * Improved UI/UX of Styling page
  * 
  * 2.0.08 - 2019-09-20 
  * Enhancement: Improved color preview enhancement
@@ -216,7 +218,7 @@ class WP_Contact_Form_ND{
 		add_filter( 'manage_contact-forms-nd_posts_columns', array( $this, 'set_custom_edit_columns' ) ) ;
 		add_action( 'manage_contact-forms-nd_posts_custom_column' , array( $this, 'custom_column' ) , 10, 2  ) ;
 
-		add_action( 'wpcf_hook_settings_page_bottom', array( $this, 'privacy_settings_content' ), 10, 1 );
+		add_action( 'wpcf_hook_settings_page_bottom_privacy', array( $this, 'privacy_settings_content' ), 10, 1 );
 		add_action( 'admin_notices', array( $this, 'disable_gdpr_notice') );
 //		add_action('wpcf_gdpr_reg_cron_hook', array( $this, 'wpcf_gdpr_register_cron') );
 
@@ -1563,7 +1565,11 @@ class WP_Contact_Form_ND{
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
-	        wp_enqueue_script( 'wpcf-admin-settings' );
+			wp_enqueue_script( 'wpcf-admin-settings' );
+			wp_register_script( 'wpcf-tabs', plugins_url(plugin_basename(dirname(__FILE__)))."/js/wpcf_tabs.js", true );
+			wp_enqueue_script( 'wpcf-tabs' );
+			wp_register_style( 'wpcf-tabs-style', plugins_url(plugin_basename(dirname(__FILE__)))."/css/wpcf-tabs-style.css", true );
+			wp_enqueue_style( 'wpcf-tabs-style' );
 			wp_register_style( 'wpcf-codemirror-style', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/codemirror.css", true );
 			wp_enqueue_style( 'wpcf-codemirror-style' );
 			wp_register_style( 'wpcf-codemirror-theme', plugins_url(plugin_basename(dirname(__FILE__)))."/assets/codemirror/monokai.css", true );
@@ -1909,111 +1915,109 @@ class WP_Contact_Form_ND{
 
             <div class="wpcf-admin-styling-wrapper">
                 <div class="wpcf-admin-enable-table-wrapper">
-                    <table class='wp-list-table striped fixed wpcf-admin-table'>
-                        <thead>
-                        <tr>
-                            <th><?php _e( "Label", "wpcf_nd" ); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
-                            <td><input type='number' name='wpcf_nd_label_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_label_font_size' value='<?php echo$wpcf_nd_styling['wpcf_nd_label_font_size']; ?>' min="10" max="62" /></td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
-                            <td>
-                            <select name='wpcf_nd_label_font_weight' id='wpcf_nd_label_font_weight'>
-                                <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>300</option>
-                                <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>400</option>
-                                <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>600</option>
-                                <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>700</option>
-                            </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
-                            <td><input type='text' name='wpcf_nd_label_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_label_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_label_color'])); ?>' /></td>
-                        </tr>
-                        </tbody>
-                    </table>
+					<div id="sola_cfr_styling_tabs">
+						<ul>
+							<li><a href="#tabs-1">Label</a></li>
+							<li><a href="#tabs-2">Input</a></li>
+							<li><a href="#tabs-3">Submit Button</a></li>
+						</ul>
 
-                    <table class='wp-list-table striped fixed wpcf-admin-table'>
-                        <thead>
-                            <tr>
-                                <th><?php _e( "Input", "wpcf_nd" ); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
-                                <td><input type='text' name='wpcf_nd_input_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_bg_color'])); ?>' /></td>
-                            </tr>
-                            <tr>
-                                <td width='250'><?php _e("Border color","wpcf_nd"); ?></td>
-                                <td><input type='text' name='wpcf_nd_input_border_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_color'])); ?>' /></td>
-                            </tr>
-                            <tr>
-                                <td width='250'><?php _e("Border hover color","wpcf_nd"); ?></td>
-                                <td><input type='text' name='wpcf_nd_input_border_focus_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_focus_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_focus_color'])); ?>' /></td>
-                            </tr>
-                            <tr>
-                                <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
-                                <td><input type='number' name='wpcf_nd_input_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_size'])); ?>' min="10" max="62" /></td>
-                            </tr>
-                            <tr>
-                                <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
-                                <td><input type='text' name='wpcf_nd_input_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_color'])); ?>' /></td>
-                            </tr>
-                        </tbody>
-                    </table>
+						<div id="tabs-1">
+							<table class='wp-list-table striped fixed wpcf-admin-table'>
+								<tbody>
+								<tr>
+									<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+									<td><input type='number' name='wpcf_nd_label_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_label_font_size' value='<?php echo$wpcf_nd_styling['wpcf_nd_label_font_size']; ?>' min="10" max="62" /></td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
+									<td>
+									<select name='wpcf_nd_label_font_weight' id='wpcf_nd_label_font_weight'>
+										<option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+										<option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+										<option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+										<option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_label_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+									</select>
+									</td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+									<td><input type='text' name='wpcf_nd_label_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_label_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_label_color'])); ?>' /></td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
 
-                    <table class='wp-list-table striped fixed wpcf-admin-table'>
-                        <thead>
-                        <tr>
-                            <th><?php _e( "Submit button", "wpcf_nd" ); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
-                            <td><input type='text' name='wpcf_nd_submit_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_color'])); ?>' /></td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Background hover color","wpcf_nd"); ?></td>
-                            <td><input type='text' name='wpcf_nd_submit_bg_hover_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_hover_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'])); ?>' /></td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
-                            <td><input type='number' name='wpcf_nd_submit_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_size'])); ?>' min="10" max="62" /></td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
-                            <td><input type='text' name='wpcf_nd_submit_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_color'])); ?>' /></td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
-                            <td>
-                            <select name='wpcf_nd_submit_font_weight' id='wpcf_nd_submit_font_weight'>
-                                <option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>300</option>
-                                <option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>400</option>
-                                <option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>600</option>
-                                <option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>700</option>
-                            </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width='250'><?php _e("Text transform","wpcf_nd"); ?></td>
-                            <td>
-                            <select name='wpcf_nd_submit_text_transform' id='wpcf_nd_submit_text_transform'>
-                                <option value="none" <?php echo ( 'normal' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "none", "wpcf_nd" ); ?></option>
-                                <option value="uppercase" <?php echo ( 'uppercase' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "uppercase", "wpcf_nd" ); ?></option>
-                            </select>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+						<div id="tabs-2">
+							<table class='wp-list-table striped fixed wpcf-admin-table'>
+								<tbody>
+									<tr>
+										<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
+										<td><input type='text' name='wpcf_nd_input_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_bg_color'])); ?>' /></td>
+									</tr>
+									<tr>
+										<td width='250'><?php _e("Border color","wpcf_nd"); ?></td>
+										<td><input type='text' name='wpcf_nd_input_border_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_color'])); ?>' /></td>
+									</tr>
+									<tr>
+										<td width='250'><?php _e("Border hover color","wpcf_nd"); ?></td>
+										<td><input type='text' name='wpcf_nd_input_border_focus_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_focus_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_focus_color'])); ?>' /></td>
+									</tr>
+									<tr>
+										<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+										<td><input type='number' name='wpcf_nd_input_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_input_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_size'])); ?>' min="10" max="62" /></td>
+									</tr>
+									<tr>
+										<td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+										<td><input type='text' name='wpcf_nd_input_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_color'])); ?>' /></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
+						<div id="tabs-3">
+							<table class='wp-list-table striped fixed wpcf-admin-table'>
+								<tbody>
+								<tr>
+									<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
+									<td><input type='text' name='wpcf_nd_submit_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_color'])); ?>' /></td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Background hover color","wpcf_nd"); ?></td>
+									<td><input type='text' name='wpcf_nd_submit_bg_hover_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_hover_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'])); ?>' /></td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
+									<td><input type='number' name='wpcf_nd_submit_font_size' class='regular-text wpcf-nd-small-input' id='wpcf_nd_submit_font_size' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_size'])); ?>' min="10" max="62" /></td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
+									<td><input type='text' name='wpcf_nd_submit_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_color'])); ?>' /></td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>
+									<td>
+									<select name='wpcf_nd_submit_font_weight' id='wpcf_nd_submit_font_weight'>
+										<option value="300" <?php echo ( '300' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>300</option>
+										<option value="400" <?php echo ( '400' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>400</option>
+										<option value="600" <?php echo ( '600' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>600</option>
+										<option value="700" <?php echo ( '700' === $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) ? 'selected' : ''; ?>>700</option>
+									</select>
+									</td>
+								</tr>
+								<tr>
+									<td width='250'><?php _e("Text transform","wpcf_nd"); ?></td>
+									<td>
+									<select name='wpcf_nd_submit_text_transform' id='wpcf_nd_submit_text_transform'>
+										<option value="none" <?php echo ( 'normal' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "none", "wpcf_nd" ); ?></option>
+										<option value="uppercase" <?php echo ( 'uppercase' === $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) ? 'selected' : ''; ?>><?php _e( "uppercase", "wpcf_nd" ); ?></option>
+									</select>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
                 </div>
 
                 <div class="wpcf-admin-preview-form wpcf_nd" id="wpcf-nd">
@@ -2032,7 +2036,7 @@ class WP_Contact_Form_ND{
 
             <?php do_action( "wpcf_hook_styling_page_bottom", $wpcf_nd_styling ); ?>
 
-            <input class="wpcf-submit-save-styling" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
+            <input class="wpcf-submit-save-styling button-primary" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
         </form>
         <style>
             .wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {
@@ -2174,34 +2178,49 @@ class WP_Contact_Form_ND{
 
 
 			?>
-
 			<form action='' method='POST' name='wpcf_settings_form'>
-				<h1><?php _e("Contact form settings","wpcf_nd"); ?></h1>
-				
+				<div id="sola_cfr_tabs">
+					<h1><?php _e("Contact form settings","wpcf_nd"); ?></h1>
+					<ul>
+    					<li><a href="#tabs-1">Contact form settings</a></li>
+						<li><a href="#tabs-2">Anti Spam Settings</a></li>
+						<li><a href="#tabs-3">Email template</a></li>
+						<li><a href="#tabs-4">Privacy</a></li>
+					</ul>
+					
+					<div id="tabs-1">
+						<h2><?php _e("Contact Form Settings","wpcf_nd"); ?></h2>
 
-				<h2><?php _e("Contact Form Settings","wpcf_nd"); ?></h2>
+						<table class='wp-list-table widefat striped fixed'>
+							<tr>
+								<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
+								<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>
+							</tr>
+							<tr>
+								<td width='250'><?php _e("Email from name","wpcf_nd"); ?></td>
+								<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo $wpcf_nd_settings['wpcf_nd_email_from_name']; ?>' /></td>
+							</tr>
+							<tr>
+								<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
+								<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
+							</tr>
+						</table>
+					</div>
 
-				<table class='wp-list-table widefat striped fixed'>
-					<tr>
-						<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>
-					</tr>
-					<tr>
-						<td width='250'><?php _e("Email from name","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo $wpcf_nd_settings['wpcf_nd_email_from_name']; ?>' /></td>
-					</tr>
-					<tr>
-						<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
-						<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
-					</tr>
-				</table>
+					<div id="tabs-2">
+						<?php do_action( "wpcf_hook_settings_page_bottom_anti_spam", $wpcf_nd_settings ); ?>
+					</div>
 
-				<?php do_action( "wpcf_hook_settings_page_bottom", $wpcf_nd_settings ); ?>
+					<div id="tabs-3">
+						<?php do_action( "wpcf_hook_settings_page_bottom_temp", $wpcf_nd_settings ); ?>
+					</div>
 
-				<input type='submit' value='Save settings' name='wpcf_submit_save_settings' />
+					<div id="tabs-4">
+						<?php do_action( "wpcf_hook_settings_page_bottom_privacy", $wpcf_nd_settings ); ?>
+					</div>
+				</div>
+				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' />
 			</form>
-
-
 
 
 			<?php

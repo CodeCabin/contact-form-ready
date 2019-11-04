@@ -12,7 +12,7 @@ function wpcf_hook_control_user_js() {
 
 
 
-add_action( "wpcf_hook_settings_page_bottom", "wpcf_hook_control_settings_page_bottom_recpatcha" , 10, 1 );
+add_action( "wpcf_hook_settings_page_bottom_anti_spam", "wpcf_hook_control_settings_page_bottom_recpatcha" , 10, 1 );
 function wpcf_hook_control_settings_page_bottom_recpatcha($wpcf_nd_settings) {
 	
 	//ReCaptcha
