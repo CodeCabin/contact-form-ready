@@ -1583,6 +1583,7 @@ class WP_Contact_Form_ND{
 			wp_enqueue_script( 'wpcf-codemirror-xml-mode' );
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-styling') {
+			wp_enqueue_script( 'jquery-ui-tabs' );	    
 			wp_register_script( 'wpcf-admin-styling', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_styling.js", true );
 			wp_enqueue_script( 'wpcf-admin-styling' );
 		}
