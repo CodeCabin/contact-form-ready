@@ -168,11 +168,13 @@ Nothing here
 
 == Changelog ==
 
-= 2.0.09 - 2019-10-31 =
+= 2.0.09 - 2019-11-07 
+* Tested on WordPress 5.3
 * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
 * Bug Fix: Fixed duplicate GDPR warning
+* Bug Fix: Fixed bug with form renderer not compiling form HTML correctly in some instances
 * Improved UI/UX of settings page
-* Improved UI/UX of styling page
+* Improved UI/UX of Styling page
 
 = 2.0.08 - 2019-09-20 =
 * Enhancement: Improved color preview enhancement

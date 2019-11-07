@@ -14,6 +14,16 @@ jQuery(document).ready(function($) {
             dataType: 'xml',
             formData: tmpformData,
             disableHTMLLabels: true,
+            onAddField: function(formData) {
+                jQuery('body').trigger('cfr_field_update_event');
+            },
+            onOpenFieldEdit: function(formData) {
+                jQuery('body').trigger('cfr_field_update_event');
+            },
+            onCloseFieldEdit: function(formData) {
+                jQuery('body').trigger('cfr_field_update_event');
+            },
+
         };
     var isJson = false;
     try {
