@@ -20,7 +20,11 @@ var predefined_busy = false;
 
                 // Grab markup and escape it
                 var markup = jQuery("<div/>");
-                markup.formRender({formData});
+                // markup.formRender({formData});
+                markup.formRender({
+                    dataType: 'xml',
+                    formData:  formBuilder.actions.getData('xml')
+                });
 
                 var decoded = markup.html();
 
@@ -29,7 +33,7 @@ var predefined_busy = false;
             }
         });
 
-        jQuery('body').on('click keyup', '.build-wrap', function(e){
+        jQuery('body').on('click keyup cfr_field_update_event', '.build-wrap', function(e){
             if (!predefined_busy && formBuilder.actions.getData) {
                 // TODO event handler logic
                 var formData = formBuilder.actions.getData('json');
@@ -45,6 +49,11 @@ var predefined_busy = false;
 
                 // Grab markup and escape it
                 var markup = jQuery("<div/>");
+
+                if(formData.indexOf('{}') !== -1){
+                    return;
+                }
+
                 markup.formRender({formData});
 
                 var decoded = markup.html();
@@ -100,7 +109,16 @@ var predefined_busy = false;
                         editOnAdd: true,
                         formData: tformData,
                         dataType: 'xml',
-                        disableHTMLLabels: true
+                        disableHTMLLabels: true,
+                        onAddField: function(formData) {
+                            jQuery('body').trigger('cfr_field_update_event');
+                        },
+                        onOpenFieldEdit: function(formData) {
+                            jQuery('body').trigger('cfr_field_update_event');
+                        },
+                        onCloseFieldEdit: function(formData) {
+                            jQuery('body').trigger('cfr_field_update_event');
+                        },
                     };
 
 
