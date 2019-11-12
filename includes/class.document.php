@@ -1,10 +1,10 @@
 <?php
 
+namespace WPGMZA;
+
 if (!defined('ABSPATH')) {
 	exit;
 }
-
-namespace WPGMZA;
 
 require_once(__DIR__ . '/class.element.php');
 

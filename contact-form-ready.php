@@ -10,7 +10,7 @@
 
 
 /**
- * 2.0.09 - 2019-11-07 
+ * 2.0.09 - 2019-11-12 
  * Tested on WordPress 5.3
  * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
  * Bug Fix: Fixed duplicate GDPR warning

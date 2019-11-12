@@ -1,10 +1,10 @@
 <?php
 
+namespace WPGMZA\Selector;
+
 if (!defined('ABSPATH')) {
 	exit;
 }
-
-namespace WPGMZA\Selector;
 
 function trace($str)
 {
