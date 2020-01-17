@@ -10,6 +10,9 @@
 
 
 /**
+ * 2.0.10 - 2020-01-17 
+ * Bug Fix: Fixed jQuery() .tabs is not a function
+ * 
  * 2.0.09 - 2019-11-12 
  * Tested on WordPress 5.3
  * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
@@ -1568,6 +1571,7 @@ class WP_Contact_Form_ND{
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
 			wp_enqueue_script( 'wpcf-admin-settings' );
+			wp_enqueue_script('jquery-ui-tabs');
 			wp_register_script( 'wpcf-tabs', plugins_url(plugin_basename(dirname(__FILE__)))."/js/wpcf_tabs.js", true );
 			wp_enqueue_script( 'wpcf-tabs' );
 			wp_register_style( 'wpcf-tabs-style', plugins_url(plugin_basename(dirname(__FILE__)))."/css/wpcf-tabs-style.css", true );
