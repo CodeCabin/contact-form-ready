@@ -168,6 +168,9 @@ Nothing here
 
 == Changelog ==
 
+= 2.0.10 - 2020-01-21 =
+* Bug Fix: Fixed jQuery() .tabs is not a function
+
 = 2.0.09 - 2019-11-12 =
 * Tested on WordPress 5.3
 * Enhancement: Added the ability to use Google's Invisible reCAPTCHA on forms
