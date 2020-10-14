@@ -4,7 +4,7 @@ Donate link: http://nickduncan.co.za
 Tags:  form, forms, form builder, contact form, wordpress contact form, contact, free contact form for website, contact us, custom form, contact form builder, contact form manager 
 Requires at least: 3.8
 Requires PHP: 5.3
-Tested up to: 5.3
+Tested up to: 5.5.1
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
