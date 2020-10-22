@@ -767,7 +767,7 @@ class WP_Contact_Form_ND{
                     </tr>
                     <tr class="wpcf-modal-customization is-active">
                         <td><label for='wpcf_nd_modal_bg'><?php _e( "Modal wrapper background color", "wpcf_nd" ); ?></label></td>
-                        <td><input type='text' value='<?php echo $modal_bg; ?>' id='wpcf_nd_modal_bg' class='wpcf-color-input' name='wpcf_nd_modal_bg' /></td>
+                        <td><input type='color' value='<?php echo $modal_bg; ?>' id='wpcf_nd_modal_bg' class='wpcf-color-input' name='wpcf_nd_modal_bg' /></td>
                     </tr>
                     <tr class="wpcf-modal-customization is-active">
                         <td><label for='wpcf_nd_modal_opacity'><?php _e( "Modal wrapper opacity", "wpcf_nd" ); ?></label></td>
@@ -778,7 +778,7 @@ class WP_Contact_Form_ND{
                     </tr>
                     <tr class="wpcf-modal-customization is-active">
                         <td><label for='wpcf_nd_modal_inner_bg'><?php _e( "Modal inner background", "wpcf_nd" ); ?></label></td>
-                        <td><input type='text' value='<?php echo $modal_inner_bg; ?>' id='wpcf_nd_modal_inner_bg' class='wpcf-color-input' name='wpcf_nd_modal_inner_bg' /></td>
+                        <td><input type='color' value='<?php echo $modal_inner_bg; ?>' id='wpcf_nd_modal_inner_bg' class='wpcf-color-input' name='wpcf_nd_modal_inner_bg' /></td>
                     </tr>
 			    	<?php do_action( "wpcf_hook_form_builder_table_bottom", $post, $wpcf_nd_settings ); ?>
 			    </table>
@@ -1550,23 +1550,10 @@ class WP_Contact_Form_ND{
                 wp_localize_script( 'wpcf-admin', 'tmpformData', 'false' );
             }
 
-		    wp_enqueue_style( 'wp-color-picker' );
-		    wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array(
-			    'jquery-ui-draggable',
-			    'jquery-ui-slider',
-			    'jquery-touch-punch'
-		    ), false, 1 );
-
+		    
 		}
 
-
-		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-styling') {
-			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array(
-				'jquery-ui-draggable',
-				'jquery-ui-slider',
-				'jquery-touch-punch'
-			), false, 1 );
+		
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
@@ -1949,7 +1936,7 @@ class WP_Contact_Form_ND{
 								</tr>
 								<tr>
 									<td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
-									<td><input type='text' name='wpcf_nd_label_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_label_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_label_color'])); ?>' /></td>
+									<td><input type='color' name='wpcf_nd_label_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_label_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_label_color'])); ?>' /></td>
 								</tr>
 								</tbody>
 							</table>
@@ -1960,15 +1947,15 @@ class WP_Contact_Form_ND{
 								<tbody>
 									<tr>
 										<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
-										<td><input type='text' name='wpcf_nd_input_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_bg_color'])); ?>' /></td>
+										<td><input type='color' name='wpcf_nd_input_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_bg_color'])); ?>' /></td>
 									</tr>
 									<tr>
 										<td width='250'><?php _e("Border color","wpcf_nd"); ?></td>
-										<td><input type='text' name='wpcf_nd_input_border_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_color'])); ?>' /></td>
+										<td><input type='color' name='wpcf_nd_input_border_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_color'])); ?>' /></td>
 									</tr>
 									<tr>
 										<td width='250'><?php _e("Border hover color","wpcf_nd"); ?></td>
-										<td><input type='text' name='wpcf_nd_input_border_focus_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_focus_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_focus_color'])); ?>' /></td>
+										<td><input type='color' name='wpcf_nd_input_border_focus_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_border_focus_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_border_focus_color'])); ?>' /></td>
 									</tr>
 									<tr>
 										<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
@@ -1976,7 +1963,7 @@ class WP_Contact_Form_ND{
 									</tr>
 									<tr>
 										<td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
-										<td><input type='text' name='wpcf_nd_input_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_color'])); ?>' /></td>
+										<td><input type='color' name='wpcf_nd_input_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_input_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_input_font_color'])); ?>' /></td>
 									</tr>
 								</tbody>
 							</table>
@@ -1987,11 +1974,11 @@ class WP_Contact_Form_ND{
 								<tbody>
 								<tr>
 									<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
-									<td><input type='text' name='wpcf_nd_submit_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_color'])); ?>' /></td>
+									<td><input type='color' name='wpcf_nd_submit_bg_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_color'])); ?>' /></td>
 								</tr>
 								<tr>
 									<td width='250'><?php _e("Background hover color","wpcf_nd"); ?></td>
-									<td><input type='text' name='wpcf_nd_submit_bg_hover_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_hover_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'])); ?>' /></td>
+									<td><input type='color' name='wpcf_nd_submit_bg_hover_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_bg_hover_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color'])); ?>' /></td>
 								</tr>
 								<tr>
 									<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
@@ -1999,7 +1986,7 @@ class WP_Contact_Form_ND{
 								</tr>
 								<tr>
 									<td width='250'><?php _e("Font color","wpcf_nd"); ?></td>
-									<td><input type='text' name='wpcf_nd_submit_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_color'])); ?>' /></td>
+									<td><input type='color' name='wpcf_nd_submit_font_color' class='regular-text wpcf-nd-small-input wpcf-color-input' id='wpcf_nd_submit_font_color' value='<?php echo stripslashes(esc_html($wpcf_nd_styling['wpcf_nd_submit_font_color'])); ?>' /></td>
 								</tr>
 								<tr>
 									<td width='250'><?php _e("Font weight","wpcf_nd"); ?></td>

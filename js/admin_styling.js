@@ -30,76 +30,7 @@
             previewSubmit = $('.wpcf-admin-preview-submit');
 
 
-        $('#wpcf_nd_label_color').iris({
-            change: function (event, ui) {
-                previewLabels.css('color', ui.color.toString());
-            }
-        });
-
-        $('#wpcf_nd_input_bg_color').iris({
-            change: function (event, ui) {
-                previewInputs.css('background', ui.color.toString());
-            }
-        });
-
-        $('#wpcf_nd_input_border_color').iris({
-            change: function (event, ui) {
-                previewInputs.css('border-color', ui.color.toString());
-            }
-        });
-
-        $('#wpcf_nd_input_font_color').iris({
-            change: function (event, ui) {
-                previewInputs.css('color', ui.color.toString());
-            }
-        });
-
-        $('#wpcf_nd_submit_bg_color').iris({
-            change: function (event, ui) {
-                previewSubmit.css('background', ui.color.toString());
-            }
-        });
-
-        $('#wpcf_nd_submit_font_color').iris({
-            change: function (event, ui) {
-                previewSubmit.css('color', ui.color.toString());
-            }
-        });
-
-        $('#wpcf_nd_input_border_focus_color').iris({
-            change: function (event, ui) {
-                previewInputs.mouseenter(function() {
-                    $(this).css('border-color', ui.color.toString());
-                }).mouseleave(function() {
-                    previewInputs.css('border-color', jQuery('#wpcf_nd_input_border_color').val());
-                });
-            }
-        });
-
-        $('#wpcf_nd_submit_bg_hover_color').iris({
-            change: function (event, ui) {
-                previewSubmit.mouseenter(function() {
-                    previewSubmit.css('background', ui.color.toString());
-                }).mouseleave(function() {
-                    previewSubmit.css('background', jQuery('#wpcf_nd_submit_bg_color').val());
-                });
-            }
-        });
-
-        $('.wpcf-styling-form').click(function (event) {
-            var targets = $(".wpcf-color-input, .iris-picker, .iris-picker-inner, .wpcf-submit-save-styling, .wpcf-admin-enable-style-wrapper, .wpcf-live-color-preview");
-            if (!targets.is(event.target) && targets.has(event.target).length === 0) {
-                colorInput.iris('hide');
-
-                return false;
-            }
-        });
-
-        colorInput.click(function (event) {
-            colorInput.iris('hide');
-            $(this).iris('show');
-            return false;
-        });
+        /* Iris replaced with standard color picker */
 
         $('#wpcf_nd_label_font_size').on('change', function (event) {
             previewLabels.css('font-size', $(this).val() + 'px');
@@ -132,14 +63,7 @@
             row.find(".wpcf-live-color-preview").css("background", $(this).val());
         });
  
-        $("body").on('click', '.iris-picker', function(){
-            $(".wpcf-color-input").each(function(){
-                var row = $(this).parent().parent();
- 
-            row.find(".wpcf-live-color-preview").css("background", $(this).val());
-            });
-        });
- 
+         
         $('.wpcf-live-color-preview').on('click', function(){
             var row = $(this).parent().parent();
  
