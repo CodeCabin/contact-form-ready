@@ -10,6 +10,15 @@
 
 
 /**
+ * 2.0.12
+ * Updated settings page layout
+ * Changed email template size to auto
+ * Removed preview blocks of color picker
+ *
+ * 2.0.11 - 2020-10-22
+ * Removed iris color picker
+ * Tested with WP 5.5.1
+ *
  * 2.0.10 - 2020-01-21 
  * Bug Fix: Fixed jQuery() .tabs is not a function
  * 
@@ -178,7 +187,7 @@ class WP_Contact_Form_ND{
 
 	public function __construct(){
 
-		$this->current_version = "2.0.10";
+		$this->current_version = "2.0.11";
 
 		$this->upload_dir =(defined('WP_CONTENT_DIR')) ? WP_CONTENT_DIR . '/uploads' : ABSPATH . 'wp-content' . $this->DS() . 'uploads';
 		$this->upload_url =(defined('WP_CONTENT_URL')) ? WP_CONTENT_URL . '/uploads' : get_option('siteurl') . '/wp-content/uploads';
@@ -901,7 +910,7 @@ class WP_Contact_Form_ND{
 		?>
         <h2 id="cfr-nd-privacy"><?php _e("Privacy","wpcf_nd"); ?></h2>
 
-        <table class='wp-list-table widefat striped fixed'>
+        <table class='wp-list-table fixed'>
             <tr>
                 <td width='250'><label for='wpcf_nd_enable_gdpr'><?php _e("Enable GDPR Compliance","wpcf_nd"); ?></label></td>
                 <td>
@@ -1493,8 +1502,8 @@ class WP_Contact_Form_ND{
 			$wpcf_nd_settings = get_option( "wpcf_nd_settings" );
 
 			$invisible_recaptcha_localize_options = array(
-				'invisible_recaptcha_enabled' => $wpcf_nd_settings['wpcf_nd_enable_invisible_recaptcha'] == '1',
-				'wpcf_invisible_recaptcha_api' => $wpcf_nd_settings['wpcf_nd_invisible_recaptcha_site_key']
+				'invisible_recaptcha_enabled' => !empty($wpcf_nd_settings['wpcf_nd_enable_invisible_recaptcha']) ? $wpcf_nd_settings['wpcf_nd_enable_invisible_recaptcha'] == '1' : "",
+				'wpcf_invisible_recaptcha_api' => !empty($wpcf_nd_settings['wpcf_nd_invisible_recaptcha_site_key']) ? $wpcf_nd_settings['wpcf_nd_invisible_recaptcha_site_key'] : ""
 			);
 		 
 			wp_localize_script( 'contact-form-ready', 'invisible_recaptcha_options', $invisible_recaptcha_localize_options);
@@ -1553,8 +1562,6 @@ class WP_Contact_Form_ND{
 		    
 		}
 
-		
-		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'wpcf-settings') {
 	        wp_register_script( 'wpcf-admin-settings', plugins_url(plugin_basename(dirname(__FILE__)))."/js/admin_settings.js", true );
 			wp_enqueue_script( 'wpcf-admin-settings' );
@@ -1917,7 +1924,7 @@ class WP_Contact_Form_ND{
 						</ul>
 
 						<div id="tabs-1">
-							<table class='wp-list-table striped fixed wpcf-admin-table'>
+							<table class='wp-list-table fixed wpcf-admin-table'>
 								<tbody>
 								<tr>
 									<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
@@ -1943,7 +1950,7 @@ class WP_Contact_Form_ND{
 						</div>
 
 						<div id="tabs-2">
-							<table class='wp-list-table striped fixed wpcf-admin-table'>
+							<table class='wp-list-table fixed wpcf-admin-table'>
 								<tbody>
 									<tr>
 										<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
@@ -1970,7 +1977,7 @@ class WP_Contact_Form_ND{
 						</div>
 
 						<div id="tabs-3">
-							<table class='wp-list-table striped fixed wpcf-admin-table'>
+							<table class='wp-list-table fixed wpcf-admin-table'>
 								<tbody>
 								<tr>
 									<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
@@ -2185,7 +2192,7 @@ class WP_Contact_Form_ND{
 					<div id="tabs-1">
 						<h2><?php _e("Contact Form Settings","wpcf_nd"); ?></h2>
 
-						<table class='wp-list-table widefat striped fixed'>
+						<table class='wp-list-table fixed'>
 							<tr>
 								<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
 								<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>

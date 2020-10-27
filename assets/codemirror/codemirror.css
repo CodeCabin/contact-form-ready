@@ -107,6 +107,11 @@
 
 /* DEFAULT THEME */
 
+.cm-s-monokai {
+    height: auto;
+    width: auto;
+}
+
 .cm-s-default .cm-header {color: blue;}
 .cm-s-default .cm-quote {color: #090;}
 .cm-negative {color: #d44;}

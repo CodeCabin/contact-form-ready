@@ -32,10 +32,10 @@ function wpcf_hook_control_settings_page_bottom_recpatcha($wpcf_nd_settings) {
 	?>
 
 	<h2><?php _e("Anti Spam Settings","wpcf_nd"); ?></h2>
-	<table class="wp-list-table widefat striped fixed">
+	<table class="wp-list-table fixed" >
 		<tbody>
 			<tr>
-				<td width='250'><label for='wpcf_nd_enable_recaptcha'><?php _e("Enable reCAPTCHA?","wpcf_nd"); ?></label></td>
+				<td width='250' ><label for='wpcf_nd_enable_recaptcha'><?php _e("Enable reCAPTCHA?","wpcf_nd"); ?></label></td>
 				<td><?php
 	        $is_checked = (isset($wpcf_nd_settings['wpcf_nd_enable_recaptcha']) && $wpcf_nd_settings['wpcf_nd_enable_recaptcha'] == 1) ? "checked" : "";
 	        ?>
