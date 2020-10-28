@@ -10,6 +10,11 @@
 
 
 /**
+ * 2.0.12 - 2020-10-28
+ * Updated settings page layout
+ * Changed email template size to auto
+ * Removed preview blocks of color picker
+ *
  * 2.0.11 - 2020-10-22
  * Removed iris color picker
  * Tested with WP 5.5.1
@@ -905,7 +910,7 @@ class WP_Contact_Form_ND{
 		?>
         <h2 id="cfr-nd-privacy"><?php _e("Privacy","wpcf_nd"); ?></h2>
 
-        <table class='wp-list-table widefat striped fixed'>
+        <table class='wp-list-table fixed'>
             <tr>
                 <td width='250'><label for='wpcf_nd_enable_gdpr'><?php _e("Enable GDPR Compliance","wpcf_nd"); ?></label></td>
                 <td>
@@ -1919,7 +1924,7 @@ class WP_Contact_Form_ND{
 						</ul>
 
 						<div id="tabs-1">
-							<table class='wp-list-table striped fixed wpcf-admin-table'>
+							<table class='wp-list-table fixed wpcf-admin-table'>
 								<tbody>
 								<tr>
 									<td width='250'><?php _e("Font size","wpcf_nd"); ?></td>
@@ -1945,7 +1950,7 @@ class WP_Contact_Form_ND{
 						</div>
 
 						<div id="tabs-2">
-							<table class='wp-list-table striped fixed wpcf-admin-table'>
+							<table class='wp-list-table fixed wpcf-admin-table'>
 								<tbody>
 									<tr>
 										<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
@@ -1972,7 +1977,7 @@ class WP_Contact_Form_ND{
 						</div>
 
 						<div id="tabs-3">
-							<table class='wp-list-table striped fixed wpcf-admin-table'>
+							<table class='wp-list-table fixed wpcf-admin-table'>
 								<tbody>
 								<tr>
 									<td width='250'><?php _e("Background color","wpcf_nd"); ?></td>
@@ -2187,7 +2192,7 @@ class WP_Contact_Form_ND{
 					<div id="tabs-1">
 						<h2><?php _e("Contact Form Settings","wpcf_nd"); ?></h2>
 
-						<table class='wp-list-table widefat striped fixed'>
+						<table class='wp-list-table fixed'>
 							<tr>
 								<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
 								<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>

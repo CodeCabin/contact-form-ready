@@ -56,19 +56,7 @@
             previewSubmit.css('text-transform', $(this).val());
         });
 
-       $(".wpcf-color-input").each(function(){
-            var row = $(this).parent().parent();
- 
-            row.append('<td><div class="wpcf-live-color-preview"></div></td>');
-            row.find(".wpcf-live-color-preview").css("background", $(this).val());
-        });
- 
-         
-        $('.wpcf-live-color-preview').on('click', function(){
-            var row = $(this).parent().parent();
- 
-            row.find('.wpcf-color-input').click(); 
-        });
+     
     });
 
     jQuery("document").ready(function(){

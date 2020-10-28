@@ -16,7 +16,7 @@ function wpcf_hook_control_settings_page_bottom_template($wpcf_nd_settings) {
 	?>
 
 	<h2><?php _e("Email Template","wpcf_nd"); ?></h2>
-	<table class='wp-list-table widefat striped fixed'>
+	<table class='wp-list-table fixed'>
 		<tr>
 			<td width='100%'>
                 <label for="wpcf_nd_template_html" class="wpcf-hidden" style="position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);"><?php _e( 'Email Template', 'wpcf_nd' ); ?></label>
