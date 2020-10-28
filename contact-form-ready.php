@@ -10,7 +10,7 @@
 
 
 /**
- * 2.0.12
+ * 2.0.12 - 2020-10-28
  * Updated settings page layout
  * Changed email template size to auto
  * Removed preview blocks of color picker

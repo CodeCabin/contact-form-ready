@@ -168,6 +168,10 @@ Nothing here
 
 == Changelog ==
 
+= 2.0.11 - 2020-10-22 =
+* Removed iris color picker
+* Tested with WP 5.5.1
+
 = 2.0.10 - 2020-01-21 =
 * Bug Fix: Fixed jQuery() .tabs is not a function
 
