@@ -411,18 +411,21 @@
     box-shadow: none !important;
     width: 100%;
 }
-    
+
+
 #sola_cfr_styling_tabs .ui-state-default .ui-tabs-anchor {
     padding: 10px 0px 10px 0px;
+    
 }
 
-#sola_cfr_styling_tabs .ui-state-default.ui-state-active{
-    background: #0085ba;
-    color: #fff;
+#sola_cfr_styling_tabs .ui-state-default.ui-state-active a{
+    background: white;
+     color: #000;
 }
+
     
-#sola_cfr_styling_tabs .ui-state-default{
-    background: #e9e9e9; 
+#sola_cfr_styling_tabs .ui-state-default {
+    background: lightgrey; 
 }
   
 #sola_cfr_styling_tabs .ui-state-default {  
@@ -474,3 +477,5 @@
 #sola_cfr_styling_tabs .ui-state-default {
     width: 32.66%;
 }
+
+
