@@ -13,28 +13,31 @@ label { font-weight: bolder; }
  #sola_cfr_tabs .ui-tabs-nav {
     border-bottom: none !important; 
     margin-top: 0px !important;
+     
  }
 
- #sola_cfr_tabs .ui-tabs-panel{
+ #sola_cfr_tabs .ui-tabs-panel {
     padding:0;
+
  }
 
  #sola_cfr_tabs .ui-tabs-panel table {
     padding: 1px;
+    
+    font-style: normal;
  }
 
  #sola_cfr_tabs .ui-state-default{
  width: 180px;
- background-color: #fff;
+ background-color: lightgray;
  height: 35px;
- padding: 0px;
  line-height: 30px;
  border: none !important;
  margin-bottom: 0px;
  margin-top: 3px;
  font-weight: 400;
  font-size: 12px;
-     
+    
  }
 
  #sola_cfr_tabs .ui-state-default a{
@@ -42,21 +45,17 @@ label { font-weight: bolder; }
     text-decoration:none;
     text-align: center;
     display: block;
-     
+    font-size: 13px;
+    padding-top: 2px;
+    padding-bottom: 17px;
+    
  }
-
- #sola_cfr_tabs .ui-state-default a:hover{
-    text-decoration:none;    
-    cursor: pointer;
-    color: #000;
-    display: block;
- }
-  
  
  #sola_cfr_tabs .ui-state-active a:hover{
     cursor: pointer;
- border: none ;
+    border: none ;
  }
+
  #sola_cfr_tabs .ui-state-active {
     background-color: #fff;
     border: none;
@@ -71,15 +70,16 @@ label { font-weight: bolder; }
  #sola_cfr_tabs  .ui-tabs .ui-tabs-nav {
     margin: 0;
     padding: .2em .2em 0 ;
-     
-     
+    
  }
  
+
+
  #sola_cfr_tabs .ui-widget-header {
     border: 1px solid #dddddd;
     color: #333333;
-    font-weight: bold;
-     
+    font-weight: bold;  
+    
  }
 
  #sola_cfr_tabs .ui-helper-reset {
@@ -90,6 +90,7 @@ label { font-weight: bolder; }
     text-decoration: none;
     font-size: 100%;
     list-style: none;
+     
  }
 
  #sola_cfr_tabs .ui-helper-clearfix:before, .ui-helper-clearfix:after {
@@ -111,7 +112,7 @@ label { font-weight: bolder; }
  #sola_cfr_tabs .ui-tabs .ui-tabs-nav li.ui-tabs-active {
     margin-bottom: -1px;
     padding-bottom: 10px;
-     
+    
  }
  
  #sola_cfr_tabs li {
@@ -127,7 +128,7 @@ label { font-weight: bolder; }
 
  #sola_cfr_tabs{
     margin: 1px .2em 15px 0;    
-  
+    
  }
  
  #sola_cfr_tabs .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
@@ -139,56 +140,71 @@ label { font-weight: bolder; }
  #sola_cfr_tabs .ui-tabs-nav {
     border-bottom: none;
     margin-top: 15px;
-      
+    
  }
  
  #sola_cfr_tabs .ui-tabs-anchor,
  .ui-tabs-anchor:active,
  .ui-tabs-anchor:focus{
     outline: none;
- box-shadow: none;
-    
+    box-shadow: none;
+      
  }
 
  #sola_cfr_tabs .ui-state-default.ui-state-active {
-    background: #0085ba;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
 }
 
 #sola_cfr_tabs .ui-state-active .ui-tabs-anchor{
-    color: #ffffff;
+    color: #000;
+
 }
  
 #sola_cfr_tabs #tabs-1 {
-background: #fff; 
+    background: #fff;
     padding: 0.3px;
     margin-top: 2px;
-    
+    padding-left: 13px;
+    font-style: normal;
 }
+
 
 #sola_cfr_tabs #tabs-2 {
-background: #fff; 
+   background: #fff; 
     padding: 0.3px;
     margin-top: 2px;
+    padding-left: 13px;
+    font-style: normal;
+    font-weight: 100;
 }
 
+
 #sola_cfr_tabs #tabs-3 {
-background: #fff; 
+    background: #fff; 
     padding: 0.3px;
     margin-top: 2px;
+    padding-left: 13px;
+    width: 2147px;
 }
 
 #sola_cfr_tabs #tabs-4 {
-background: #fff; 
+    background: #fff; 
     padding: 0.3px;
     margin-top: 2px;
+    padding-left: 13px;
+    font-style: normal;
+    font-weight: 100;
 }
 
-#sola_cfr_tabs #tabs-1 {
-background: #fff; 
+#sola_cfr_tabs #tabs-5 {
+    background: #fff; 
     padding: 0.3px;
     margin-top: 2px;
+    padding-left: 13px;
+    font-style: normal;
+    font-weight: 100;
 }
 
 
- 
+

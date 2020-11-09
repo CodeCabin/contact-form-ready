@@ -1283,9 +1283,17 @@ class WP_Contact_Form_ND{
 
 	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
 	    
+        
+          /**
+	* Custom CSS
+    */
+    
+    if (isset($wpgmza_settings['cfr_custom_css'])) { $wpgmza_custom_css = $wpgmza_settings['cfr_custom_css']; } else { $cfr_custom_css  = ""; }
+        
 	}
 
 
+  
 
 	function check_versions() {
 
@@ -2037,7 +2045,7 @@ class WP_Contact_Form_ND{
 
             <?php do_action( "wpcf_hook_styling_page_bottom", $wpcf_nd_styling ); ?>
 
-            <input class="wpcf-submit-save-styling button-primary" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
+            <input class="wpcf-submit-save-styling button-primary" type='submit' value='Save styling' name='wpcf_submit_save_styling' style='background: #f3f5f6; color: #3858e9'/>
         </form>
         <style>
             .wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {
@@ -2187,6 +2195,7 @@ class WP_Contact_Form_ND{
 						<li><a href="#tabs-2">Anti Spam Settings</a></li>
 						<li><a href="#tabs-3">Email template</a></li>
 						<li><a href="#tabs-4">Privacy</a></li>
+                        <li><a href="#tabs-5">Advanced</a></li>
 					</ul>
 					
 					<div id="tabs-1">
@@ -2219,8 +2228,20 @@ class WP_Contact_Form_ND{
 					<div id="tabs-4">
 						<?php do_action( "wpcf_hook_settings_page_bottom_privacy", $wpcf_nd_settings ); ?>
 					</div>
+                    <div id="tabs-5">
+						<h2><?php _e("Advanced Settings","wpcf_nd"); ?></h2>
+
+						<table class='wp-list-table fixed'>
+							<tr>
+								<td width='250'><?php _e("Custom CSS:","wpcf_nd"); ?></td>
+								<td><textarea name="cfr_custom_css" id="cfr_custom_css" cols="70" rows="10" spellcheck="false" style="background: #2B323C; color: #fff; padding-left: 15px".stripslashes($cfr_custom_css).></textarea></td>
+							</tr>
+							
+						</table>
+                       
+					</div>
 				</div>
-				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' />
+				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' style='background: #f3f5f6; color: #3858e9' />
 			</form>
 
 

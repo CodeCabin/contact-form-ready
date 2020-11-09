@@ -3,22 +3,25 @@
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 300px;
+  height: 100%;
   color: black;
   direction: ltr;
+ 
+
 }
 
 /* PADDING */
 
 .CodeMirror-lines {
-  padding: 4px 0; /* Vertical padding around content */
-}
-.CodeMirror pre {
-  padding: 0 4px; /* Horizontal padding of content */
+  padding: 0 30px; /* Vertical padding around content */
 }
 
+.CodeMirror pre {
+  padding: 0 26px; /* Horizontal padding of content */
+}
 .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
   background-color: white; /* The little square between H and V scrollbars */
+ 
 }
 
 /* GUTTER */
@@ -28,7 +31,10 @@
   background-color: #f7f7f7;
   white-space: nowrap;
 }
-.CodeMirror-linenumbers {}
+
+.CodeMirror-linenumbers {
+    color: white;
+}
 .CodeMirror-linenumber {
   padding: 0 3px 0 5px;
   min-width: 20px;
@@ -106,11 +112,6 @@
 }
 
 /* DEFAULT THEME */
-
-.cm-s-monokai {
-    height: auto;
-    width: auto;
-}
 
 .cm-s-default .cm-header {color: blue;}
 .cm-s-default .cm-quote {color: #090;}
@@ -292,8 +293,8 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
 .CodeMirror-gutter,
 .CodeMirror-gutters,
 .CodeMirror-linenumber {
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
+  /*-moz-box-sizing: content-box;*/
+  box-sizing:inherit;
 }
 
 .CodeMirror-measure {
@@ -308,7 +309,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
   position: absolute;
   pointer-events: none;
 }
-.CodeMirror-measure pre { position: static; }
+.CodeMirror-measure pre { position: relative; }
 
 div.CodeMirror-cursors {
   visibility: hidden;
