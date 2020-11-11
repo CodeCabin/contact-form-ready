@@ -518,6 +518,8 @@ class WP_Contact_Form_ND{
 		return $wpcf_nd_settings['wpcf_nd_email_from_name'];
 
 	}
+
+	
 	
 
 	function wpcf_send_email($cfid,$body,$sent_data) {
@@ -729,7 +731,7 @@ class WP_Contact_Form_ND{
 			    	<tr>
 			    		<td width='250'><label for='wpcf_nd_shortcode'><?php _e("Shortcode","wpcf_nd"); ?></label></td>
 			    		<td>
-			    			<input id="wpcf-shortcode-input" type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
+			    			<input id="wpcf-shortcode-input" class="wpcf_shortcode_copy" type='text' readonly value='[cform-nd id="<?php echo $post->ID; ?>"]' />
                             <span class="wpcf-shortcode-copy-text"><?php _e( 'Copied to clipboard', 'wpcf_nd' ) ?></span>
 			    			<p class='description'><?php _e("Copy this to your post or page to show the contact form","wpcf_nd"); ?></p>
 
@@ -817,6 +819,9 @@ class WP_Contact_Form_ND{
 						$cfr_email_subject_user = ( isset($wpcf_nd_settings['wpcf_nd_subject_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_subject_user'] : "";
 						$cfr_email_body_user = ( isset($wpcf_nd_settings['wpcf_nd_message_user'] ) ) ? $wpcf_nd_settings['wpcf_nd_message_user'] : "";
 
+
+						
+
 					} else {
 
 						$cfr_email_subject_admin = isset( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_subject_admin'] ) ) : '';
@@ -828,6 +833,11 @@ class WP_Contact_Form_ND{
 						$cfr_email_subject_user = isset( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_subject_user'] ) ) : '';
 						$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_user'] ) ) : '';
 
+					}
+					
+
+					if (isset($wpcf_nd_setting['wpcf_custom_css']) && $wpcf_nd_setting['wpcf_custom_css'] != "") { 
+						wp_add_inline_style( 'wp_styles', stripslashes( $wpcf_nd_setting['wpcf_custom_css'] ) );
 					}
 
 				?>
@@ -1282,14 +1292,7 @@ class WP_Contact_Form_ND{
 		update_option( 'wpcf_nd_basic_settings', $wpcf_nd_basic_settings );
 
 	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
-	    
-        
-          /**
-	* Custom CSS
-    */
-    
-    if (isset($wpgmza_settings['cfr_custom_css'])) { $wpgmza_custom_css = $wpgmza_settings['cfr_custom_css']; } else { $cfr_custom_css  = ""; }
-        
+	     
 	}
 
 
@@ -1400,6 +1403,9 @@ class WP_Contact_Form_ND{
 		if (!isset($wpcf_nd_settings['wpcf_nd_email_from_name']))
 			$wpcf_nd_settings['wpcf_nd_email_from_name'] = get_option( 'blogname' ); 
 
+			
+
+		
 		if (!isset($wpcf_nd_settings['wpcf_nd_subject_admin']))
 			$wpcf_nd_settings['wpcf_nd_subject_admin'] = __("New Contact Form Response","wpcf_nd"); 
 
@@ -1762,6 +1768,19 @@ class WP_Contact_Form_ND{
 			<a href="https://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
+		<div class="wpcf-extension">
+			<h3 class="wpcf-extension-title">Trello</h3>
+			<a href="https://www.contactformready.com/extensions/trello/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=trello" title="Trello Extension" target="_BLANK">
+				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/trello.png" ?>" class="attachment-showcase wp-post-image" alt="Trello Extension" title="Trello Extension">
+			</a>
+			<p></p>
+			<p></p>
+			<div class="wpcf-extension-label-box"></div>
+			<p>Price: <em>$4.99 once off</em></p>
+			<p>Convert submitted forms into cards on trello</p>			
+		<!--<a href="https://www.contactformready.com/extensions/trello/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=trello" title="Trello Extension" class="button-secondary" target="_BLANK">Get this add-on</a> -->
+		</div>
+
 
 		<?php
 	}
@@ -2045,7 +2064,7 @@ class WP_Contact_Form_ND{
 
             <?php do_action( "wpcf_hook_styling_page_bottom", $wpcf_nd_styling ); ?>
 
-            <input class="wpcf-submit-save-styling button-primary" type='submit' value='Save styling' name='wpcf_submit_save_styling' style='background: #f3f5f6; color: #3858e9'/>
+            <input class="wpcf-submit-save-styling button-primary" type='submit' value='Save styling' name='wpcf_submit_save_styling' />
         </form>
         <style>
             .wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {
@@ -2135,6 +2154,10 @@ class WP_Contact_Form_ND{
 					$wpcf_nd_settings['wpcf_nd_email_from_name'] = ''; 
 				}
 
+				if (isset($wpcf_nd_styling['wpcf_custom_css'])) { $wpcf_nd_settings['wpcf_custom_css'] = sanitize_text_field($wpcf_nd_styling['wpcf_custom_css']); }
+
+				
+
 				if (isset($_POST['wpcf_nd_thank_you_text']))
 					$wpcf_nd_settings['wpcf_nd_thank_you_text'] = sanitize_text_field( $_POST['wpcf_nd_thank_you_text'] );
 
@@ -2162,6 +2185,8 @@ class WP_Contact_Form_ND{
 					$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = 0;
 				}
 
+				
+
 
 
 				$wpcf_nd_settings = apply_filters("wpcf_filter_save_settings", $wpcf_nd_settings, $_POST);
@@ -2183,7 +2208,8 @@ class WP_Contact_Form_ND{
 
 			if (!isset($wpcf_nd_settings['wpcf_nd_email_from_name']))
 				$wpcf_nd_settings['wpcf_nd_email_from_name'] = get_option( 'blogname' ); 
-
+				
+				
 
 
 			?>
@@ -2234,14 +2260,14 @@ class WP_Contact_Form_ND{
 						<table class='wp-list-table fixed'>
 							<tr>
 								<td width='250'><?php _e("Custom CSS:","wpcf_nd"); ?></td>
-								<td><textarea name="cfr_custom_css" id="cfr_custom_css" cols="70" rows="10" spellcheck="false" style="background: #2B323C; color: #fff; padding-left: 15px".stripslashes($cfr_custom_css).></textarea></td>
+								<td><textarea name="wpcf_custom_css" id="wpcf_custom_css" cols="70" rows="10" spellcheck="false" ></textarea></td>
 							</tr>
 							
 						</table>
                        
 					</div>
 				</div>
-				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' style='background: #f3f5f6; color: #3858e9' />
+				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' />
 			</form>
 
 
@@ -2274,10 +2300,10 @@ class WP_Contact_Form_ND{
 	}
 	function set_custom_edit_columns($columns) {
 
-
-	    $columns['shortcode'] = __( 'Shortcode', 'wpcf_nd' );
+	    
 	    $columns['views'] = __( 'Views', 'wpcf_nd' );
-	    $columns['submissions'] = __( 'Submissions', 'wpcf_nd' );
+		$columns['submissions'] = __( 'Submissions', 'wpcf_nd' );
+		$columns['shortcode'] = __( 'Shortcode', 'wpcf_nd' );
     
 	    return $columns;
 	}
@@ -2285,9 +2311,7 @@ class WP_Contact_Form_ND{
 	function custom_column( $column, $post_id ) {
 	    switch ( $column ) {
 
-	        case 'shortcode' :
-	            echo '<pre>[cform-nd id="'.$post_id.'"]</pre>';
-	            break;
+	        
 	        case 'views' :
 	            $views = intval(get_post_meta( $post_id , 'cform_views' , true )); 
 	            echo $views;
@@ -2295,7 +2319,10 @@ class WP_Contact_Form_ND{
 	        case 'submissions' :
 	            $views = intval(get_post_meta( $post_id , 'cform_submissions' , true )); 
 	            echo $views;
-	            break;
+				break;
+			case 'shortcode' :
+				echo '<pre>[cform-nd id="'.$post_id.'"]</pre>';						
+				break;
 
 
 	    }
@@ -2404,9 +2431,7 @@ class WP_Contact_Form_ND{
 			}
 		}
 
-		if ( '' !== $css ) {
-			wp_add_inline_style( 'contact-form-ready', $css );
-		}
+		
 	}
 
 	/**
@@ -2810,6 +2835,10 @@ if ( function_exists( 'register_block_type' ) ) {
 	}
 
 	add_action( 'init', 'cfr_gutenberg_block_renderer' );
+
+	
+	
+
 
 	/**
 	 * Renders our Gutenberg Block

@@ -29,7 +29,7 @@ label { font-weight: bolder; }
 
  #sola_cfr_tabs .ui-state-default{
  width: 180px;
- background-color: lightgray;
+ background-color: #D3D3D3;
  height: 35px;
  line-height: 30px;
  border: none !important;
@@ -73,7 +73,6 @@ label { font-weight: bolder; }
     
  }
  
-
 
  #sola_cfr_tabs .ui-widget-header {
     border: 1px solid #dddddd;
@@ -206,5 +205,23 @@ label { font-weight: bolder; }
     font-weight: 100;
 }
 
+ textarea[name="wpcf_custom_css"] {
+   border-color: #2B323C;
+   background-color:#2B323C;
+   background: #2B323C;
+   color: #fff;
+   padding-left: 10px;
+ }
+ 
+ .wp-core-ui .button-primary {
+   background: #f3f5f6;
+   color: #183ad6;
+   
+    
+ }
 
+ .wp-core-ui .button-primary:hover{
+   background: #cee3ec;
+    color: #007cba;
+ }
 
