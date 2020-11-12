@@ -116,19 +116,46 @@
     left: 14px;
 }
 
+.wpcf_shortcode_copy {
+    background: #edf7fc !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 7px 5px;
+    font-size: 15px !important;
+    color: #007cba!important;
+    border: 2px solid #007cba !important;
+    border-radius: 3px !important;
+    cursor: pointer;
+    text-align: center; 
+}
+
+.wpcf_nd_shortcode_styling {
+    background: #edf7fc !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 7px 5px;
+    font-size: 15px !important;
+    color: #007cba!important;
+    border: 2px solid #007cba !important;
+    border-radius: 3px !important;
+    cursor: pointer;
+    text-align: center; 
+}
+
 .wpcf-shortcode-copy-text {
     opacity: 0;
     visibility: hidden;
     margin: 0 3px;
     padding: 2px;
     transition: opacity 0.8s;
-    color: #0085ba;
-    border: 1px solid #0085ba;
+    color: #007cba;
+    border: 1px solid #007cba;
 }
 
 .wpcf-shortcode-copy-text.is-active {
     opacity: 1;
     visibility: visible;
+    
 }
 
 .build-wrap .icon-pencil {
@@ -191,15 +218,17 @@
     display: inline-block;
     margin: 20px 0;
     padding: 10px 15px;
-    background: #f9f9f9;
+    background: #c5c5c5;;
     font-size: 16px;
     font-weight: 600;
+        
 }
 
 .wpcf-admin-enable-style-wrapper input {
     position: relative;
     top: 2px;
     margin-left: 5px;
+    
 }
 
 .wpcf-admin-styling-wrapper {
@@ -286,6 +315,7 @@
     border-color: #333333;
 }
 
+
 .wpcf_nd input[type="submit"] {
     width: 100%;
     padding: 12px 9px;
@@ -362,7 +392,7 @@
     .wpcf-styling-form .wpcf-admin-preview-form, .wpcf_nd {
         margin-left: 0 !important;
         padding: 28px;
-        background: white;
+        background: #fff;
     }
 }
     
@@ -370,11 +400,11 @@
     .wpcf-styling-form .wpcf-admin-preview-form, .wpcf_nd {
         margin-left: 150px;
         padding: 28px;
-        background: white;
+        background: #fff;
     }
 }
-    
-    
+   
+
 .wpcf-styling-form #sola_cfr_styling_tabs {
     height: 100%;
     width: 100%;
@@ -419,13 +449,13 @@
 }
 
 #sola_cfr_styling_tabs .ui-state-default.ui-state-active a{
-    background: white;
+    background: #fff;
      color: #000;
 }
 
     
 #sola_cfr_styling_tabs .ui-state-default {
-    background: lightgrey; 
+    background: #D3D3D3; 
 }
   
 #sola_cfr_styling_tabs .ui-state-default {  
@@ -478,4 +508,15 @@
     width: 32.66%;
 }
 
-
+.widefat td pre{
+    background: #edf7fc !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 7px 5px;
+    font-size: 15px !important;
+    color: #007cba!important;
+    border: 2px solid #007cba !important;
+    border-radius: 3px !important;
+    cursor: pointer;
+    text-align: center;
+}
