@@ -1,4 +1,5 @@
-label { font-weight: bolder; }  
+/*label { font-weight: bolder; }*/
+
 #sola_cfr_tabs .ui-tabs-nav {
     padding:0; 
     height:auto; 
@@ -184,7 +185,9 @@ label { font-weight: bolder; }
     padding: 0.3px;
     margin-top: 2px;
     padding-left: 13px;
-    width: 2147px;
+    padding-right: 13px;
+    /*width: 2147px;*/
+    width: 97.5% !important;
 }
 
 #sola_cfr_tabs #tabs-4 {
@@ -205,23 +208,52 @@ label { font-weight: bolder; }
     font-weight: 100;
 }
 
- textarea[name="wpcf_custom_css"] {
+#sola_cfr_tabs #tabs-5 #wpcf_custom_css_container{
+   margin-right: 13px;
+}
+
+textarea #wpcf_custom_css{
    border-color: #2B323C;
    background-color:#2B323C;
    background: #2B323C;
    color: #fff;
    padding-left: 10px;
- }
- 
- .wp-core-ui .button-primary {
+}
+
+.wp-core-ui .button-primary {
    background: #f3f5f6;
-   color: #183ad6;
-   
-    
- }
+   color: #183ad6; 
+}
 
- .wp-core-ui .button-primary:hover{
+.wp-core-ui .button-primary:hover{
    background: #cee3ec;
-    color: #007cba;
- }
+   color: #007cba;
+}
 
+#tabs-3 .wp-list-table{
+   width: 100% !important;
+}
+
+#wpcf_restore_default_template{
+   margin-top: 15px !important;
+}
+
+.wp-list-table{
+   margin-bottom: 15px;
+}
+
+.wp-list-table label{
+   font-weight: 600;
+}
+
+.updated{
+   margin-left: 0 !important;
+}
+
+#wpcf_custom_css_tr_container .CodeMirror{
+   width: 400px;
+}
+
+.CodeMirror .CodeMirror-scroll .CodeMirror-sizer{
+   min-height: 150px !important;
+}
