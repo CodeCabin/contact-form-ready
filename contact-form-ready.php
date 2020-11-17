@@ -965,12 +965,12 @@ class WP_Contact_Form_ND{
 		        $cfr_enable_gdpr = isset($wpcf_nd_settings['wpcf_nd_enable_gdpr']) && $wpcf_nd_settings['wpcf_nd_enable_gdpr'] == 1;
 		    }
 		    if ( ! $cfr_enable_gdpr ) { ?>
-                <div class="update-nag notice notice-error is-dismissible" style="border-color: #dd0000; max-width: 600px;margin-left: 0;">
+                <div class="update-nag notice notice-error is-dismissible wpcf_gdpr_notice" style="border-color: #dd0000; max-width: 600px;margin-left: 0;">
                     <p><strong><?php _e( 'Warning - GDPR Compliance Disabled - Action Required', 'wpcf_nd' ); ?></strong></p>
                     <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="#">EU GDPR</a> </p>
                     <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="#">Privacy Policy</a> </p>
                     <p><?php _e( 'It is highly recommended that you enable GDPR compliance to ensure your user data is regulated.', 'wpcf_nd' ); ?></p>
-                    <p><a id="GDPR_privacy_settings_button" href="?post_type=contact-forms-nd&page=wpcf-settings#tabs-4" class="button" onclick="wpcf_OpenPrivacyTab()"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
+                    <p><a id="GDPR_privacy_settings_button" href="?post_type=contact-forms-nd&page=wpcf-settings#tabs-4" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
                 </div>
 			    <?php
 		    }
