@@ -834,11 +834,6 @@ class WP_Contact_Form_ND{
 						$cfr_email_body_user = isset( $wpcf_nd_settings['wpcf_nd_message_user'] ) ? stripslashes( esc_html( $wpcf_nd_settings['wpcf_nd_message_user'] ) ) : '';
 
 					}
-					
-
-					if (isset($wpcf_nd_setting['wpcf_custom_css']) && $wpcf_nd_setting['wpcf_custom_css'] != "") { 
-						wp_add_inline_style( 'wp_styles', stripslashes( $wpcf_nd_setting['wpcf_custom_css'] ) );
-					}
 
 				?>
 
@@ -928,11 +923,11 @@ class WP_Contact_Form_ND{
                 </td>
             </tr>
             <tr>
-                <td width='250'><?php _e("Company Name","wpcf_nd"); ?></td>
+                <td width='250'><label for="wpcf_nd_gdpr_company_name"><?php _e("Company Name","wpcf_nd"); ?></label></td>
                 <td><input type='text' name='wpcf_nd_gdpr_company_name' class='regular-text' id='wpcf_nd_gdpr_company_name' value='<?php echo $cfr_gdpr_company_name; ?>' /></td>
             </tr>
             <tr>
-                <td width='250'><?php _e("Retention Purpose","wpcf_nd"); ?></td>
+                <td width='250'><label for="wpcf_nd_gdpr_retention_purpose"><?php _e("Retention Purpose","wpcf_nd"); ?></label></td>
                 <td><input type='text' name='wpcf_nd_gdpr_retention_purpose' class='regular-text' id='wpcf_nd_gdpr_retention_purpose' value='<?php echo $cfr_gdpr_retention_purpose; ?>' /></td>
             </tr>
             <tr>
@@ -940,7 +935,7 @@ class WP_Contact_Form_ND{
                 <td><input type='text' name='wpcf_nd_gdpr_retention_period' id='wpcf_nd_gdpr_retention_period' value='<?php echo $cfr_gdpr_retention_period; ?>' /> <span class='description'><?php echo __("days","wpcf_nd");  ?></span></td>
             </tr>
             <tr>
-                <td width='250'><?php _e("GDPR Notice","wpcf_nd"); ?></td>
+                <td width='250'><label for="wpcf_nd_gdpr_notice"><?php _e("GDPR Notice","wpcf_nd"); ?></label></td>
                 <td><textarea name='wpcf_nd_gdpr_notice' class='regular-text' id='wpcf_nd_gdpr_notice' rows="6"><?php echo $cfr_gdpr_notice; ?></textarea></td>
             </tr>
             <tr>
@@ -975,7 +970,7 @@ class WP_Contact_Form_ND{
                     <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="#">EU GDPR</a> </p>
                     <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="#">Privacy Policy</a> </p>
                     <p><?php _e( 'It is highly recommended that you enable GDPR compliance to ensure your user data is regulated.', 'wpcf_nd' ); ?></p>
-                    <p><a href="?post_type=contact-forms-nd&page=wpcf-settings#cfr-nd-privacy" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
+                    <p><a id="GDPR_privacy_settings_button" href="?post_type=contact-forms-nd&page=wpcf-settings#tabs-4" class="button" onclick="wpcf_OpenPrivacyTab()"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
                 </div>
 			    <?php
 		    }
@@ -2147,16 +2142,17 @@ class WP_Contact_Form_ND{
 					$wpcf_nd_settings['wpcf_nd_email_from_address'] = ''; 
 				}
 
-
 				if ( isset( $_POST['wpcf_nd_email_from_name'] ) ){
 					$wpcf_nd_settings['wpcf_nd_email_from_name'] = sanitize_text_field( $_POST['wpcf_nd_email_from_name'] ); 					
 				} else {
 					$wpcf_nd_settings['wpcf_nd_email_from_name'] = ''; 
 				}
 
-				if (isset($wpcf_nd_styling['wpcf_custom_css'])) { $wpcf_nd_settings['wpcf_custom_css'] = sanitize_text_field($wpcf_nd_styling['wpcf_custom_css']); }
-
-				
+				if (isset($_POST['wpcf_custom_css'])) {
+					$wpcf_nd_settings['wpcf_custom_css'] = sanitize_textarea_field($_POST['wpcf_custom_css']);
+				} else {
+					$wpcf_nd_settings['wpcf_custom_css'] = "";
+				}
 
 				if (isset($_POST['wpcf_nd_thank_you_text']))
 					$wpcf_nd_settings['wpcf_nd_thank_you_text'] = sanitize_text_field( $_POST['wpcf_nd_thank_you_text'] );
@@ -2185,21 +2181,35 @@ class WP_Contact_Form_ND{
 					$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = 0;
 				}
 
-				
-
-
-
 				$wpcf_nd_settings = apply_filters("wpcf_filter_save_settings", $wpcf_nd_settings, $_POST);
 				
-				update_option( "wpcf_nd_settings" , $wpcf_nd_settings );
+				$updated_wpcf_nd_settings = update_option( "wpcf_nd_settings" , $wpcf_nd_settings );
+
+				if($updated_wpcf_nd_settings){
+					echo "
+						<div class=\"updated\">
+							<p>".__('Update Successful', 'wpcf_nd')."</p>
+						</div>
+					";
+				} else {
+					echo "
+						<div class=\"error\">
+							<p>".__('No changes were made', 'wpcf_nd')."</p>
+						</div>
+					";
+				}
 
                 $cfr_enable_gdpr = isset($_POST['wpcf_nd_enable_gdpr']) && $_POST['wpcf_nd_enable_gdpr'] == 1;
                 if ( ! $cfr_enable_gdpr ) { 
 					$wpcf_nd_settings['wpcf_nd_enable_gdpr_delete_button'] = 0;
 					$wpcf_nd_settings['wpcf_nd_enable_gdpr_download_button'] = 0;
                 } else {
-                    echo "<span class='update-nag below-h1'>Settings saved</span>";
+                    //echo "<span class='update-nag below-h1'>Settings saved</span>";
                 }
+			}
+
+			if (!empty($wpcf_nd_settings['wpcf_custom_css'])) { 
+				wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_settings['wpcf_custom_css'] ) );
 			}
 
 
@@ -2229,15 +2239,15 @@ class WP_Contact_Form_ND{
 
 						<table class='wp-list-table fixed'>
 							<tr>
-								<td width='250'><?php _e("Email from address","wpcf_nd"); ?></td>
+								<td width='250'><label for="wpcf_nd_email_from_address"><?php _e("Email from address","wpcf_nd"); ?></label></td>
 								<td><input type='text' name='wpcf_nd_email_from_address' class='regular-text' id='wpcf_nd_email_from_address' value='<?php echo$wpcf_nd_settings['wpcf_nd_email_from_address']; ?>' /></td>
 							</tr>
 							<tr>
-								<td width='250'><?php _e("Email from name","wpcf_nd"); ?></td>
+								<td width='250'><label for="wpcf_nd_email_from_name"><?php _e("Email from name","wpcf_nd"); ?></label></td>
 								<td><input type='text' name='wpcf_nd_email_from_name' class='regular-text' id='wpcf_nd_email_from_name' value='<?php echo $wpcf_nd_settings['wpcf_nd_email_from_name']; ?>' /></td>
 							</tr>
 							<tr>
-								<td width='250'><?php _e("Thank you text","wpcf_nd"); ?></td>
+								<td width='250'><label for="wpcf_nd_thank_you_text"><?php _e("Thank you text","wpcf_nd"); ?></label></td>
 								<td><input type='text' name='wpcf_nd_thank_you_text' class='regular-text' id='wpcf_nd_thank_you_text' value='<?php echo stripslashes(esc_html($wpcf_nd_settings['wpcf_nd_thank_you_text'])); ?>' /></td>
 							</tr>
 						</table>
@@ -2258,9 +2268,9 @@ class WP_Contact_Form_ND{
 						<h2><?php _e("Advanced Settings","wpcf_nd"); ?></h2>
 
 						<table class='wp-list-table fixed'>
-							<tr>
-								<td width='250'><?php _e("Custom CSS:","wpcf_nd"); ?></td>
-								<td><textarea name="wpcf_custom_css" id="wpcf_custom_css" cols="70" rows="10" spellcheck="false" ></textarea></td>
+							<tr id="wpcf_custom_css_tr_container">
+								<td style="width: 250px"><label><?php _e("Custom CSS:","wpcf_nd"); ?></label></td>
+								<td id="wpcf_custom_css_container"><textarea name="wpcf_custom_css" id="wpcf_custom_css" cols="70" rows="10" spellcheck="false"><?php if(isset($wpcf_nd_settings['wpcf_custom_css']) && $wpcf_nd_settings['wpcf_custom_css'] != "") { echo strip_tags($wpcf_nd_settings['wpcf_custom_css']); } ?></textarea></td>
 							</tr>
 							
 						</table>
@@ -2335,7 +2345,7 @@ class WP_Contact_Form_ND{
 	 */
 	public static function enqueue_user_styles() {
         wp_register_style( 'contact-form-ready', plugins_url(plugin_basename(dirname(__FILE__)))."/css/front-end.css", true );
-        wp_enqueue_style( 'contact-form-ready' );
+		wp_enqueue_style( 'contact-form-ready' );
 
 		$wpcf_nd_styling = get_option("wpcf_nd_styling");
 		$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
@@ -2343,6 +2353,11 @@ class WP_Contact_Form_ND{
 		$modal_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_bg'];
 		$modal_opacity = $wpcf_nd_basic_settings['wpcf_nd_modal_opacity'];
 		$modal_inner_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_inner_bg'];
+
+		$wpcf_nd_settings = get_option("wpcf_nd_settings");
+		if (!empty($wpcf_nd_settings['wpcf_custom_css'])) { 
+			wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_settings['wpcf_custom_css'] ) );
+		}
 
 		$css = '';
 		if ( 1 === $wpcf_nd_styling['wpcf_nd_enable_style'] ) {

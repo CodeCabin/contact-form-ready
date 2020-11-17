@@ -26,6 +26,20 @@ jQuery(document).ready(function() {
         });
     }
 
+    if (document.getElementById('wpcf_custom_css')){
+        var wpcfCodeMirror = CodeMirror.fromTextArea(document.getElementById('wpcf_custom_css'), {
+            matchBrackets: true,
+            lineNumbers: true,
+            styleActiveLine: true,
+            smartIndent: true,
+            mode: "text/css",
+        });
+        wpcfCodeMirror.setOption("theme", "monokai");
+        setTimeout(function () {
+            wpcfCodeMirror.refresh();
+        }, 1);
+    }
+
     var gdprNotice = jQuery('.wpcf-notice-secondary');
     var gdprInput = jQuery('input[name=wpcf_nd_enable_gdpr]');
     gdprInput.on('change', gdprIsChecked);
