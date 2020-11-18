@@ -216,7 +216,7 @@
 
 .wpcf-admin-enable-style-wrapper {
     display: inline-block;
-    margin: 20px 0;
+    margin: 5px 0 20px 0;
     padding: 10px 15px;
     background: #c5c5c5;;
     font-size: 16px;
@@ -409,10 +409,12 @@
     height: 100%;
     width: 100%;
 }
-    
+
+/*
 .wpcf-styling-form .wpcf-admin-preview-form:hover {
     border: 1px solid #c5c5c5;
 }
+*/
     
 #sola_cfr_styling_tabs .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
     border-bottom: 1px solid #f1f1f1;
@@ -519,4 +521,8 @@
     border-radius: 3px !important;
     cursor: pointer;
     text-align: center;
+}
+
+.notice, div.error{
+    margin: 15px 15px 2px 0 !important;
 }
