@@ -264,6 +264,7 @@
 
 .wpcf_nd label, .fb-radio-group-label, .fb-checkbox-group-label {
     display: block;
+    margin-top: 20px;
     margin-bottom: 8px;
     color: #333333;
     font-size: 18px;
@@ -391,7 +392,7 @@
 @media only screen and (max-width: 911px) {
     .wpcf-styling-form .wpcf-admin-preview-form, .wpcf_nd {
         margin-left: 0 !important;
-        padding: 28px;
+        padding: 18px 28px 0px 28px;
         background: #fff;
     }
 }
@@ -399,7 +400,7 @@
 @media only screen and (min-width: 912px) {
     .wpcf-styling-form .wpcf-admin-preview-form, .wpcf_nd {
         margin-left: 150px;
-        padding: 28px;
+        padding: 18px 28px 0px 28px;
         background: #fff;
     }
 }
@@ -525,4 +526,20 @@
 
 .updated, .error{
     margin: 15px 15px 2px 0 !important;
+}
+
+label#wpcf-admin-preview-darkmode-label{
+    color: #000;
+    display: inline;
+}
+
+input#wpcf-admin-preview-darkmode-checkbox{
+    margin-left: 15px;
+    margin-top: 20px;
+}
+
+span#wpcf-admin-preview-darkmode-note{
+    display: block;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }

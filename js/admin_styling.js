@@ -106,6 +106,23 @@
             previewSubmit.css('background-color', wpcf_style_submit_bg_color);
         });
 
+        $('#wpcf-admin-preview-darkmode-checkbox').on('change', function(event) {
+            if (!$('#wpcf-admin-preview-darkmode-checkbox').attr('checked')){
+                $('#wpcf-admin-preview-darkmode-checkbox').attr('checked', 'checked');
+            } else {
+                $('#wpcf-admin-preview-darkmode-checkbox').removeAttr('checked');
+            }
+
+            if ($('#wpcf-admin-preview-darkmode-checkbox').attr('checked')){
+                $('.wpcf-admin-preview-form').css('background-color', '#333');
+                $('#wpcf-admin-preview-darkmode-note').css('color', '#ddd');
+                $('#wpcf-admin-preview-darkmode-label').css('color', '#fff' );
+            } else {
+                $('.wpcf-admin-preview-form').css('background-color', '#fff');
+                $('#wpcf-admin-preview-darkmode-note').css('color', '#333');
+                $('#wpcf-admin-preview-darkmode-label').css('color', '#000' );
+            }
+        });
     });
 
     jQuery("document").ready(function(){

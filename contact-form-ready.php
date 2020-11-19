@@ -2057,6 +2057,9 @@ class WP_Contact_Form_ND{
                 </div>
 
                 <div class="wpcf-admin-preview-form wpcf_nd" id="wpcf-nd">
+					<label id="wpcf-admin-preview-darkmode-label" for="wpcf-admin-preview-darkmode-checkbox">Dark Mode</label>
+					<input id="wpcf-admin-preview-darkmode-checkbox" type="checkbox" name="wpcf-admin-preview-darkmode-label">
+					<br><span id="wpcf-admin-preview-darkmode-note">Note: The dark mode setting is purely for preview purposes only.</span>
                     <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-text"><?php _e("Text Field","wpcf_nd"); ?></label>
                     <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-text" type="text"/>
                     <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-email"><?php _e("Email Field","wpcf_nd"); ?></label>
