@@ -2057,9 +2057,12 @@ class WP_Contact_Form_ND{
                 </div>
 
                 <div class="wpcf-admin-preview-form wpcf_nd" id="wpcf-nd">
-                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-text"><?php _e("Text field","wpcf_nd"); ?></label>
+					<label id="wpcf-admin-preview-darkmode-label" for="wpcf-admin-preview-darkmode-checkbox">Dark Mode</label>
+					<input id="wpcf-admin-preview-darkmode-checkbox" type="checkbox" name="wpcf-admin-preview-darkmode-label">
+					<br><span id="wpcf-admin-preview-darkmode-note">Note: The dark mode setting is purely for preview purposes only.</span>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-text"><?php _e("Text Field","wpcf_nd"); ?></label>
                     <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-text" type="text"/>
-                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-email"><?php _e("Email field","wpcf_nd"); ?></label>
+                    <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-email"><?php _e("Email Field","wpcf_nd"); ?></label>
                     <input class="wpcf-admin-preview-input" id="wpcf-admin-preview-email" type="email"/>
                     <label class="wpcf-admin-preview-label" for="wpcf-admin-preview-textarea"><?php _e("Text Area","wpcf_nd"); ?></label>
                     <textarea class="wpcf-admin-preview-input" id="wpcf-admin-preview-textarea"></textarea>
@@ -2361,6 +2364,22 @@ class WP_Contact_Form_ND{
 		wp_enqueue_style( 'contact-form-ready' );
 
 		$wpcf_nd_styling = get_option("wpcf_nd_styling");
+		
+		if (!empty($wpcf_nd_styling)){
+			
+			if ($wpcf_nd_styling['wpcf_nd_enable_style'] == 1){
+
+				$wpcf_nd_styling_css_string_labels = '.fb-text-label, .fb-textarea-label, .fb-radio-group-label, .fb-select-label, .fb-date-label, .fb-number-label, .fb-checkbox-group-label{font-size:' . esc_attr($wpcf_nd_styling['wpcf_nd_label_font_size']) . 'px !important; font-weight:' .  esc_attr($wpcf_nd_styling['wpcf_nd_label_font_weight']) .' !important; color:' . esc_attr($wpcf_nd_styling['wpcf_nd_label_color']) . ' !important;}';
+
+				$wpcf_nd_styling_css_string_inputs = '.text-input, .text-area, .wpcf_nd input[type=text], .wpcf_nd textarea, .wpcf_nd input[type=number], .wpcf_nd select, .wpcf_nd input[type=date]{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_input_bg_color']) . ' !important; border-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_input_border_color']) . ' !important; font-size:' . esc_attr($wpcf_nd_styling['wpcf_nd_input_font_size']) . 'px !important; color:' . esc_attr($wpcf_nd_styling['wpcf_nd_input_font_color']) . ' !important;} ' . '.text-input:hover, .text-area:hover, .wpcf_nd input[type=text]:hover, .wpcf_nd textarea:hover, .wpcf_nd input[type=number]:hover, .wpcf_nd select:hover, .wpcf_nd input[type=date]:hover{border-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_input_border_focus_color']) . '!important;}';
+
+				$wpcf_nd_styling_css_string_submit = '.wpcf_nd_submit{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_bg_color']) . ' !important; font-size:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_size']) . 'px !important; color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_color']) . ' !important; font-weight:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_weight']) . ' !important; text-transform:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_text_transform']) . ' !important;} ' . '.wpcf_nd_submit:hover{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']) . ' !important;}';
+			
+				$wpcf_nd_styling_css_string_full = $wpcf_nd_styling_css_string_labels . ' ' . $wpcf_nd_styling_css_string_inputs . ' ' . $wpcf_nd_styling_css_string_submit;
+			}
+			wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_styling_css_string_full ) );
+		}
+		
 		$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
 		$modal_el = $wpcf_nd_basic_settings['wpcf_nd_modal_el'];
 		$modal_bg = $wpcf_nd_basic_settings['wpcf_nd_modal_bg'];
