@@ -919,7 +919,7 @@ class WP_Contact_Form_ND{
             <tr>
                 <td width='250'><label for='wpcf_nd_enable_gdpr'><?php _e("Enable GDPR Compliance","wpcf_nd"); ?></label></td>
                 <td>
-                    <input type='checkbox' name='wpcf_nd_enable_gdpr' id='wpcf_nd_enable_gdpr' value='1' <?php echo $cfr_enable_gdpr; ?> /> <span class='description'><?php echo sprintf(__("<a href='%s' target='_BLANK'>Importance of GDPR Compliance</a>","wpcf_nd"),"https://www.eugdpr.org/");  ?></span>
+                    <input type='checkbox' name='wpcf_nd_enable_gdpr' id='wpcf_nd_enable_gdpr' value='1' <?php echo $cfr_enable_gdpr; ?> /> <span class='description'><?php echo sprintf(__("<a href='%s' target='_BLANK'>Importance of GDPR Compliance</a>","wpcf_nd"),"https://gdpr.eu/");  ?></span>
                 </td>
             </tr>
             <tr>
@@ -967,10 +967,10 @@ class WP_Contact_Form_ND{
 		    if ( ! $cfr_enable_gdpr ) { ?>
                 <div class="update-nag notice notice-error is-dismissible wpcf_gdpr_notice" style="border-color: #dd0000; max-width: 600px;margin-left: 0;">
                     <p><strong><?php _e( 'Warning - GDPR Compliance Disabled - Action Required', 'wpcf_nd' ); ?></strong></p>
-                    <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="#">EU GDPR</a> </p>
-                    <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="#">Privacy Policy</a> </p>
+                    <p><?php _e( 'GDPR compliance has been disabled, read more about the implications of this here:', 'wpcf_nd' ); ?> <a href="https://gdpr.eu/">EU GDPR</a> </p>
+                    <p><?php _e( 'Additionally please take a look at Contact Form Ready', 'wpcf_nd' ); ?> <a href="https://www.contactformready.com/documentation/privacy-policy/">Privacy Policy</a> </p>
                     <p><?php _e( 'It is highly recommended that you enable GDPR compliance to ensure your user data is regulated.', 'wpcf_nd' ); ?></p>
-                    <p><a id="GDPR_privacy_settings_button" href="?post_type=contact-forms-nd&page=wpcf-settings#tabs-4" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
+                    <p><a id="GDPR_privacy_settings_button" href="edit.php?post_type=contact-forms-nd&page=wpcf-settings#cfr-nd-privacy" class="button"><?php _e( 'Privacy Settings', 'wpcf_nd' ) ?></a></p>
                 </div>
 			    <?php
 		    }
@@ -1922,8 +1922,21 @@ class WP_Contact_Form_ND{
 
             $wpcf_nd_styling = apply_filters("wpcf_filter_save_styling", $wpcf_nd_styling, $_POST);
 
-            update_option( "wpcf_nd_styling" , $wpcf_nd_styling );
-            echo "<span class='update-nag below-h1'>Styling saved</span>";
+            $updated_wpcf_nd_style_settings = update_option( "wpcf_nd_styling" , $wpcf_nd_styling );
+
+			if($updated_wpcf_nd_style_settings){
+				echo "
+					<div class=\"updated\">
+						<p>".__('Style Settings Saved', 'wpcf_nd')."</p>
+					</div>
+				";
+			} else {
+				echo "
+					<div class=\"error\">
+						<p>".__('No changes were made', 'wpcf_nd')."</p>
+					</div>
+				";
+			}
 
         }
         ?>
