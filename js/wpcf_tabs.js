@@ -9,7 +9,6 @@ jQuery(function(){
         jQuery('.ui-tabs-nav #ui-id-4').trigger('click');
     });
 
-
     jQuery("body").on("click", '.ui-tabs-nav li', function(){
         var tabId = jQuery(this).attr('aria-controls');
         tabId = tabId.replace('tabs-', '');

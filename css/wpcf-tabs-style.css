@@ -246,8 +246,8 @@ textarea #wpcf_custom_css{
    font-weight: 600;
 }
 
-.updated{
-   margin-left: 0 !important;
+.updated, .error{
+   margin: 15px 15px 2px 0 !important;
 }
 
 #wpcf_custom_css_tr_container .CodeMirror{

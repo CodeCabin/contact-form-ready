@@ -523,6 +523,6 @@
     text-align: center;
 }
 
-.notice, div.error{
+.updated, .error{
     margin: 15px 15px 2px 0 !important;
 }
