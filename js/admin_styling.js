@@ -29,9 +29,6 @@
             previewInputs = $('.wpcf-admin-preview-input'),
             previewSubmit = $('.wpcf-admin-preview-submit');
 
-
-        /* Iris replaced with standard color picker */
-
         $('#wpcf_nd_label_font_size').on('change', function (event) {
             previewLabels.css('font-size', $(this).val() + 'px');
         });
