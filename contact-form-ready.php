@@ -204,6 +204,7 @@ class WP_Contact_Form_ND{
 		register_activation_hook( __FILE__, array($this, 'plugin_activate') );
 		add_action( "init", array($this, "check_versions") );
 		add_action( "init", array($this, "create_post_type") );
+		add_action( "init", array($this, "wpcf_nd_create_token") );
 		add_action( "plugins_loaded", array($this, "load_plugin_textdomain") );
 		add_filter( "wpcf_nd_html_control", array( $this, "wpcf_nd_filter_control_html_control" ), 10, 2 );
 		add_action( 'save_post', array( $this, 'wpcf_nd_save_meta_box' ) );
@@ -242,7 +243,81 @@ class WP_Contact_Form_ND{
 		add_filter( 'wp_mail_from_name', array( $this, 'wpcf_nd_filter_control_from_mail_headers_from_name' ), 10, 1 );
 
 		add_filter( 'codecabin_deactivate_feedback_form_plugins', array( $this, 'wpcf_nd_filter_deactivate_feedback_form' ), 10, 1 );
+
+		add_action( 'rest_api_init', array( $this, 'wpcf_rest_routes_init' ));
+	
 	}
+
+	function wpcf_rest_routes_init(){
+		register_rest_route('contact-form-ready/v1', '/get_forms',
+							array(
+								'methods' => 'GET, POST',
+								'callback' => array( $this , 'wpcf_nd_get_submissions_rest'),
+								
+							));
+	}
+
+	function wpcf_nd_get_submissions_rest( WP_REST_Request $data ){
+		
+		$return_array = array();
+
+		if( isset( $data ) ){
+
+			if( isset( $data['token'] ) ){
+
+				if( $data['token'] == get_option('wpcf_nd_token') ){
+
+					$args = array( 
+						'post_type' => 'contact-forms-nd',
+						'posts_per_page' => -1                    
+					);
+
+					$the_query = new WP_Query( $args );
+
+					$submissions_array = array();
+
+					if ( $the_query->have_posts() ) {
+
+						while ( $the_query->have_posts() ) {
+
+							$the_query->the_post();
+
+							$submissions_array[] = array(
+								'title' => get_the_title(),
+								//'content' => get_the_content()
+							);
+						}
+						wp_reset_postdata();
+					} 
+					
+					$return_array['response'] = "Submissions returned successfully";
+					$return_array['code'] = "200";
+					$return_array['data'] = array( $submissions_array );
+
+				} else {
+
+					$return_array['response'] = "Secret token is invalid";
+					$return_array['code'] = "401";
+
+				}
+
+			} else {
+
+				$return_array['response'] = "No 'security' found";
+				$return_array['code'] = "401";
+
+			}
+
+		} else{
+
+			$return_array['response'] = "No request data found";
+			$return_array['code'] = "400";
+
+		}
+
+		return $return_array;
+	}
+
 
 	function load_plugin_textdomain() {
 	    $plugin_dir = basename( dirname( __FILE__ ) ) . '/languages/';
@@ -1350,6 +1425,18 @@ class WP_Contact_Form_ND{
 		$this->create_contact_form_types();
 	}
 
+	function wpcf_nd_create_token(){
+	
+		$wpcf_nd_token = get_option('wpcf_nd_token');
+
+    	if( !$wpcf_nd_token || $wpcf_nd_token == "" ){
+        
+        	$wpcf_nd_new_token = md5( time()."wpcf_nd_token" );
+        	update_option( 'wpcf_nd_token', $wpcf_nd_new_token );
+    
+    	} 
+	}
+	
 	function create_contact_form_types($force = false) {
 		/* contact form types */
 		if (!get_option("wpcf_nd_contact_forms") || $force) {
@@ -2248,6 +2335,7 @@ class WP_Contact_Form_ND{
 						<li><a href="#tabs-3">Email template</a></li>
 						<li><a href="#tabs-4">Privacy</a></li>
                         <li><a href="#tabs-5">Advanced</a></li>
+						<li><a href="#tabs-6">REST API</a></li>
 					</ul>
 					
 					<div id="tabs-1">
@@ -2280,9 +2368,9 @@ class WP_Contact_Form_ND{
 					<div id="tabs-4">
 						<?php do_action( "wpcf_hook_settings_page_bottom_privacy", $wpcf_nd_settings ); ?>
 					</div>
-                    <div id="tabs-5">
+                    
+					<div id="tabs-5">
 						<h2><?php _e("Advanced Settings","wpcf_nd"); ?></h2>
-
 						<table class='wp-list-table fixed'>
 							<tr id="wpcf_custom_css_tr_container">
 								<td style="width: 250px"><label><?php _e("Custom CSS:","wpcf_nd"); ?></label></td>
@@ -2290,7 +2378,53 @@ class WP_Contact_Form_ND{
 							</tr>
 							
 						</table>
-                       
+					</div>
+
+					<?php
+					 	function wpcf_nd_get_token() {
+							$wpcf_nd_token = get_option( 'wpcf_nd_token' );
+							if ( isset( $wpcf_nd_token ) ){
+								return $wpcf_nd_token;
+							} else {
+								return '';
+							}
+						}
+					?>
+
+					<div id="tabs-6">
+						<h2><?php _e("REST API","wpcf_nd"); ?></h2>
+						<table class="form-table wp-list-table widefat striped pages">
+							<tbody>
+								<tr>
+									<td width="200">Secret Token:</td>
+									<td width="300px"><input type="text" id="wpcf_nd_token" disabled="true" value="<?php echo esc_attr(wpcf_nd_get_token()); ?>" readonly style="width:300px;"></td>
+								</tr>
+
+								<tr>
+									<td>Supported API Calls:</td>
+									<td width="600"><code>/wp-json/contact-form-ready/v1/get_forms?token={secret_token}</code> 
+									</td>
+								</tr>
+								<tr>
+									<td>API Response Codes:</td>
+									<td><code>200</code> 
+										<code>Success</code> 
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><code>400</code> 
+										<code>Bad Request</code> 
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><code>401</code> 
+										<code>Unauthorized</code> 
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' />
