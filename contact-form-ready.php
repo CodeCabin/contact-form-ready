@@ -2510,8 +2510,10 @@ class WP_Contact_Form_ND{
 				$wpcf_nd_styling_css_string_submit = '.wpcf_nd_submit{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_bg_color']) . ' !important; font-size:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_size']) . 'px !important; color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_color']) . ' !important; font-weight:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_weight']) . ' !important; text-transform:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_text_transform']) . ' !important;} ' . '.wpcf_nd_submit:hover{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']) . ' !important;}';
 			
 				$wpcf_nd_styling_css_string_full = $wpcf_nd_styling_css_string_labels . ' ' . $wpcf_nd_styling_css_string_inputs . ' ' . $wpcf_nd_styling_css_string_submit;
+				
+				wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_styling_css_string_full ) );
 			}
-			wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_styling_css_string_full ) );
+			
 		}
 		
 		$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
