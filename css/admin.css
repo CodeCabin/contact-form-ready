@@ -546,3 +546,33 @@ span#wpcf-admin-preview-darkmode-note{
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
+
+#basic-settings > h2{
+    font-size: 25px;
+}
+
+#advanced-settings > h2{
+    font-size: 25px;
+}
+
+#contact_form_ready_tabs{
+    border: none;
+}
+
+#contact_form_ready_tabs .ui-tabs-panel{
+    border: 1px solid #dddddd;
+}
+
+#contact_form_ready_tabs .ui-tabs-nav li{
+    margin-right: 0 !important;
+}
+
+#contact_form_ready_tabs .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr{
+    border-radius: 0 !important;
+}
+
+#contact_form_ready_tabs .ui-widget-header{
+    border: none;
+    background: none;
+    padding-left: 0px;
+}
