@@ -2206,10 +2206,10 @@ class WP_Contact_Form_ND{
                     echo 'color:' . $wpcf_nd_styling['wpcf_nd_submit_font_color'] . ';';
                 }
                 if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) {
-                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_submit_font_weight'] . 'px;';
+                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_submit_font_weight'] . ';';
                 }
                 if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) {
-                    echo 'text-transform:' . $wpcf_nd_styling['wpcf_nd_submit_text_transform'] . 'px;';
+                    echo 'text-transform:' . $wpcf_nd_styling['wpcf_nd_submit_text_transform'] . ';';
                 } ?>
             }
             .wpcf-admin-preview-submit:hover {
