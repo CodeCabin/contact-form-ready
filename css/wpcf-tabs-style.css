@@ -208,6 +208,15 @@
     font-weight: 100;
 }
 
+#sola_cfr_tabs #tabs-6 {
+   background: #fff; 
+   padding: 0.3px;
+   margin-top: 2px;
+   padding-left: 13px;
+   font-style: normal;
+   font-weight: 100;
+}
+
 #sola_cfr_tabs #tabs-5 #wpcf_custom_css_container{
    margin-right: 13px;
 }
