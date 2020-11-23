@@ -547,13 +547,10 @@ span#wpcf-admin-preview-darkmode-note{
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-#basic-settings > h2{
+#contact_form_ready_tabs .ui-tabs-panel > h2{
     font-size: 25px;
 }
 
-#advanced-settings > h2{
-    font-size: 25px;
-}
 
 #contact_form_ready_tabs{
     border: none;
