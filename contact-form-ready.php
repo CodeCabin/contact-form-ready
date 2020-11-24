@@ -2341,6 +2341,13 @@ class WP_Contact_Form_ND{
 								echo '<li><a href="#tabs-6">Mailchimp</a></li>';
 							}
 						?>
+
+						<?php
+							if( function_exists('cfr_bulksms_tab') ){
+								echo '<li><a href="#tabs-7">BulkSMS</a></li>';
+							}
+						?>
+
 						
 						<li><a href="#tabs-10">REST API</a></li>
 					</ul>
@@ -2438,6 +2445,14 @@ class WP_Contact_Form_ND{
 						<?php
 							if ( function_exists('cfr_mailchimp_hook_settings_page_bottom') ) {
 								do_action( "wpcf_hook_settings_page_bottom_mailchimp", $wpcf_nd_settings );
+							}
+						?>
+					</div>
+
+					<div id="tabs-7">
+						<?php
+							if ( function_exists('cfr_bulksms_api_settings') ) {
+								do_action( "wpcf_hook_settings_page_bottom_bulksms", $wpcf_nd_settings );
 							}
 						?>
 					</div>

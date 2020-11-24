@@ -165,7 +165,8 @@
 #sola_cfr_tabs #tabs-2, /* Anti Spam Tab */
 #sola_cfr_tabs #tabs-4, /* Privacy Tab */
 #sola_cfr_tabs #tabs-5, /* Advanced Tab */
-#sola_cfr_tabs #tabs-6 /* MailChimp Tab */
+#sola_cfr_tabs #tabs-6, /* MailChimp Tab */
+#sola_cfr_tabs #tabs-7  /* BulkSMS Tab */
 {
     background: #fff;
     padding: 0.1em 13px;
