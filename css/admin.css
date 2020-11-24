@@ -561,6 +561,7 @@ span#wpcf-admin-preview-darkmode-note{
 
 #contact_form_ready_tabs .ui-tabs-nav li{
     margin-right: 0 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 #contact_form_ready_tabs .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr{
