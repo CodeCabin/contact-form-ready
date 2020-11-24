@@ -2366,6 +2366,12 @@ class WP_Contact_Form_ND{
 							}
 						?>
 
+						<?php
+							if( function_exists('wpcf_sr_hook_settings_page_bottom') ){
+								echo '<li><a href="#tabs-11">Stored Submissions</a></li>';
+							}
+						?>
+
 						<li><a href="#tabs-0">REST API</a></li>
 					</ul>
 					
@@ -2494,6 +2500,14 @@ class WP_Contact_Form_ND{
 						if ( function_exists('cfr_zendesk_settings_page') ) {
 							echo "<div id=\"tabs-10\">";
 							do_action( "wpcf_hook_settings_page_bottom_zendesk", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+
+					<?php
+						if ( function_exists('wpcf_sr_hook_settings_page_bottom') ) {
+							echo "<div id=\"tabs-11\">";
+							do_action( "wpcf_hook_settings_page_bottom_stored_submissions", $wpcf_nd_settings );
 							echo "</div>";
 						}
 					?>
