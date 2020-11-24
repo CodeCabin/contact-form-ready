@@ -167,7 +167,8 @@
 #sola_cfr_tabs #tabs-5, /* Advanced Tab */
 #sola_cfr_tabs #tabs-6, /* MailChimp Tab */
 #sola_cfr_tabs #tabs-7, /* BulkSMS Tab */
-#sola_cfr_tabs #tabs-8  /* Clickatell Tab */
+#sola_cfr_tabs #tabs-8, /* Clickatell Tab */
+#sola_cfr_tabs #tabs-9  /* ClickSend Tab */
 {
     background: #fff;
     padding: 0.1em 13px;
