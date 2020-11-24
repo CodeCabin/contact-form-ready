@@ -2335,7 +2335,14 @@ class WP_Contact_Form_ND{
 						<li><a href="#tabs-3">Email template</a></li>
 						<li><a href="#tabs-4">Privacy</a></li>
                         <li><a href="#tabs-5">Advanced</a></li>
-						<li><a href="#tabs-6">REST API</a></li>
+						
+						<?php
+							if( function_exists('cfr_mailchimp_tab') ){
+								echo '<li><a href="#tabs-6">Mailchimp</a></li>';
+							}
+						?>
+						
+						<li><a href="#tabs-10">REST API</a></li>
 					</ul>
 					
 					<div id="tabs-1">
@@ -2391,7 +2398,7 @@ class WP_Contact_Form_ND{
 						}
 					?>
 
-					<div id="tabs-6">
+					<div id="tabs-10">
 						<h2><?php _e("REST API","wpcf_nd"); ?></h2>
 						<table class="form-table wp-list-table widefat striped pages">
 							<tbody>
@@ -2426,12 +2433,20 @@ class WP_Contact_Form_ND{
 							</tbody>
 						</table>
 					</div>
+
+					<div id="tabs-6">
+						<?php
+							if ( function_exists('cfr_mailchimp_hook_settings_page_bottom') ) {
+								do_action( "wpcf_hook_settings_page_bottom_mailchimp", $wpcf_nd_settings );
+							}
+						?>
+					</div>
 				</div>
 				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' />
 			</form>
 
-
 			<?php
+			
 		}
 	}
 
