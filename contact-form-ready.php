@@ -2360,6 +2360,12 @@ class WP_Contact_Form_ND{
 							}
 						?>
 
+						<?php
+							if( function_exists('cfr_zendesk_tab') ){
+								echo '<li><a href="#tabs-10">Zendesk</a></li>';
+							}
+						?>
+
 						<li><a href="#tabs-0">REST API</a></li>
 					</ul>
 					
@@ -2480,6 +2486,14 @@ class WP_Contact_Form_ND{
 						if ( function_exists('cfr_clicksend_api_settings') ) {
 							echo "<div id=\"tabs-9\">";
 							do_action( "wpcf_hook_settings_page_bottom_clicksend", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+
+					<?php
+						if ( function_exists('cfr_zendesk_settings_page') ) {
+							echo "<div id=\"tabs-10\">";
+							do_action( "wpcf_hook_settings_page_bottom_zendesk", $wpcf_nd_settings );
 							echo "</div>";
 						}
 					?>

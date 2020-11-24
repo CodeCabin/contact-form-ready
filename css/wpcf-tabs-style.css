@@ -168,7 +168,8 @@
 #sola_cfr_tabs #tabs-6, /* MailChimp Tab */
 #sola_cfr_tabs #tabs-7, /* BulkSMS Tab */
 #sola_cfr_tabs #tabs-8, /* Clickatell Tab */
-#sola_cfr_tabs #tabs-9  /* ClickSend Tab */
+#sola_cfr_tabs #tabs-9, /* ClickSend Tab */
+#sola_cfr_tabs #tabs-10 /* Zendesk Tab */
 {
     background: #fff;
     padding: 0.1em 13px;
