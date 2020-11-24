@@ -2479,7 +2479,7 @@ class WP_Contact_Form_ND{
 					<?php
 						if ( function_exists('cfr_clicksend_api_settings') ) {
 							echo "<div id=\"tabs-9\">";
-							do_action( "wpcf_hook_settings_page_bottom_clickasend", $wpcf_nd_settings );
+							do_action( "wpcf_hook_settings_page_bottom_clicksend", $wpcf_nd_settings );
 							echo "</div>";
 						}
 					?>
