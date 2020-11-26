@@ -161,60 +161,41 @@
 
 }
  
-#sola_cfr_tabs #tabs-1 {
+#sola_cfr_tabs #tabs-1, /* Contact Form Tab*/
+#sola_cfr_tabs #tabs-2, /* Anti Spam Tab */
+#sola_cfr_tabs #tabs-4, /* Privacy Tab */
+#sola_cfr_tabs #tabs-5, /* Advanced Tab */
+#sola_cfr_tabs #tabs-6, /* MailChimp Tab */
+#sola_cfr_tabs #tabs-7, /* BulkSMS Tab */
+#sola_cfr_tabs #tabs-8, /* Clickatell Tab */
+#sola_cfr_tabs #tabs-9, /* ClickSend Tab */
+#sola_cfr_tabs #tabs-10, /* Zendesk Tab */
+#sola_cfr_tabs #tabs-11 /* Stored Submissions Tab */
+{
     background: #fff;
-    padding: 0.3px;
+    padding: 0.1em 13px;
     margin-top: 2px;
-    padding-left: 13px;
     font-style: normal;
+    width: 97% !important;
 }
 
-
-#sola_cfr_tabs #tabs-2 {
-   background: #fff; 
-    padding: 0.3px;
-    margin-top: 2px;
-    padding-left: 13px;
-    font-style: normal;
-    font-weight: 100;
-}
-
-
+/* Email Template Tab */
 #sola_cfr_tabs #tabs-3 {
     background: #fff; 
-    padding: 0.3px;
+    padding: 0.1em 13px;
     margin-top: 2px;
-    padding-left: 13px;
-    padding-right: 13px;
     /*width: 2147px;*/
-    width: 97.5% !important;
+    width: 97% !important;
 }
 
-#sola_cfr_tabs #tabs-4 {
-    background: #fff; 
-    padding: 0.3px;
-    margin-top: 2px;
-    padding-left: 13px;
-    font-style: normal;
-    font-weight: 100;
-}
-
-#sola_cfr_tabs #tabs-5 {
-    background: #fff; 
-    padding: 0.3px;
-    margin-top: 2px;
-    padding-left: 13px;
-    font-style: normal;
-    font-weight: 100;
-}
-
-#sola_cfr_tabs #tabs-6 {
+/* REST API Tab */
+#sola_cfr_tabs #tabs-0 {
    background: #fff; 
-   padding: 0.3px;
+   padding: 0.1em 13px;
    margin-top: 2px;
-   padding-left: 13px;
    font-style: normal;
    font-weight: 100;
+   width: 97% !important;
 }
 
 #sola_cfr_tabs #tabs-5 #wpcf_custom_css_container{

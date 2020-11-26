@@ -2206,10 +2206,10 @@ class WP_Contact_Form_ND{
                     echo 'color:' . $wpcf_nd_styling['wpcf_nd_submit_font_color'] . ';';
                 }
                 if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_font_weight'] ) {
-                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_submit_font_weight'] . 'px;';
+                    echo 'font-weight:' . $wpcf_nd_styling['wpcf_nd_submit_font_weight'] . ';';
                 }
                 if ( '' !== $wpcf_nd_styling['wpcf_nd_submit_text_transform'] ) {
-                    echo 'text-transform:' . $wpcf_nd_styling['wpcf_nd_submit_text_transform'] . 'px;';
+                    echo 'text-transform:' . $wpcf_nd_styling['wpcf_nd_submit_text_transform'] . ';';
                 } ?>
             }
             .wpcf-admin-preview-submit:hover {
@@ -2335,7 +2335,44 @@ class WP_Contact_Form_ND{
 						<li><a href="#tabs-3">Email template</a></li>
 						<li><a href="#tabs-4">Privacy</a></li>
                         <li><a href="#tabs-5">Advanced</a></li>
-						<li><a href="#tabs-6">REST API</a></li>
+						
+						<?php
+							if( function_exists('cfr_mailchimp_tab') ){
+								echo '<li><a href="#tabs-6">Mailchimp</a></li>';
+							}
+						?>
+
+						<?php
+							if( function_exists('cfr_bulksms_tab') ){
+								echo '<li><a href="#tabs-7">BulkSMS</a></li>';
+							}
+						?>
+
+						<?php
+							if( function_exists('cfr_clickatell_tab') ){
+								echo '<li><a href="#tabs-8">Clickatell</a></li>';
+							}
+						?>
+
+						<?php
+							if( function_exists('cfr_clicksend_tab') ){
+								echo '<li><a href="#tabs-9">ClickSend</a></li>';
+							}
+						?>
+
+						<?php
+							if( function_exists('cfr_zendesk_tab') ){
+								echo '<li><a href="#tabs-10">Zendesk</a></li>';
+							}
+						?>
+
+						<?php
+							if( function_exists('wpcf_sr_hook_settings_page_bottom') ){
+								echo '<li><a href="#tabs-11">Stored Submissions</a></li>';
+							}
+						?>
+
+						<li><a href="#tabs-0">REST API</a></li>
 					</ul>
 					
 					<div id="tabs-1">
@@ -2391,7 +2428,7 @@ class WP_Contact_Form_ND{
 						}
 					?>
 
-					<div id="tabs-6">
+					<div id="tabs-0">
 						<h2><?php _e("REST API","wpcf_nd"); ?></h2>
 						<table class="form-table wp-list-table widefat striped pages">
 							<tbody>
@@ -2426,12 +2463,61 @@ class WP_Contact_Form_ND{
 							</tbody>
 						</table>
 					</div>
+
+					<?php
+						if ( function_exists('cfr_mailchimp_hook_settings_page_bottom') ) {
+							echo "<div id=\"tabs-6\">";
+							do_action( "wpcf_hook_settings_page_bottom_mailchimp", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+					
+					<?php
+						if ( function_exists('cfr_bulksms_api_settings') ) {
+							echo "<div id=\"tabs-7\">";
+							do_action( "wpcf_hook_settings_page_bottom_bulksms", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+
+					<?php
+						if ( function_exists('cfr_clickatell_api_settings') ) {
+							echo "<div id=\"tabs-8\">";
+							do_action( "wpcf_hook_settings_page_bottom_clickatell", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+
+					<?php
+						if ( function_exists('cfr_clicksend_api_settings') ) {
+							echo "<div id=\"tabs-9\">";
+							do_action( "wpcf_hook_settings_page_bottom_clicksend", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+
+					<?php
+						if ( function_exists('cfr_zendesk_settings_page') ) {
+							echo "<div id=\"tabs-10\">";
+							do_action( "wpcf_hook_settings_page_bottom_zendesk", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+
+					<?php
+						if ( function_exists('wpcf_sr_hook_settings_page_bottom') ) {
+							echo "<div id=\"tabs-11\">";
+							do_action( "wpcf_hook_settings_page_bottom_stored_submissions", $wpcf_nd_settings );
+							echo "</div>";
+						}
+					?>
+					
 				</div>
 				<input type='submit' class="button-primary" value='Save settings' name='wpcf_submit_save_settings' />
 			</form>
 
-
 			<?php
+			
 		}
 	}
 
@@ -2510,8 +2596,10 @@ class WP_Contact_Form_ND{
 				$wpcf_nd_styling_css_string_submit = '.wpcf_nd_submit{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_bg_color']) . ' !important; font-size:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_size']) . 'px !important; color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_color']) . ' !important; font-weight:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_font_weight']) . ' !important; text-transform:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_text_transform']) . ' !important;} ' . '.wpcf_nd_submit:hover{background-color:' . esc_attr($wpcf_nd_styling['wpcf_nd_submit_bg_hover_color']) . ' !important;}';
 			
 				$wpcf_nd_styling_css_string_full = $wpcf_nd_styling_css_string_labels . ' ' . $wpcf_nd_styling_css_string_inputs . ' ' . $wpcf_nd_styling_css_string_submit;
+				
+				wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_styling_css_string_full ) );
 			}
-			wp_add_inline_style( 'contact-form-ready', stripslashes( $wpcf_nd_styling_css_string_full ) );
+			
 		}
 		
 		$wpcf_nd_basic_settings = get_option("wpcf_nd_basic_settings");
