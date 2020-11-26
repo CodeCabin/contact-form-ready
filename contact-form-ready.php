@@ -252,12 +252,11 @@ class WP_Contact_Form_ND{
 		register_rest_route('contact-form-ready/v1', '/get_forms',
 							array(
 								'methods' => 'GET, POST',
-								'callback' => array( $this , 'wpcf_nd_get_submissions_rest'),
-								
+								'callback' => array( $this , 'wpcf_nd_get_forms_rest')
 							));
 	}
 
-	function wpcf_nd_get_submissions_rest( WP_REST_Request $data ){
+	function wpcf_nd_get_forms_rest( WP_REST_Request $data ){
 		
 		$return_array = array();
 
@@ -274,7 +273,7 @@ class WP_Contact_Form_ND{
 
 					$the_query = new WP_Query( $args );
 
-					$submissions_array = array();
+					$forms_array = array();
 
 					if ( $the_query->have_posts() ) {
 
@@ -282,17 +281,16 @@ class WP_Contact_Form_ND{
 
 							$the_query->the_post();
 
-							$submissions_array[] = array(
+							$forms_array[] = array(
 								'title' => get_the_title(),
-								//'content' => get_the_content()
 							);
 						}
 						wp_reset_postdata();
 					} 
 					
-					$return_array['response'] = "Submissions returned successfully";
+					$return_array['response'] = "Forms returned successfully";
 					$return_array['code'] = "200";
-					$return_array['data'] = array( $submissions_array );
+					$return_array['data'] = array( $forms_array );
 
 				} else {
 
@@ -424,13 +422,13 @@ class WP_Contact_Form_ND{
 		            $tmpbody .= "<tr>";
 		            $tmpbody .= "	<td width='50%' align='left' valign='top'><strong>". esc_attr( $k ). "</strong></td><td align='left'>: ". esc_attr( $v ) ."</td>";
 		            $tmpbody .= "</tr>";
-		            $txt_only_sub .= esc_attr( $k ). " : ". esc_attr( $v )."\r\n"; 
+		            $txt_only_sub .= esc_attr( $k ). " : ". esc_attr( $v )." \r\n "; 
         		}
         		$tmpbody .= "</table>";
 	            $body .= "<tr>";
 	            $body .= "	<td width='50%' align='right' valign='top'><strong>". esc_attr( $key ). "</strong></td><td align='left'>" . $tmpbody ."</td>";
 	            $body .= "</tr>";
-	            $txt_only .= esc_attr( $key ). " : ". $txt_only_sub."\r\n"; 
+	            $txt_only .= esc_attr( $key ). " : ". $txt_only_sub." \r\n "; 
 
         	} else {
 
@@ -451,7 +449,7 @@ class WP_Contact_Form_ND{
 		            $body .= "<tr>";
 		            $body .= "<td width='50%' align='right' valign='top'><strong>". esc_attr( $key ). "</strong></td><td align='left'>: ". $user_email . "</td>";
 		            $body .= "</tr>";							
-		            $txt_only .= esc_attr( $key ) . " : " . $user_email . "\r\n"; 
+		            $txt_only .= esc_attr( $key ) . " : " . $user_email . " \r\n "; 
 				} else {
 
 					$include = apply_filters( "wpcf_fiter_exclude_certain_fields", true, $key, $val );
@@ -460,7 +458,7 @@ class WP_Contact_Form_ND{
 			            $body .= "<tr>";
 			            $body .= "<td width='50%' align='right' valign='top'><strong>". esc_attr( $key ). "</strong></td><td align='left'>: ". nl2br( esc_attr( $val ) ). "</td>";
 			            $body .= "</tr>";
-			            $txt_only .= esc_attr( $key ) . " : " . esc_attr( $val ) . "\r\n"; 
+			            $txt_only .= esc_attr( $key ) . " : " . esc_attr( $val ) . " \r\n "; 
 
 			        }
 		        }
@@ -2337,42 +2335,11 @@ class WP_Contact_Form_ND{
                         <li><a href="#tabs-5">Advanced</a></li>
 						
 						<?php
-							if( function_exists('cfr_mailchimp_tab') ){
-								echo '<li><a href="#tabs-6">Mailchimp</a></li>';
-							}
+							//Build extension settings page tab
+							do_action( 'wpcf_hook_settings_page_tab', $wpcf_nd_settings );
 						?>
 
-						<?php
-							if( function_exists('cfr_bulksms_tab') ){
-								echo '<li><a href="#tabs-7">BulkSMS</a></li>';
-							}
-						?>
-
-						<?php
-							if( function_exists('cfr_clickatell_tab') ){
-								echo '<li><a href="#tabs-8">Clickatell</a></li>';
-							}
-						?>
-
-						<?php
-							if( function_exists('cfr_clicksend_tab') ){
-								echo '<li><a href="#tabs-9">ClickSend</a></li>';
-							}
-						?>
-
-						<?php
-							if( function_exists('cfr_zendesk_tab') ){
-								echo '<li><a href="#tabs-10">Zendesk</a></li>';
-							}
-						?>
-
-						<?php
-							if( function_exists('wpcf_sr_hook_settings_page_bottom') ){
-								echo '<li><a href="#tabs-11">Stored Submissions</a></li>';
-							}
-						?>
-
-						<li><a href="#tabs-0">REST API</a></li>
+						<li><a href="#tabs-6">REST API</a></li>
 					</ul>
 					
 					<div id="tabs-1">
@@ -2428,7 +2395,7 @@ class WP_Contact_Form_ND{
 						}
 					?>
 
-					<div id="tabs-0">
+					<div id="tabs-6">
 						<h2><?php _e("REST API","wpcf_nd"); ?></h2>
 						<table class="form-table wp-list-table widefat striped pages">
 							<tbody>
@@ -2465,51 +2432,8 @@ class WP_Contact_Form_ND{
 					</div>
 
 					<?php
-						if ( function_exists('cfr_mailchimp_hook_settings_page_bottom') ) {
-							echo "<div id=\"tabs-6\">";
-							do_action( "wpcf_hook_settings_page_bottom_mailchimp", $wpcf_nd_settings );
-							echo "</div>";
-						}
-					?>
-					
-					<?php
-						if ( function_exists('cfr_bulksms_api_settings') ) {
-							echo "<div id=\"tabs-7\">";
-							do_action( "wpcf_hook_settings_page_bottom_bulksms", $wpcf_nd_settings );
-							echo "</div>";
-						}
-					?>
-
-					<?php
-						if ( function_exists('cfr_clickatell_api_settings') ) {
-							echo "<div id=\"tabs-8\">";
-							do_action( "wpcf_hook_settings_page_bottom_clickatell", $wpcf_nd_settings );
-							echo "</div>";
-						}
-					?>
-
-					<?php
-						if ( function_exists('cfr_clicksend_api_settings') ) {
-							echo "<div id=\"tabs-9\">";
-							do_action( "wpcf_hook_settings_page_bottom_clicksend", $wpcf_nd_settings );
-							echo "</div>";
-						}
-					?>
-
-					<?php
-						if ( function_exists('cfr_zendesk_settings_page') ) {
-							echo "<div id=\"tabs-10\">";
-							do_action( "wpcf_hook_settings_page_bottom_zendesk", $wpcf_nd_settings );
-							echo "</div>";
-						}
-					?>
-
-					<?php
-						if ( function_exists('wpcf_sr_hook_settings_page_bottom') ) {
-							echo "<div id=\"tabs-11\">";
-							do_action( "wpcf_hook_settings_page_bottom_stored_submissions", $wpcf_nd_settings );
-							echo "</div>";
-						}
+						//Build extension settings page body
+						do_action( "wpcf_hook_settings_page_bottom", $wpcf_nd_settings );
 					?>
 					
 				</div>
