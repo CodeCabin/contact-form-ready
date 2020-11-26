@@ -2320,10 +2320,8 @@ class WP_Contact_Form_ND{
 			if (!isset($wpcf_nd_settings['wpcf_nd_email_from_name']))
 				$wpcf_nd_settings['wpcf_nd_email_from_name'] = get_option( 'blogname' ); 
 				
-				
-
-
 			?>
+
 			<form action='' method='POST' name='wpcf_settings_form'>
 				<div id="sola_cfr_tabs">
 					<h1><?php _e("Contact form settings","wpcf_nd"); ?></h1>
@@ -2408,7 +2406,11 @@ class WP_Contact_Form_ND{
 									<td>Supported API Calls:</td>
 									<td width="600"><code>/wp-json/contact-form-ready/v1/get_forms?token={secret_token}</code> 
 									</td>
+									
 								</tr>
+								<?php
+									do_action('wpcf_hook_settings_page_sr_rest_show');
+								?>
 								<tr>
 									<td>API Response Codes:</td>
 									<td><code>200</code> 
@@ -2441,7 +2443,6 @@ class WP_Contact_Form_ND{
 			</form>
 
 			<?php
-			
 		}
 	}
 
