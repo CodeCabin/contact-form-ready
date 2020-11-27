@@ -1359,7 +1359,7 @@ class WP_Contact_Form_ND{
 		update_post_meta( $post_id, 'wpcf_nd_email_sending_settings', $wpcf_nd_settings );
 		update_option( 'wpcf_nd_basic_settings', $wpcf_nd_basic_settings );
 
-	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
+		do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
 	     
 	}
 
@@ -1847,20 +1847,6 @@ class WP_Contact_Form_ND{
 			<p>Convert submitted form data into a ticket on Nifty Desk</p>			
 			<a href="https://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
-
-		<div class="wpcf-extension">
-			<h3 class="wpcf-extension-title">Trello</h3>
-			<a href="https://www.contactformready.com/extensions/trello/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=trello" title="Trello Extension" target="_BLANK">
-				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/trello.png" ?>" class="attachment-showcase wp-post-image" alt="Trello Extension" title="Trello Extension">
-			</a>
-			<p></p>
-			<p></p>
-			<div class="wpcf-extension-label-box"></div>
-			<p>Price: <em>$4.99 once off</em></p>
-			<p>Convert submitted forms into cards on trello</p>			
-		<!--<a href="https://www.contactformready.com/extensions/trello/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=trello" title="Trello Extension" class="button-secondary" target="_BLANK">Get this add-on</a> -->
-		</div>
-
 
 		<?php
 	}
