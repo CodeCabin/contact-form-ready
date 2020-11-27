@@ -165,12 +165,7 @@
 #sola_cfr_tabs #tabs-2, /* Anti Spam Tab */
 #sola_cfr_tabs #tabs-4, /* Privacy Tab */
 #sola_cfr_tabs #tabs-5, /* Advanced Tab */
-#sola_cfr_tabs #tabs-6, /* MailChimp Tab */
-#sola_cfr_tabs #tabs-7, /* BulkSMS Tab */
-#sola_cfr_tabs #tabs-8, /* Clickatell Tab */
-#sola_cfr_tabs #tabs-9, /* ClickSend Tab */
-#sola_cfr_tabs #tabs-10, /* Zendesk Tab */
-#sola_cfr_tabs #tabs-11 /* Stored Submissions Tab */
+#sola_cfr_tabs .extension-tab /* Extension Tabs */
 {
     background: #fff;
     padding: 0.1em 13px;
@@ -189,7 +184,7 @@
 }
 
 /* REST API Tab */
-#sola_cfr_tabs #tabs-0 {
+#sola_cfr_tabs #tabs-6 {
    background: #fff; 
    padding: 0.1em 13px;
    margin-top: 2px;
