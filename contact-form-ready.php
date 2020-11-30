@@ -3,21 +3,26 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.10
+  Version: 2.0.11
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
- * 2.0.12 - 2020-10-28
- * Updated settings page layout
- * Changed email template size to auto
- * Removed preview blocks of color picker
- *
- * 2.0.11 - 2020-10-22
- * Removed iris color picker
- * Tested with WP 5.5.1
+ * 2.0.11 - 2020-11-30
+ * Tested on WordPress 5.5.3
+ * Modernized admin areas
+ * Added custom secure REST endpoint – ‘get_forms’
+ * Added REST API tab in Settings
+ * Added Live Preview on Styling tab
+ * Added Dark Mode feature for Live Preview on Styling tab
+ * Added Custom CSS feature
+ * Bug Fix: Fixed a bug that prevented extension settings from displaying
+ * Bug Fix: Fixed GDPR warning buttons and links
+ * Bug Fix: Fixed a bug that prevented custom stylings on front end
+ * Bug Fix: Fixed various styling issues
+ * Bug Fix: Fixed various bugs
  *
  * 2.0.10 - 2020-01-21 
  * Bug Fix: Fixed jQuery() .tabs is not a function
