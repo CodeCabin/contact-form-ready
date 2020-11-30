@@ -1848,6 +1848,19 @@ class WP_Contact_Form_ND{
 			<a href="https://www.contactformready.com/extensions/nifty-desk/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=nifty" title="Nifty Desk Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
 
+		<div class="wpcf-extension">
+			<h3 class="wpcf-extension-title">Zapier</h3>
+			<a href="" title="Zapier Extension" target="_BLANK">
+				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/Zapier.png" ?>" class="attachment-showcase wp-post-image" alt="Zapier Extension" title="Zapier Extension">
+			</a>
+			<p></p>
+			<p></p>
+			<div class="wpcf-extension-label-box"></div>
+			<p>Price: <em>$4.99 once off</em></p>
+			<p>Integrate your forms with many different Zapier apps</p>			
+			<a href="https://www.contactformready.com/extensions/zapier/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zapier" title="Zapier Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
+		</div>
+		
 		<?php
 	}
 

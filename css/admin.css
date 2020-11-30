@@ -100,7 +100,7 @@
     border: 1px solid #ccc;
     width: 262px;
     padding: 14px;
-    height: 395px;
+    height: 415px;
     position: relative;
 
 }
@@ -114,6 +114,7 @@
     position: absolute;
     bottom: 14px;
     left: 14px;
+    
 }
 
 .wpcf_shortcode_copy {
