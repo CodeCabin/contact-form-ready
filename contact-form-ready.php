@@ -3,21 +3,26 @@
   Plugin Name: Contact Form Ready
   Plugin URI: http://contactformready.com
   Description: The easiest to use Contact Form plugin for WordPress with a drag and drop interface.
-  Version: 2.0.10
+  Version: 2.0.11
   Author: NickDuncan
   Author URI: http://nickduncan.co.za
  */
 
 
 /**
- * 2.0.12 - 2020-10-28
- * Updated settings page layout
- * Changed email template size to auto
- * Removed preview blocks of color picker
- *
- * 2.0.11 - 2020-10-22
- * Removed iris color picker
- * Tested with WP 5.5.1
+ * 2.0.11 - 2020-11-30
+ * Tested on WordPress 5.5.3
+ * Modernized admin areas
+ * Added custom secure REST endpoint – ‘get_forms’
+ * Added REST API tab in Settings
+ * Added Live Preview on Styling tab
+ * Added Dark Mode feature for Live Preview on Styling tab
+ * Added Custom CSS feature
+ * Bug Fix: Fixed a bug that prevented extension settings from displaying
+ * Bug Fix: Fixed GDPR warning buttons and links
+ * Bug Fix: Fixed a bug that prevented custom stylings on front end
+ * Bug Fix: Fixed various styling issues
+ * Bug Fix: Fixed various bugs
  *
  * 2.0.10 - 2020-01-21 
  * Bug Fix: Fixed jQuery() .tabs is not a function
@@ -1359,7 +1364,7 @@ class WP_Contact_Form_ND{
 		update_post_meta( $post_id, 'wpcf_nd_email_sending_settings', $wpcf_nd_settings );
 		update_option( 'wpcf_nd_basic_settings', $wpcf_nd_basic_settings );
 
-	    do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
+		do_action ( "wpcf_nd_hook_save_meta_box_control", $post_id, $_POST );
 	     
 	}
 
@@ -1849,19 +1854,18 @@ class WP_Contact_Form_ND{
 		</div>
 
 		<div class="wpcf-extension">
-			<h3 class="wpcf-extension-title">Trello</h3>
-			<a href="https://www.contactformready.com/extensions/trello/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=trello" title="Trello Extension" target="_BLANK">
-				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/trello.png" ?>" class="attachment-showcase wp-post-image" alt="Trello Extension" title="Trello Extension">
+			<h3 class="wpcf-extension-title">Zapier</h3>
+			<a href="" title="Zapier Extension" target="_BLANK">
+				<img width="256" height="256" src="<?php echo plugins_url(plugin_basename(dirname(__FILE__)))."/images/Zapier.png" ?>" class="attachment-showcase wp-post-image" alt="Zapier Extension" title="Zapier Extension">
 			</a>
 			<p></p>
 			<p></p>
 			<div class="wpcf-extension-label-box"></div>
 			<p>Price: <em>$4.99 once off</em></p>
-			<p>Convert submitted forms into cards on trello</p>			
-		<!--<a href="https://www.contactformready.com/extensions/trello/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=trello" title="Trello Extension" class="button-secondary" target="_BLANK">Get this add-on</a> -->
+			<p>Integrate your forms with many different Zapier apps</p>			
+			<a href="https://www.contactformready.com/extensions/zapier/?utm_source=plugin&amp;utm_medium=link&amp;utm_campaign=zapier" title="Zapier Extension" class="button-secondary" target="_BLANK">Get this add-on</a>
 		</div>
-
-
+		
 		<?php
 	}
 

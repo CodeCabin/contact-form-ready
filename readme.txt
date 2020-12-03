@@ -4,7 +4,7 @@ Donate link: http://nickduncan.co.za
 Tags:  form, forms, form builder, contact form, wordpress contact form, contact, free contact form for website, contact us, custom form, contact form builder, contact form manager 
 Requires at least: 3.8
 Requires PHP: 5.3
-Tested up to: 5.5.1
+Tested up to: 5.5.3
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -168,9 +168,21 @@ Nothing here
 
 == Changelog ==
 
-= 2.0.11 - 2020-10-22 =
-* Removed iris color picker
-* Tested with WP 5.5.1
+= 2.0.11 - 2020-11-30 =
+* 
+* Tested on WordPress 5.5.3
+* Modernized admin areas
+* Added custom secure REST endpoint – ‘get_forms’
+* Added REST API tab in Settings
+* Added Live Preview on Styling tab
+* Added Dark Mode feature for Live Preview on Styling tab
+* Added Custom CSS feature
+* Bug Fix: Fixed a bug that prevented extension settings from displaying
+* Bug Fix: Fixed GDPR warning buttons and links
+* Bug Fix: Fixed a bug that prevented custom stylings on front end
+* Bug Fix: Fixed various styling issues
+* Bug Fix: Fixed various bugs
+
 
 = 2.0.10 - 2020-01-21 =
 * Bug Fix: Fixed jQuery() .tabs is not a function
